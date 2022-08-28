@@ -1,3 +1,4 @@
+/* Probably not needed as each component should be aware of its own appropriate bp's */
 import { useState, useEffect } from 'react';
 
 type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
