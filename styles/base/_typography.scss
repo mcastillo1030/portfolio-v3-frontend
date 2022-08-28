@@ -1,0 +1,170 @@
+@use 'bootstrap' as c;
+@use 'sass:map';
+
+html {
+  position: relative;
+  font-size: c.$font-base-size;
+}
+
+body {
+  position: relative;
+  color: var(--c-foreground);
+  font-family: c.$font-body-family;
+  font-size: 100%;
+  line-height: 1.5;
+  background: var(--c-background);
+  transition: color .2s ease-out, background-color .2s ease-out;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+p,
+ul,
+ol,
+dl,
+table,
+figure,
+blockquote,
+address,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.alpha,
+.beta,
+.gamma,
+.delta,
+.epsilon,
+.zeta {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+p,
+ul,
+ol,
+dl,
+table,
+figure,
+address {
+  font-size: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.kilo,
+.alpha,
+.beta,
+.gamma,
+.delta,
+.epsilon,
+.zeta {
+  margin-top: 2.5rem;
+  line-height: 1.2;
+  font-family: c.$font-heading-family-mono;
+  font-weight: 500;
+  line-height: 1.251;
+}
+
+h4,
+h5,
+h6,
+.delta,
+.epsilon,
+.zeta {
+  font-family: c.$font-heading-family-sans;
+}
+
+.kilo {
+  font-size: map.get(map.get(c.$font-sizes, 'kilo'), 'large');
+}
+
+h1,
+.alpha {
+  font-size: map.get(map.get(c.$font-sizes, 'alpha'), 'large');
+}
+
+h2,
+.beta {
+  font-size: map.get(map.get(c.$font-sizes, 'beta'), 'large');
+}
+
+h3,
+.gamma {
+  font-size: map.get(map.get(c.$font-sizes, 'gamma'), 'large');
+}
+
+h4,
+.delta {
+  font-size: map.get(map.get(c.$font-sizes, 'delta'), 'large');
+}
+
+h5,
+.epsilon {
+  font-size: map.get(map.get(c.$font-sizes, 'epsilon'), 'large');
+}
+
+h6,
+.zeta {
+  font-size: map.get(map.get(c.$font-sizes, 'zeta'), 'large');
+}
+
+.milli {
+  font-size: map.get(map.get(c.$font-sizes, 'milli'), 'large');
+}
+
+:is(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) + :is(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) {
+  margin-top: 0;
+}
+
+a {
+  color: var(--c-action);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+address {
+  font-style: normal;
+}
+
+ul,
+ol {
+  padding-left: 1rem;
+
+  li {
+    margin: 1rem 0;
+  }
+
+  ul,
+  ol {
+    margin-top: .5rem;
+
+    li {
+      margin: .5rem 0;
+    }
+  }
+}
+
+blockquote {
+  footer {
+    font-weight: 700;
+    text-transform: uppercase;
+
+    cite {
+      font-style: normal;
+    }
+  }
+}
+
+figure {
+  margin: 2.25rem 0;
+}

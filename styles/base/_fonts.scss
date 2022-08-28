@@ -1,0 +1,77 @@
+@font-face {
+  font-family: Fira-Mono;
+  src:
+    local('Fira Mono Regular'),
+    local('FiraMono-Regular'),
+    url('../../public/fonts/fira-mono-regular.woff') format('woff'),
+
+    url('../../public/fonts/fira-mono-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Fira-Mono;
+  src:
+    local('Fira Mono Medium'),
+    local('FiraMono-Medium'),
+    url('../../public/fonts/fira-mono-500.woff') format('woff'),
+
+    url('../../public/fonts/fira-mono-500.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Fira-Sans-Condensed;
+  src:
+    local('Fira Sans Condensed Regular'),
+    local('FiraSansCondensed-Regular'),
+    url('../../public/fonts/fira-sans-condensed-regular.woff') format('woff'),
+
+    url('../../public/fonts/fira-sans-condensed-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Fira-Sans-Condensed;
+  src:
+    local('Fira Sans Condensed Medium'),
+    local('FiraSansCondensed-Medium'),
+    url('../../public/fonts/fira-sans-condensed-500.woff') format('woff'),
+
+    url('../../public/fonts/fira-sans-condensed-500.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Alef;
+  src:
+    local('Alef Regular'),
+    local('Alef-Regular'),
+    url('../../public/fonts/alef-regular.woff') format('woff'),
+
+    url('../../public/fonts/alef-regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Alef;
+  src:
+    local('Alef Medium'),
+    local('Alef-Medium'),
+    url('../../public/fonts/alef-700.woff') format('woff'),
+
+    url('../../public/fonts/alef-700.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}

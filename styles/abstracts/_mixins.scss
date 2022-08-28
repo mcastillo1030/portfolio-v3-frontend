@@ -1,0 +1,49 @@
+@use 'sass:math';
+@use 'functions' as *;
+
+@mixin a11y() {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  clip-path: inset(50%);
+  overflow: hidden;
+
+  &-focusable {
+    &:focus,
+    &:active {
+      position: static;
+      width: auto;
+      height: auto;
+      white-space: normal;
+      clip: auto;
+      clip-path: none;
+      clip-path: none;
+      overflow: visible;
+    }
+  }
+}
+
+@mixin a11y-show() {
+  position: static;
+  width: auto;
+  height: auto;
+  white-space: normal;
+  clip: auto;
+  clip-path: none;
+  clip-path: none;
+  overflow: visible;
+}
+
+@function custom-spacing($min-space: 32px, $max-space: 56px, $min-width: 375px, $max-width: 768px) {
+  $space-diff: strip-unit($max-space - $min-space);
+  $width-diff: strip-unit($max-width - $min-width);
+  $space-step: math.div(($space-diff * 100), $width-diff);
+  $rel-size: math.div((strip-unit($min-width * $max-space) - strip-unit($max-width * $min-space)), strip-unit($min-width - $max-width));
+
+  @return clamp(#{$min-space}, #{$space-step}vw + #{math.div($rel-size, 16)}rem, #{$max-space});
+}

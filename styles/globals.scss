@@ -1,0 +1,49 @@
+@use 'bootstrap' as c;
+@use 'base';
+@use 'vendors';
+@use 'sass:map';
+
+:root {
+  color-scheme: light dark;
+  --c-foreground: #{map.get(c.$color-fg, 'dark')};
+  --c-background: #{map.get(c.$color-bg, 'dark')};
+  --c-menu-bg: #{map.get(c.$color-menu, 'dark')};
+  --c-action: #{map.get(c.$color-action, 'dark')};
+  --c-accent: #{map.get(c.$color-accent, 'dark')};
+  --c-success: #{map.get(c.$color-success, 'dark')};
+  --c-warning: c.$color-warning;
+  --c-selection: #{map.get(c.$color-selection, 'dark')};
+  --c-extra-1: #{map.get(c.$color-extra-1, 'dark')};
+  --c-extra-2: #{map.get(c.$color-extra-2, 'dark')};
+  --w-max-content: #{c.$content-max};
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.light-mode {
+  --c-foreground: #{map.get(c.$color-fg, 'light')};
+  --c-background: #{map.get(c.$color-bg, 'light')};
+  --c-menu-bg: #{map.get(c.$color-menu, 'light')};
+  --c-action: #{map.get(c.$color-action, 'light')};
+  --c-accent: #{map.get(c.$color-accent, 'light')};
+  --c-success: #{map.get(c.$color-success, 'light')};
+  --c-warning: c.$color-warning;
+  --c-selection: #{map.get(c.$color-selection, 'light')};
+  --c-extra-1: #{map.get(c.$color-extra-1, 'light')};
+  --c-extra-2: #{map.get(c.$color-extra-2, 'light')};
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

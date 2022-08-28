@@ -9,9 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/qs": "^6.9.7",
+    "gsap": "npm:@gsap/member@^3.11.0",
+    "moment": "^2.29.4",
     "next": "12.2.5",
+    "qs": "^6.11.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.3",
+    "react-moment": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "18.7.3",
@@ -19,6 +25,7 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
+    "sass": "^1.54.5",
     "typescript": "4.7.4"
   }
 }

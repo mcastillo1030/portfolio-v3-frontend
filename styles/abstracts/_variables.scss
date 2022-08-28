@@ -1,0 +1,92 @@
+/* Breakpoints */
+$breakpoint-xxs: 320px;
+$breakpoint-xs: 375px;
+$breakpoint-sm: 550px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1600px;
+
+/* Content max width */
+$content-max: 1920px;
+
+/* Colors */
+$color-bg: (
+  'dark': #011627,
+  'light': #fbfbfb,
+);
+$color-fg: (
+  'dark': #d6deeb,
+  'light': #403f53,
+);
+$color-menu: (
+  'dark': #1d3b53,
+  'light': #e0e0e0,
+);
+$color-accent: (
+  'dark': #c792ea,
+  'light': #994cc3,
+);
+$color-action: (
+  'dark': #82aaff,
+  'light': #4876d6,
+);
+$color-success: (
+  'dark': #addb67,
+  'light': #0c969b,
+);
+$color-warning: #ff2c83;
+$color-selection: (
+  'dark': #80a4c2,
+  'light': #90a7b2,
+);
+$color-extra-1: (
+  'dark': #f78c6c,
+  'light': #bc5454,
+);
+$color-extra-2: (
+  'dark': #7fdbca,
+  'light': #aa0982,
+);
+
+/* Fonts */
+$font-body-family: Alef, -apple-system, system-ui, blinkmacsystemfont, 'Segoe UI', helvetica, arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-heading-family-mono: Fira-Mono, $font-body-family;
+$font-heading-family-sans: Fira-Sans-Condensed, $font-body-family;
+
+/* Sizes */
+$font-base-size: 16px;
+$font-sizes: (
+  'kilo': (
+    'large': 3.86rem,
+    'small': 2.988rem,
+  ),
+  'alpha': (
+    'large': 3.063rem,
+    'small': 2.488rem,
+  ),
+  'beta': (
+    'large': 2.438rem,
+    'small': 2.075rem,
+  ),
+  'gamma': (
+    'large': 1.938rem,
+    'small': 1.725rem,
+  ),
+  'delta': (
+    'large': 1.563rem,
+    'small': 1.4375rem,
+  ),
+  'epsilon': (
+    'large': 1.25rem,
+    'small': 1.2rem,
+  ),
+  'zeta': (
+    'large': 1rem,
+    'small': .83125rem,
+  ),
+  'milli': (
+    'large': .8125rem,
+    'small': .75rem,
+  ),
+);
