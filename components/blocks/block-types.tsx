@@ -1,6 +1,6 @@
 import { StrapiMedia } from '../../lib/media';
 
-interface Block {
+interface BlockType {
   id: string;
   __component: string;
 }
@@ -10,26 +10,26 @@ type Icon = {
   name: string,
 }
 
-export interface HeadingBlock extends Block {
+export interface HeadingBlockType extends BlockType {
   title: string,
 }
 
-export interface ImageBlock extends Block {
+export interface ImageBlockType extends BlockType {
   heading: string | null,
   image: StrapiMedia,
 }
 
-export interface TextBlock extends Block {
+export interface TextBlockType extends BlockType {
   heading: string | null,
   text: string,
 }
 
-export interface IconListBlock extends Block {
+export interface IconListBlockType extends BlockType {
   heading: string | null,
   icon: Icon[],
 }
 
-export interface MarkdownBlock extends Block {
+export interface MarkdownBlockType extends BlockType {
   heading: string | null,
   content: string,
 }

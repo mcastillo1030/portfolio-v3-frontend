@@ -39,7 +39,7 @@
   overflow: visible;
 }
 
-@function custom-spacing($min-space: 32px, $max-space: 56px, $min-width: 375px, $max-width: 768px) {
+@function fluid-spacing($min-space: 32px, $max-space: 56px, $min-width: 375px, $max-width: 768px) {
   $space-diff: strip-unit($max-space - $min-space);
   $width-diff: strip-unit($max-width - $min-width);
   $space-step: math.div(($space-diff * 100), $width-diff);

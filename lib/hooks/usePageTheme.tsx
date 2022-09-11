@@ -12,6 +12,7 @@ const usePageTheme = () => {
 
       if (body) {
         body.className = theme;
+        body.setAttribute('data-theme', theme);
       }
     }
   } , []);
@@ -24,6 +25,7 @@ const usePageTheme = () => {
 
     if (body) {
       body.className = newTheme;
+      body.setAttribute('data-theme', newTheme);
     }
   }
 

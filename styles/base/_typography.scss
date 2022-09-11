@@ -82,41 +82,41 @@ h6,
 }
 
 .kilo {
-  font-size: map.get(map.get(c.$font-sizes, 'kilo'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'kilo'), 'small');
 }
 
 h1,
 .alpha {
-  font-size: map.get(map.get(c.$font-sizes, 'alpha'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'alpha'), 'small');
 }
 
 h2,
 .beta {
-  font-size: map.get(map.get(c.$font-sizes, 'beta'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'beta'), 'small');
 }
 
 h3,
 .gamma {
-  font-size: map.get(map.get(c.$font-sizes, 'gamma'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'gamma'), 'small');
 }
 
 h4,
 .delta {
-  font-size: map.get(map.get(c.$font-sizes, 'delta'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'delta'), 'small');
 }
 
 h5,
 .epsilon {
-  font-size: map.get(map.get(c.$font-sizes, 'epsilon'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'epsilon'), 'small');
 }
 
 h6,
 .zeta {
-  font-size: map.get(map.get(c.$font-sizes, 'zeta'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'zeta'), 'small');
 }
 
 .milli {
-  font-size: map.get(map.get(c.$font-sizes, 'milli'), 'large');
+  font-size: map.get(map.get(c.$font-sizes, 'milli'), 'small');
 }
 
 :is(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) + :is(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) {
@@ -167,4 +167,44 @@ blockquote {
 
 figure {
   margin: 2.25rem 0;
+}
+
+@media screen and (min-width: c.$breakpoint-md) {
+  .kilo {
+    font-size: map.get(map.get(c.$font-sizes, 'kilo'), 'large');
+  }
+
+  h1,
+  .alpha {
+    font-size: map.get(map.get(c.$font-sizes, 'alpha'), 'large');
+  }
+
+  h2,
+  .beta {
+    font-size: map.get(map.get(c.$font-sizes, 'beta'), 'large');
+  }
+
+  h3,
+  .gamma {
+    font-size: map.get(map.get(c.$font-sizes, 'gamma'), 'large');
+  }
+
+  h4,
+  .delta {
+    font-size: map.get(map.get(c.$font-sizes, 'delta'), 'large');
+  }
+
+  h5,
+  .epsilon {
+    font-size: map.get(map.get(c.$font-sizes, 'epsilon'), 'large');
+  }
+
+  h6,
+  .zeta {
+    font-size: map.get(map.get(c.$font-sizes, 'zeta'), 'large');
+  }
+
+  .milli {
+    font-size: map.get(map.get(c.$font-sizes, 'milli'), 'large');
+  }
 }

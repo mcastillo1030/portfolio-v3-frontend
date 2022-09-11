@@ -39,11 +39,8 @@ body {
   --c-extra-2: #{map.get(c.$color-extra-2, 'light')};
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+.container {
+  max-width: #{c.$content-max};
+  padding: 0 c.fluid-spacing(18px, 194px, c.$breakpoint-sm, c.$breakpoint-xl);
+  margin: 0 auto;
 }

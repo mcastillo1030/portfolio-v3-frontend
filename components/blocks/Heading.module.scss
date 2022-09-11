@@ -1,0 +1,21 @@
+@use 'bootstrap' as c;
+@use 'sass:map';
+
+.heading {
+  --kilo-font-size: #{map.get(map.get(c.$font-sizes, 'kilo'), 'small')};
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: calc(100% - var(--kilo-font-size) + 18px);
+  margin: 0;
+  padding-inline-start: c.fluid-spacing(16px, 64px);
+  text-transform: lowercase;
+  opacity: .25;
+  transform-origin: left center;
+  transform: rotate(90deg);
+}
+
+@media screen and (min-width: c.$breakpoint-xl) {
+  .heading {
+    inset-inline-start: var(--kilo-font-size);
+  }
+}

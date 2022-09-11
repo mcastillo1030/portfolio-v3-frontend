@@ -1,0 +1,124 @@
+@use 'bootstrap' as c;
+@use 'sass:map';
+
+.hp-hero {
+  --kilo-font-size: #{map.get(map.get(c.$font-sizes, 'kilo'), 'small')};
+  margin-block: 1rem c.fluid-spacing(39px, 192px, c.$breakpoint-xxs, c.$breakpoint-xl);
+
+  &__outline {
+    position: relative;
+    padding: 1.375rem c.fluid-spacing(18px, 186px, c.$breakpoint-sm, c.$breakpoint-xl);
+    border: 1px solid var(--c-accent);
+    border-right-width: 0;
+    border-bottom-width: 0;
+  }
+
+  &__title {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: calc(100% - var(--kilo-font-size) + 18px);
+    margin: 0;
+    padding-inline-start: c.fluid-spacing(16px, 64px);
+    text-transform: lowercase;
+    opacity: .25;
+    transform-origin: left center;
+    transform: rotate(90deg);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-block: c.fluid-spacing(16px, 64px);
+  }
+
+  &__name {
+    font-size: map-get(map-get(c.$font-sizes, 'alpha'), 'large');
+  }
+
+  &__sub {
+    display: flex;
+    align-items: center;
+    color: var(--c-selection);
+    font-size: .875rem;
+    font-family: c.$font-heading-family-mono;
+  }
+
+  &__sub-prefix {
+    margin-inline-end: 1ch;
+  }
+
+  &__sub-text {
+    color: var(--c-accent);
+  }
+
+  &__sub-suffix {
+    margin-inline-start: .5ch;
+  }
+
+  &__intro {
+    position: relative;
+    overflow: hidden;
+    font-family: c.$font-heading-family-sans;
+  }
+
+  &__intro-text {
+    display: block;
+    background: url('/images/sub-gradient.png');
+    background-position: 0% bottom;
+    background-repeat: no-repeat;
+    background-size: 200% 200%;
+    color: transparent;
+    background-clip: text;
+    animation: intro-gradient 10s ease-in-out infinite;
+  }
+
+  &__sub-gradient {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 200%;
+    height: 100%;
+    background: var(--c-background);
+  }
+
+  @keyframes intro-gradient {
+    0% {
+      background-position: 0% bottom;
+    }
+    50% {
+      background-position: 110% top;
+    }
+    100% {
+      background-position: 0% bottom;
+    }
+  }
+}
+
+@media screen and (min-width: c.$breakpoint-md) {
+  .hp-hero {
+    &__name {
+      font-size: map-get(map-get(c.$font-sizes, 'kilo'), 'large');
+    }
+
+    &__sub {
+      font-size: 1rem;
+    }
+
+    &__intro {
+      font-size: map-get(map-get(c.$font-sizes, 'alpha'), 'large');
+    }
+  }
+}
+
+@media screen and (min-width: c.$breakpoint-xl) {
+  .hp-hero {
+    &__title {
+      inset-inline-start: var(--kilo-font-size);
+    }
+  }
+}
