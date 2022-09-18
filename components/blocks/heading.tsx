@@ -12,7 +12,12 @@ const HeadingBlock = ({ title }: HeadingBlockType) => {
     return getClassNames(styles, ...classNames);
   };
   return (
-    <h2 className={`${printHeadingClass('heading')} beta`}>{title}</h2>
+    <h2 className={`${printHeadingClass('heading')} kilo`}>
+      <span className={printHeadingClass('heading__bar')} aria-hidden='true'>/</span>
+      <span className={printHeadingClass('heading__title')}>
+        {title}
+      </span>
+    </h2>
   );
 };
 

@@ -7,7 +7,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     loader: 'default',
-    domains: ['localhost'],
+    domains: ['localhost', '127.0.0.1', '127.0.0.1:1337'],
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

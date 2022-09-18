@@ -1,0 +1,10 @@
+@use 'bootstrap' as c;
+
+.hp-section {
+  &__outline {
+    position: relative;
+    padding: c.fluid-spacing(24px, 80px) c.fluid-spacing(18px, 186px, c.$breakpoint-sm, c.$breakpoint-xl);
+    border: 1px solid var(--c-accent);
+    border-width: 0 0 0 1px;
+  }
+}

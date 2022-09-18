@@ -5,9 +5,67 @@
 }
 
 :first-child {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 :last-child {
-	margin-bottom: 0;
+  margin-bottom: 0;
+}
+
+.svg-icon {
+  display: inline;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.image-frame {
+  position: relative;
+  border: 2px solid var(--c-selection);
+  border-radius: .625rem;
+  overflow: hidden;
+
+  &__toolbar {
+    position: relative;
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+    padding-block: .6875rem;
+    padding-inline: .875rem;
+    border-bottom: 2px solid var(--c-selection);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--c-selection);
+      opacity: .5;
+    }
+  }
+
+  &__btn {
+    position: relative;
+    width: .625rem;
+    height: .625rem;
+    border-radius: 50%;
+    background-color: var(--c-success);
+
+    &:nth-of-type(2) {
+      background-color: var(--c-extra-1);
+    }
+
+    &:nth-of-type(3) {
+      background-color: var(--c-warning);
+    }
+  }
+
+  &__img {
+    > img,
+    > span {
+      display: block !important;
+    }
+  }
 }

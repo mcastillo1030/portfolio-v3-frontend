@@ -3,7 +3,8 @@
 
 .hp-hero {
   --kilo-font-size: #{map.get(map.get(c.$font-sizes, 'kilo'), 'small')};
-  margin-block: 1rem c.fluid-spacing(39px, 192px, c.$breakpoint-xxs, c.$breakpoint-xl);
+  margin-block-start: 1rem;
+  // margin-block: 1rem c.fluid-spacing(39px, 192px, c.$breakpoint-xxs, c.$breakpoint-xl);
 
   &__outline {
     position: relative;

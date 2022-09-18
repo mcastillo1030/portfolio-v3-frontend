@@ -11,7 +11,7 @@
   --c-action: #{map.get(c.$color-action, 'dark')};
   --c-accent: #{map.get(c.$color-accent, 'dark')};
   --c-success: #{map.get(c.$color-success, 'dark')};
-  --c-warning: c.$color-warning;
+  --c-warning: #{c.$color-warning};
   --c-selection: #{map.get(c.$color-selection, 'dark')};
   --c-extra-1: #{map.get(c.$color-extra-1, 'dark')};
   --c-extra-2: #{map.get(c.$color-extra-2, 'dark')};
@@ -22,8 +22,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 .light-mode {
@@ -33,7 +31,7 @@ body {
   --c-action: #{map.get(c.$color-action, 'light')};
   --c-accent: #{map.get(c.$color-accent, 'light')};
   --c-success: #{map.get(c.$color-success, 'light')};
-  --c-warning: c.$color-warning;
+  --c-warning: #{c.$color-warning};
   --c-selection: #{map.get(c.$color-selection, 'light')};
   --c-extra-1: #{map.get(c.$color-extra-1, 'light')};
   --c-extra-2: #{map.get(c.$color-extra-2, 'light')};

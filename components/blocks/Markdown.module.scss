@@ -1,0 +1,25 @@
+@use 'bootstrap' as c;
+@use 'sass:map';
+
+.markdown-block {
+  &__heading {
+    margin-block-end: .75em;
+    color: var(--c-accent);
+    font-size: .75rem;
+  }
+
+  &__content {
+    max-width: calc(100% - 2rem);
+
+    h3 {
+      margin-block-end: .25em;
+      font-size: map.get(map.get(c.$font-sizes, 'beta'), 'small');
+    }
+
+    h4 {
+      margin-block-end: .625rem;
+      color: var(--c-extra-2);
+      font-size: map.get(map.get(c.$font-sizes, 'epsilon'), 'small');
+    }
+  }
+}

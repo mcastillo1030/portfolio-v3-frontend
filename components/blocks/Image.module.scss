@@ -1,0 +1,12 @@
+.image-block {
+  &__heading {
+    max-width: calc(100% - 2rem);
+    margin-block-end: .75em;
+    color: var(--c-accent);
+    font-size: .75rem;
+  }
+
+  &__frame {
+    max-width: calc(100% - 2rem);
+  }
+}

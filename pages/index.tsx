@@ -11,6 +11,7 @@ import type { SeoData } from '../components/seo/seo-types';
 
 /* Import utils & hooks */
 import { fetchAPI } from '../lib/api'
+import { getClassNames } from '../lib/utils';
 import { getKebabString } from '../lib/utils';
 import { usePageSeo } from '../lib/hooks/usePageSeo';
 import { useEffect } from 'react';
@@ -28,6 +29,7 @@ import MarkdownBlock from '../components/blocks/markdown';
 
 /* Import styles */
 import headerStyles from '../components/header/Header.module.scss';
+import styles from './scss/Index.module.scss';
 
 /**
  * Declare HeroBlock type
@@ -76,6 +78,9 @@ const componentsMap: {
 const Home: NextPage = ({homepage}: Data) => {
   const { setMetaTitle, setMetaDescription, setShareImage } = usePageSeo();
   const { seo, hero, blocks } = homepage.attributes;
+  const printHpClass = (...classNames: string[]) => {
+    return getClassNames(styles, ...classNames);
+  };
   const sectionBounds: number[] = [];
   const homeHeadings     = blocks.filter((block, idx) => {
     const isHeading = block.__component === 'shared.heading';
@@ -104,10 +109,10 @@ const Home: NextPage = ({homepage}: Data) => {
       <section
         key={`${heading.id}-${idx}`}
         id={getKebabString(heading.title)}
-        className='hp-section'
+        className={printHpClass('hp-section')}
       >
         <div className='container'>
-          <div className='hp-section__outline'>
+          <div className={printHpClass('hp-section__outline')}>
             {sectionBlocks.map((block, idx) => {
               const Component = componentsMap[block.__component];
 

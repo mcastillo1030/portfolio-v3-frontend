@@ -1,0 +1,19 @@
+@use 'bootstrap' as c;
+
+.button {
+  display: inline-block;
+  padding: c.fluid-spacing(8px, 16px) c.fluid-spacing(16px, 32px);
+  color: var(--c-action);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--c-action);
+  border-radius: .5625rem;
+  transition:
+    color .15s ease-out,
+    background-color .15s ease-out;
+
+  &:hover {
+    background-color: var(--c-action);
+    color: var(--c-background);
+  }
+}
