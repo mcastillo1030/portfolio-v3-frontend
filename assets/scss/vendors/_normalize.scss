@@ -46,7 +46,7 @@ main {
 
 h1 {
 	margin: .67em 0;
-	font-size: 2em;
+	// font-size: 2em;
 }
 
 /* Grouping content
@@ -371,6 +371,6 @@ img {
 /* stylelint-enable no-duplicate-selectors */
 
 ::selection {
-	color: var(--background-color);
-	background-color: var(--selection-color);
+	color: var(--c-background);
+	background-color: var(--c-selection);
 }

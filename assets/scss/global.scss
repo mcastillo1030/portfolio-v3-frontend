@@ -1,20 +1,50 @@
-@use 'bootstrap' as c;
 @use 'base';
 @use 'vendors';
 
 :root {
-	color-scheme: light dark;
-	--gutter: clamp(24px, 2vw, 48px);
-	--max-content: 1920px;
-	--foreground-color: #d6deeb;
-	--accent-color: #c792ea;
-	--background-color: #011627;
-	--selection-color: #80a4c2;
+  color-scheme: light dark;
+  // (S)pacing
+  --s-gutter-left: clamp(1.5rem, 0.055rem + 6.163vw, 4rem);
+  --s-gutter-right: clamp(1.5625rem, 6.25vw, 7.5rem);
+  // (L)ayout
+  --l-max-content: 102.5rem;
+  // (T)ypography
+  --t-font: 'Fira Code', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  --t-line-height: 1.5;
+  // (C)olors
+  --c-foreground: #d6deeb;
+  --c-background: #011627;
+  --c-action: #c792ea;
+  --c-selection: #80a4c2;
+  --c-success: #addb67;
+  --c-accent-1: #f78c6c;
+  --c-accent-2: #82aaff;
+  --c-invalid: #ff2c83;
 }
 
 .light-mode {
-	--foreground-color: #403f53;
-	--accent-color: #994cc3;
-	--background-color: #fbfbfb;
-	--selection-color: #90a7b2;
+  --c-foreground: #403f53;
+  --c-background: #fbfbfb;
+  --c-action: #994cc3;
+  --c-selection: #90a7b2;
+  --c-success: #0c969b;
+  --c-accent-1: #bc5454;
+  --c-accent-2: #4876d6;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+}
+
+.container {
+  max-width: var(--l-max-content);
+  padding: 0 var(--s-gutter-right) 0 var(--s-gutter-left);
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    --s-gutter-left: 10.5rem;
+  }
 }

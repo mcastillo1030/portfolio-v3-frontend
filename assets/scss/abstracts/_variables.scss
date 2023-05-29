@@ -1,0 +1,12 @@
+// (T)ypography
+$t-base-text: 16px;
+
+// Common (B)reakpoints
+$b-small: 550px; // mobile
+$b-type-small: 640px; // mobile
+$b-medium: 768px; // portrait tablet
+$b-medium-large: 1024px; // landscape tablet
+$b-large: 1200px; // small laptop
+$b-xlarge: 1440px; // laptop
+$b-maxspacing: 1920px; // the point above which dynamic spacing mixins max out
+$b-minspacing: 375px; // the point below which dynamic spacing mixins bottom out

@@ -1,0 +1,215 @@
+@use '../bootstrap' as c;
+@use '../abstracts/functions' as *;
+@use 'sass:math';
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('assets/fonts/FiraCode-VariableFont_wght.ttf') format('ttf') tech('variations'),
+  url('assets/fonts/FiraCode-VariableFont_wght.ttf') format('ttf-variations');
+  font-weight: 300 700;
+}
+
+html {
+  position: relative;
+  font-size: math.div(strip-unit(c.$t-base-text), 16) * 100%;
+}
+
+body {
+  position: relative;
+  font-family: var(--t-font);
+  font-size: 100%;
+  line-height: var(--t-line-height);
+  color: var(--c-foreground);
+  background: var(--c-background);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+p,
+ul,
+ol,
+dl,
+table,
+figure,
+blockquote,
+address,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.alpha,
+.beta,
+.gamma,
+.delta,
+.epsilon,
+.zeta {
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
+p,
+ul,
+ol,
+dl,
+table,
+figure,
+address {
+  font-size: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.alpha,
+.beta,
+.gamma,
+.delta,
+.epsilon,
+.zeta {
+  margin: 1.875rem 0 clamp(1.625rem, 1.361rem + 1.127vw, 2.375rem);
+  color: var(--c-foreground);
+  font-family: var(--t-font);
+  line-height: 1.5;
+  text-transform: lowercase;
+}
+
+h1,
+.alpha {
+  --stroke-width: .125rem;
+  color: var(--c-background);
+  font-size: clamp(2rem, 1.34rem + 2.817vw, 3.875rem);
+  font-weight: 700;
+  text-shadow:
+    calc(var(--stroke-width) * -1) calc(var(--stroke-width) * -1) 0 var(--c-foreground),
+    var(--stroke-width) calc(var(--stroke-width) * -1) 0 var(--c-foreground),
+    calc(var(--stroke-width) * -1) var(--stroke-width) 0 var(--c-foreground),
+    var(--stroke-width) var(--stroke-width) 0 var(--c-foreground);
+  letter-spacing: .045em;
+
+  @supports (-webkit-text-stroke: var(--stroke-width) var(--c-foreground)) {
+    color: var(--c-background);
+    text-shadow: none;
+    -webkit-text-stroke: var(--stroke-width) var(--c-foreground);
+  }
+}
+
+h2,
+.beta {
+  color: var(--c-accent-1);
+  font-size: clamp(1.813rem, 1.394rem + 1.784vw, 3rem);
+  font-weight: 500;
+}
+
+h3,
+.gamma {
+  font-size: clamp(1.625rem, 1.339rem + 1.221vw, 2.438rem);
+  font-weight: 500;
+  letter-spacing: .005em;
+}
+
+h4,
+.delta {
+  color: var(--c-accent-2);
+  font-size: clamp(1.438rem, 1.261rem + 0.751vw, 1.938rem);
+  font-weight: 500;
+}
+
+h5,
+.epsilon {
+  font-size: clamp(1.25rem, 1.14rem + 0.469vw, 1.563rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+h5,
+.epsilon {
+  font-size: clamp(1.25rem, 1.14rem + 0.469vw, 1.563rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+h6,
+.zeta {
+  font-size: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem);
+  color: var(--c-accent-1);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+:is(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) {
+  + :where(h1, h3, h4, h5, h6, .alpha, .gamma, .delta, .epsilon, .zeta) {
+    margin-top: -.25rem;
+  }
+}
+
+:is(h3, .gamma) + :where(h1, h3, h4, h5, h6, .alpha, .gamma, .delta, .epsilon, .zeta) {
+  margin-top: .75rem;
+}
+
+a {
+  color: var(--c-action);
+  text-underline-offset: .375em;
+  text-decoration-thickness: 1px;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+address {
+	font-style: normal;
+}
+
+ul,
+ol {
+	padding-left: 1rem;
+
+	li {
+		margin: .5rem 0;
+	}
+
+	ul,
+	ol {
+		margin-top: .5rem;
+
+		li {
+			margin: .5rem 0;
+		}
+	}
+}
+
+ul li::marker {
+	color: var(--c-accent-1);
+}
+
+li > :where(h1, h2, h3, h4, h5, h6, .alpha, .beta, .gamma, .delta, .epsilon, .zeta) {
+	&:where(:first-child) {
+		margin-top: 1rem;
+	}
+
+	&:where(:not(:last-child)) {
+		margin-bottom: .25rem;
+	}
+}
+
+figure {
+	max-width: 100%;
+	margin: 2rem 0;
+
+	img {
+		display: block;
+	}
+
+	figcaption {
+		margin-top: 1.375rem;
+		color: var(--c-accent-1);
+		font-style: italic;
+	}
+}
