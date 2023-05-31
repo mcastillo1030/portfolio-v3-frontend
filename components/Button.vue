@@ -37,13 +37,14 @@
   .button {
     --border-color: transparent;
     display: inline-block;
-    padding: .75rem 1rem;
+    padding: .75rem 1.6875rem;
     color: var(--c-background);
     background: var(--c-action);
     border: 0;
     border-radius: .5rem;
     text-decoration: none;
     text-transform: lowercase;
+    line-height: 1;
     cursor: pointer;
     box-shadow: 0 0 0 2px var(--border-color);
     transition:
@@ -55,7 +56,7 @@
       display: inline-flex;
       align-items: center;
       // padding-left: .75rem;
-      padding: .5rem 1rem .5rem .75rem;
+      padding: .6875rem .75rem;
       column-gap: .75rem;
     }
 

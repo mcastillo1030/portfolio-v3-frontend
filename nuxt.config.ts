@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ['@/assets/scss/global.scss'],
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+    }
+  },
   vite: {
     css: {
       preprocessorOptions: {
@@ -9,5 +14,5 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
 })
