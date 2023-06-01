@@ -1,14 +1,8 @@
-<script lang="ts">
-  const props = {
-    items: {
-      type: Object,
-      default: {},
-    },
-  };
-  export default {
-    name: 'Header',
-    props,
-  };
+<script setup lang="js">
+  // const items = ref([]);
+  const { baseApiUrl, apiEndpoints } = useAppConfig();
+  const navEndpoint = `${baseApiUrl}${apiEndpoints.mainNav}`;
+  const { data: items } = await useAsyncData( 'nav', () => $fetch( navEndpoint ) );
 </script>
 
 <template>
@@ -16,9 +10,9 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>Header</h1>
+          <OutlineTitle text="Header" />
           <ul>
-            <li v-for="item in items.data">
+            <li v-for="item in items">
               <!-- <a
                 :href="item.page.url"
                 :download="item.page.attachment ? item.page.title : null"

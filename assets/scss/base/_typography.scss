@@ -81,21 +81,10 @@ h6,
 h1,
 .alpha {
   --stroke-width: .125rem;
-  color: var(--c-background);
+  color: var(--c-foreground);
   font-size: clamp(2rem, 1.34rem + 2.817vw, 3.875rem);
   font-weight: 700;
-  text-shadow:
-    calc(var(--stroke-width) * -1) calc(var(--stroke-width) * -1) 0 var(--c-foreground),
-    var(--stroke-width) calc(var(--stroke-width) * -1) 0 var(--c-foreground),
-    calc(var(--stroke-width) * -1) var(--stroke-width) 0 var(--c-foreground),
-    var(--stroke-width) var(--stroke-width) 0 var(--c-foreground);
   letter-spacing: .045em;
-
-  @supports (-webkit-text-stroke: var(--stroke-width) var(--c-foreground)) {
-    color: var(--c-background);
-    text-shadow: none;
-    -webkit-text-stroke: var(--stroke-width) var(--c-foreground);
-  }
 }
 
 h2,
