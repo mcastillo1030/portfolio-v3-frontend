@@ -7,5 +7,6 @@ node_modules
 .env
 dist
 .DS_Store
+.vscode/
 .vscode/*
 *.code-workspace

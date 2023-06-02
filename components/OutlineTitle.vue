@@ -11,12 +11,15 @@
       color: var(--c-foreground);
       text-shadow: none;
       -webkit-text-stroke: var(--stroke-width) var(--c-foreground);
+      transition:
+        color .2s ease-out,
+        -webkit-text-stroke .2s ease-out;
 
       &::before {
         content: attr(data-content);
+        position: absolute;
         -webkit-text-fill-color: var(--c-background);
         -webkit-text-stroke: 0;
-        position: absolute;
       }
     }
   }
@@ -46,5 +49,5 @@
 
 <template>
   <h1 v-if="isH1" :class="`outline-text ${classes}`" :data-content="text">{{ text }}</h1>
-  <p v-else :class="`outline-text ${classes}`" :data-content="text">{{ text }}</p>
+  <p v-else :class="`outline-text alpha ${classes}`" :data-content="text">{{ text }}</p>
 </template>

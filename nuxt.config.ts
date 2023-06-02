@@ -6,6 +6,12 @@ export default defineNuxtConfig({
       crawlLinks: true,
     }
   },
+  typescript: {
+    shim: false,
+  },
+  build: {
+    transpile: ['gsap'],
+  },
   vite: {
     css: {
       preprocessorOptions: {

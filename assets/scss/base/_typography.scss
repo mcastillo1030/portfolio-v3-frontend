@@ -23,6 +23,7 @@ body {
   background: var(--c-background);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color .2s ease-out;
 }
 
 p,
