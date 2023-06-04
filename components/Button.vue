@@ -82,7 +82,7 @@
     :target="external ? '_blank' : '_self'"
     :class="`button ${external ? 'button--external' : ''} ${classes}`"
   >
-    <icons-external-link v-if="external" classes="button__icon" />
+    <IconsExternalLink v-if="external" classes="button__icon" />
     <slot />
   </a>
   <button

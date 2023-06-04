@@ -28,6 +28,6 @@
   .menu-open {
     width: 2rem;
     height: 2rem;
-    stroke: var(--c-action);
+    stroke: currentColor;
   }
 </style>

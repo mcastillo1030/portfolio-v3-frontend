@@ -1,8 +1,8 @@
 <template>
   <div id="wrapper">
-    <Header />
+    <LayoutHeader />
     <slot />
-    <Footer />
+    <LayoutFooter />
   </div>
 </template>
 

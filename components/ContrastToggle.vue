@@ -5,8 +5,8 @@
     @click="toggleColorMode"
   >
     <span class="contrast-toggle__label sr-only">Toggle light mode</span>
-    <icons-moon v-if="colorMode === 'dark'" />
-    <icons-sun v-else />
+    <IconsMoon v-if="colorMode === 'dark'" />
+    <IconsSun v-else />
   </button>
 </template>
 
@@ -15,6 +15,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--c-action);
+    cursor: pointer;
+    transition: color .2s ease-out;
+
+    &:hover {
+      color: var(--c-foreground);
+    }
   }
 </style>
 

@@ -14,7 +14,7 @@
                 :href="item.page.url"
                 :download="item.page.attachment ? item.page.title : null"
               >
-                <icons-nav-item :type="item.page.icon.value" classes="header__link-icon" />
+                <IconsNavItem :type="item.page.icon.value" classes="header__link-icon" />
                 <span class="header__link-text">{{ item.page.title }}</span>
               </a>
             </li>
@@ -41,7 +41,7 @@
               :download="item.page.attachment ? item.page.title : null"
             >
               <!-- <span class="header__item-icon"></span> -->
-              <icons-nav-item :type="item.page.icon.value" classes="header__item-icon" />
+              <IconsNavItem :type="item.page.icon.value" classes="header__item-icon" />
               <span class="header__item-text">{{ item.page.title }}</span>
             </a>
           </li>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-  import gsap from 'gsap';
+  import { gsap } from 'gsap';
 
   // API setup
   const { baseApiUrl, apiEndpoints } = useAppConfig();
@@ -64,7 +64,7 @@
 
   // Gsap
   const header = ref<HTMLElement>();
-  const tl = ref<gsap.core.Timeline>();
+  const tl = ref<GSAPTimeline>();
   let ctx: gsap.Context;
 
   /**
@@ -128,8 +128,11 @@
 </script>
 
 <style lang="scss">
-  .header {
+  :root {
     --header-height: 4rem;
+  }
+
+  .header {
     position: relative;
     z-index: 100;
 
@@ -179,7 +182,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      padding: calc(var(--header-height) - 1rem) 0 1rem;
+      padding: var(--header-height) 0 1rem;
       width: 100%;
       background: #1d3b53;
       transform: translateY(-100%);
@@ -206,13 +209,20 @@
       display: flex;
       align-items: center;
       column-gap: 1rem;
+      transition: color .2s ease-out;
+
+      &:hover {
+        color: var(--c-accent-1);
+      }
     }
   }
 
   @media screen and (min-width: 768px) {
-    .header {
+    :root {
       --header-height: 4.75rem;
+    }
 
+    .header {
       &__inner {
         --inner-gap: 5.25rem;
         padding-top: 1.375rem;
@@ -254,6 +264,11 @@
 
       &__link {
         position: relative;
+        transition: color .2s ease-out;
+
+        &:hover {
+          color: var(--c-foreground);
+        }
       }
 
       &__link-icon {
@@ -273,7 +288,7 @@
         text-transform: lowercase;
         opacity: 0;
         border-radius: .5rem;
-        background: var(--c-accent-2);
+        background: var(--c-action);
         transform: translate(-50%, 0);
         transition:
           opacity .2s ease-out,
@@ -288,7 +303,7 @@
           height: 0;
           border-style: solid;
           border-width: 0 .5rem .5rem .5rem;
-          border-color: transparent transparent var(--c-accent-2) transparent;
+          border-color: transparent transparent var(--c-action) transparent;
           transform: translate(-50%, -.5rem);
         }
       }
@@ -389,7 +404,7 @@
           top: 50%;
           left: 0;
           border-width: .5rem .5rem .5rem 0;
-          border-color: transparent var(--c-accent-2) transparent transparent;
+          border-color: transparent var(--c-action) transparent transparent;
           transform: translate(-.35rem, -50%);
         }
       }

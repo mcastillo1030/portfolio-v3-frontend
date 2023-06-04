@@ -28,6 +28,6 @@
     width: 2rem;
     height: 2rem;
     fill: none;
-    stroke: #994CC3;
+    stroke: currentColor;
   }
 </style>

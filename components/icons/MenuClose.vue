@@ -26,6 +26,6 @@
 
 <style lang="scss">
   .menu-close {
-    stroke: var(--c-action);
+    stroke: currentColor;
   }
 </style>

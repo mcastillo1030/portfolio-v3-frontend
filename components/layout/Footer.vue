@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="container footer__container">
       <div class="footer__top">
-        <IconsWatermark classes="footer__watermark" />
+        <IconsFooterWatermark classes="footer__watermark" />
       </div>
       <div class="footer__bottom">
         <nav class="footer__nav" aria-label="Footer Nav">
