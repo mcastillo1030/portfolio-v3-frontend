@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   },
   css: ['@/assets/scss/global.scss'],
   image: {
-    domains: ['portfolio-v3-backend.test']
+    domains: ['placekitten.com']
   },
   modules: [
     '@nuxt/image-edge',

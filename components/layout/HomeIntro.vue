@@ -7,7 +7,7 @@
           <div class="home-intro__image-wrap" v-if="image">
             <!-- <img :src="image.permalink" alt="Image" class="home-intro__image"> -->
             <nuxt-img
-              src="https://revivalmovementusa.org/wp-content/uploads/2023/01/team-2.jpg"
+              :src="`http://placekitten.com/${image.width}/${image.height}`"
               :alt="image.alt"
               :width="image.width"
               :height="image.height"
@@ -176,6 +176,12 @@
 
       .light-mode &__text-column {
         background: #ededed;
+      }
+
+      @media (prefers-color-scheme: light) {
+        &__text-column {
+          background: #ededed;
+        }
       }
     }
   }

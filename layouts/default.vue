@@ -15,6 +15,7 @@
       return;
     }
 
-    document.querySelector('body')?.classList.toggle('light-mode', colorMode.value !== 'light');
+
+    document.querySelector('body')?.classList.toggle('light-mode', colorMode.value === 'light');
   });
 </script>

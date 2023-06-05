@@ -136,11 +136,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(1, 22, 39, .7);
-
-    .light-mode & {
-      background: rgb(251, 251, 251, .7);
-    }
+    background: var(--c-header-bg);
 
     &__inner {
       position: relative;
@@ -190,14 +186,14 @@
       left: 0;
       padding: var(--header-height) 0 1rem;
       width: 100%;
-      background: #1d3b53;
+      background: var(--c-menu-bg);
       transform: translateY(-100%);
       transition: background-color .2s ease-out;
     }
 
-    .light-mode &__menu {
-      background: #e0e0e0;
-    }
+    // .light-mode &__menu {
+    //   background: #e0e0e0;
+    // }
 
     &__menu-list {
       padding: 0;
