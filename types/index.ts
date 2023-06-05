@@ -21,7 +21,10 @@ declare global {
   }
 
   interface Asset extends Resource {
+    alt: string;
     api_url: string;
+    width: number;
+    height: number;
   }
 
   type NavItem = {
@@ -40,8 +43,8 @@ declare global {
     title: string;
     icon: Icon;
     is_asset: boolean;
-    url: string|null;
-    file: Asset|null;
+    url: string|undefined;
+    file: Array<Asset>;
     id: string;
   }
 

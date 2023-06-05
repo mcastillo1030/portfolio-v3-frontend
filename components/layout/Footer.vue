@@ -14,7 +14,7 @@
                 :download="item.page.attachment ? item.page.title : null"
               >
                 <IconsNavItem :type="item.page.icon.value" classes="footer__icon" />
-                <span class="footer__link-label">{{ item.page.title }}</span>
+                <span class="footer__link-label tooltip">{{ item.page.title }}</span>
               </a>
             </li>
           </ul>
@@ -92,13 +92,14 @@
       position: absolute;
       bottom: 100%;
       left: 50%;
-      padding: .5rem .75rem;
+      z-index: 2;
+      // padding: .5rem .75rem;
       color: var(--c-background);
-      font-size: .875rem;
-      line-height: 0.86;
-      text-transform: lowercase;
+      // font-size: .875rem;
+      // line-height: 0.86;
+      // text-transform: lowercase;
       opacity: 0;
-      border-radius: .5rem;
+      // border-radius: .5rem;
       background: var(--c-accent-2);
       transform: translate(-50%, -.5rem);
       transition:

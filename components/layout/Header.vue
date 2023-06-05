@@ -15,7 +15,7 @@
                 :download="item.page.attachment ? item.page.title : null"
               >
                 <IconsNavItem :type="item.page.icon.value" classes="header__link-icon" />
-                <span class="header__link-text">{{ item.page.title }}</span>
+                <span class="header__link-text tooltip">{{ item.page.title }}</span>
               </a>
             </li>
           </ul>
@@ -133,8 +133,14 @@
   }
 
   .header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 100;
+    background: rgba(1, 22, 39, .7);
+
+    .light-mode & {
+      background: rgb(251, 251, 251, .7);
+    }
 
     &__inner {
       position: relative;
@@ -281,14 +287,8 @@
         position: absolute;
         top: 100%;
         left: 50%;
-        padding: .5rem .75rem;
-        font-size: .875rem;
-        line-height: .86;
-        color: var(--c-background);
-        text-transform: lowercase;
+        z-index: 2;
         opacity: 0;
-        border-radius: .5rem;
-        background: var(--c-action);
         transform: translate(-50%, 0);
         transition:
           opacity .2s ease-out,
@@ -332,6 +332,11 @@
       max-width: 6.2rem;
       height: 100dvh;
       min-height: 37.5rem;
+      background: none;
+
+      .light-mode & {
+        background: none;
+      }
 
       &__container {
         height: 100%;

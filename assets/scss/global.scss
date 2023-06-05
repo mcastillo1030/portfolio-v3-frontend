@@ -19,6 +19,7 @@
   --c-success: #addb67;
   --c-accent-1: #f78c6c;
   --c-accent-2: #82aaff;
+  --c-accent-3: #7fdbca;
   --c-invalid: #ff2c83;
 }
 
@@ -30,12 +31,11 @@
   --c-success: #0c969b;
   --c-accent-1: #bc5454;
   --c-accent-2: #4876d6;
+  --c-accent-3: #93a1a1;
 }
 
 .icon {
   display: inline-block;
-  // width: 1em;
-  // height: 1em;
   vertical-align: middle;
 }
 
@@ -48,6 +48,16 @@
   background: none;
   border: 0;
   appearance: none;
+}
+
+.tooltip {
+  padding: .5rem .75rem;
+  font-size: .875rem;
+  line-height: .86;
+  color: var(--c-background);
+  text-transform: lowercase;
+  border-radius: .5rem;
+  background: var(--c-action);
 }
 
 .container {
