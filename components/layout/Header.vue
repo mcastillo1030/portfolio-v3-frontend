@@ -310,7 +310,7 @@
 
       &__link:hover &__link-text {
         opacity: 1;
-        transform: translate(-50%, .5rem);
+        transform: translate(-50%, 1rem);
       }
 
       &__util-item--menu {
@@ -414,8 +414,7 @@
       }
 
       &__util {
-        margin-top: auto;
-        margin-bottom: 6rem;
+        margin: auto auto 6rem;
       }
     }
   }

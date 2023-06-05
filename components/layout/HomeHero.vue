@@ -45,11 +45,12 @@
 
     &__icons {
       --cursor-position: 100%;
+      --icons-width: clamp(3rem, 2.272rem + 3.107vw, 6rem);
       position: relative;
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: 1fr;
-      width: clamp(3rem, 2.272rem + 3.107vw, 6rem);
+      width: var(--icons-width);
       padding: 0;
       margin: 0 0 2rem;
       list-style: none;
@@ -63,7 +64,11 @@
         height: calc(100% + .5rem);
         background: #80a4c2;
         border-radius: .125rem;
-        animation: hero-blink 1s steps(2) infinite;
+        animation: hero-blink .75s steps(2) infinite;
+      }
+
+      &.typing::after {
+        animation: none;
       }
     }
 
@@ -77,7 +82,7 @@
       grid-column: 1;
       grid-row: 1;
       margin: 0;
-      width: 100%;
+      width: clamp(3rem, 2.272rem + 3.107vw, 6rem);
       color: var(--c-accent-1);
       opacity: 0;
       vertical-align: middle;
@@ -113,7 +118,6 @@
   // gsap setup
   const hero = ref<HTMLElement>();
   const tl   = ref<GSAPTimeline>();
-  // let
   let ctx: gsap.Context;
 
   onMounted(() => {
@@ -122,14 +126,14 @@
         return;
       }
 
-      const wrap    = self.selector('.home-hero__icons');
       const icons   = self.selector('.home-hero__icon-item');
-      const iconsTl = gsap.timeline({
+      const heroTl = gsap.timeline({
         repeat: -1,
       });
 
       [...icons].forEach((icon, i) => {
-        const isActive = icon.classList.contains('active');
+        const next = icon.nextElementSibling || icons[0];
+        const wrap = icon.parentElement;
 
         const iconTl = gsap.timeline({
           defaults: {
@@ -138,53 +142,40 @@
           },
         });
 
-        if (!isActive) {
-          iconTl.to(wrap, {
+        iconTl.to(icon, {
+          opacity: 0,
+          delay: 2.5,
+          onComplete: () => {
+            icon.classList.remove('active');
+          }
+        })
+        .to(wrap, {
+          '--cursor-position': 0,
+          duration: 0,
+          delay: 0,
+          onStart: () => {
+            wrap.classList.add('typing');
+          },
+          onComplete: () => {
+            wrap.classList.remove('typing');
+          }
+        })
+        .add(gsap.set(wrap, {'--cursor-position': '100%'}), '+=1')
+        .to(next, {
+          opacity: 1,
+          onStart: () => {
+            wrap.classList.add('typing');
+          },
+          onComplete: () => {
+            next.classList.add('active');
+            wrap.classList.remove('typing');
+          }
+        });
 
-          })
-        }
-
-        // if (isActive) {
-        //   iconTl.to(icon, {
-        //     opacity: 0,
-        //     delay: 1,
-        //     onComplete() {
-        //       icon.classList.remove('active');
-        //     },
-        //   })
-        //   .to(wrap, {
-        //     '--cursor-position': '0%',
-        //     duration: .125,
-        //   });
-        // } else {
-        //   iconTl.to(wrap, {
-        //     '--cursor-position': '100%',
-        //     delay: 0.5,
-        //     duration: .125,
-        //   })
-        //   .to(icon, {
-        //     opacity: 1,
-        //     onComplete() {
-        //       icon.classList.add('active');
-        //     },
-        //   })
-        //   .to(icon, {
-        //     opacity: 0,
-        //     delay: 1.5,
-        //     onComplete() {
-        //       icon.classList.remove('active');
-        //     },
-        //   })
-        //   .to(wrap, {
-        //     '--cursor-position': '0%',
-        //     duration: .125,
-        //   });
-        // }
-
-        iconsTl.add(iconTl);
+        heroTl.add(iconTl);
       });
 
-      tl.value = iconsTl;
+      tl.value = heroTl;
     }, hero.value);
   });
 
