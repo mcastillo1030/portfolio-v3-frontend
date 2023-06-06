@@ -1,5 +1,5 @@
 <template>
-  <div class="contrast-toggle" :class="toggleOpen ? 'open' : ''" ref="toggle">
+  <div class="contrast-toggle" :class="toggleOpen ? 'open' : ''" ref="toggleComp">
     <button
       type="button"
       class="btn contrast-toggle__trigger"
@@ -50,47 +50,10 @@
 
 <style lang="scss">
   .contrast-toggle {
-    --button-width: 2rem;
-    --vertical-gap: .5rem;
-    --hz-offset: .3125rem;
+    --button-size: 2rem;
+    --dialog-gap: .75rem;
+    --dialog-align: .5rem;
     position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: calc((var(--vertical-gap) / 2) * -1);
-      left: calc(var(--hz-offset) * -1);
-      width: calc(100% + var(--hz-offset) * 2);
-      height: calc(100% + (var(--vertical-gap) / 2));
-      opacity: 0;
-      background-color: var(--c-menu-bg);
-      border-radius: .5rem .5rem 0 0;
-      transform: translateY(-1rem);
-      transition:
-        opacity .2s ease-out,
-        transform .3s ease-out;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: calc(var(--hz-offset) * -1);
-      width: calc(100% + var(--hz-offset) * 2);
-      height: var(--vertical-gap);
-      opacity: 0;
-      background-color: var(--c-menu-bg);
-      transform: translateY(-1rem);
-      transition:
-        opacity .2s ease-out,
-        transform .3s ease-out;
-    }
-
-    &.open::before,
-    &.open::after {
-      opacity: 1;
-      transform: translateY(0);
-    }
 
     &__trigger {
       position: relative;
@@ -109,21 +72,34 @@
 
     &__options {
       position: absolute;
-      top: calc(100% + var(--vertical-gap));
-      right: calc(var(--hz-offset) * -1);
+      top: calc(100% + var(--dialog-gap));
+      right: calc(var(--dialog-align) * -1);
       width: max-content;
       padding: 0;
       margin: 0;
       background: var(--c-menu-bg);
       opacity: 0;
       visibility: hidden;
-      border-radius: .5rem 0 .5rem .5rem;
+      border-radius: .5rem;
       list-style: none;
       transform: translateY(-1rem);
       transition:
         opacity .2s ease-out,
         visibility .2s ease-out,
         transform .3s ease-out;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: calc(var(--dialog-align) + (var(--button-size) / 2));
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 .5rem .5rem .5rem;
+        border-color: transparent transparent var(--c-menu-bg) transparent;
+        transform: translate(50%, -.5rem);
+      }
     }
 
     &.open &__options {
@@ -163,15 +139,52 @@
       text-transform: lowercase;
     }
   }
+
+  @media screen and (min-width: c.$b-medium-large) {
+    .contrast-toggle {
+      &__options {
+        top: unset;
+        bottom: calc(var(--dialog-align) * -1);
+        left: calc(100% + var(--dialog-gap));
+        transform: translateX(-1rem);
+
+        &::before {
+          top: unset;
+          bottom: calc(var(--dialog-align) + (var(--button-size) / 2));
+          left: 0;
+          border-width: .5rem .5rem .5rem 0;
+          border-color: transparent var(--c-menu-bg) transparent transparent;
+          transform: translate(-.5rem, 50%);
+        }
+      }
+
+      &.open &__options {
+        transform: translateX(0);
+      }
+    }
+  }
 </style>
 
 <script lang="ts" setup>
   const colorMode = useColorMode();
+  const toggleComp = ref<HTMLElement>();
   const toggleOpen = ref<boolean>(false);
 
 
   const setColorMode = (mode:string) => {
     colorMode.value =  mode;
-    localStorage.setItem('color-mode', colorMode.value);
+    toggleOpen.value = false;
   }
+
+  onMounted(() => {
+    document.addEventListener('click', (evt) => {
+      const { target } = evt;
+
+      if (toggleComp.value?.contains(target as Node)) {
+        return;
+      }
+
+      toggleOpen.value = false;
+    });
+  });
 </script>

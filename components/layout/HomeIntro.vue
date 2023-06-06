@@ -9,8 +9,8 @@
             <nuxt-img
               :src="`http://placekitten.com/${image.width}/${image.height}`"
               :alt="image.alt"
-              :width="image.width"
-              :height="image.height"
+              width="420"
+              height="534"
               loading="lazy"
               class="home-intro__image"
             />
@@ -119,6 +119,7 @@
       position: absolute;
       top: 100%;
       left: 50%;
+      z-index: 1;
       opacity: 0;
       transform: translate(-50%, 0);
       transition:
@@ -193,7 +194,7 @@
         display: grid;
         grid-template-columns: 2fr 3fr;
         align-items: center;
-        column-gap: clamp(5.375rem, 9.94791667vw, 11.9375rem);
+        column-gap: clamp(5.375rem, 6.97916667vw, 8.34rem);
         max-width: 72rem;
         margin: 0 auto;
       }

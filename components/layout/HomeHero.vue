@@ -116,8 +116,9 @@
   import { gsap } from 'gsap';
 
   // gsap setup
-  const hero = ref<HTMLElement>();
-  const tl   = ref<GSAPTimeline>();
+  const hero     = ref<HTMLElement>();
+  const skillsTl = ref<GSAPTimeline>();
+  const markTl   = ref<GSAPTimeline>();
   let ctx: gsap.Context;
 
   onMounted(() => {
@@ -126,7 +127,8 @@
         return;
       }
 
-      const icons   = self.selector('.home-hero__icon-item');
+      const cursor = self.selector('.home-hero__watermark .hero-watermark__cursor');
+      const icons  = self.selector('.home-hero__icon-item');
       const heroTl = gsap.timeline({
         repeat: -1,
       });
@@ -175,7 +177,17 @@
         heroTl.add(iconTl);
       });
 
-      tl.value = heroTl;
+      skillsTl.value = heroTl;
+      // markTl.value   = gsap.timeline({
+      //   defaults: {
+      //     delay: 1,
+      //     ease: 'none',
+      //   },
+      //   duration: 1,
+      //   repeat: -1,
+      // })
+      // .add(gsap.set(cursor, {opacity: 0}))
+      // .add(gsap.set(cursor, {opacity: 1}), '+=1');
     }, hero.value);
   });
 

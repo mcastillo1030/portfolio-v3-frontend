@@ -69,6 +69,12 @@ declare global {
     share_image_alt: string|null;
   };
 
+  type TechnologyTaxonomy = Resource & {
+    title: string;
+    slug: string;
+    api_url: string;
+  };
+
   type Entry = SEOData & {
     api_url: string;
     blueprint: Structure;
@@ -86,6 +92,13 @@ declare global {
     updated_at: string;
     uri: string;
   };
+
+  type ProjectPage = Entry & {
+    content: string;
+    excerpt: string;
+    featured_image: Asset|null;
+    technologies: Array<string>;
+  }
 
   type HomePage = Entry & {
     hero_heading: string;
