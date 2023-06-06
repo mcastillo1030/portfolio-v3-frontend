@@ -127,8 +127,9 @@ h5,
 
 h6,
 .zeta {
-  font-size: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem);
   color: var(--c-accent-1);
+  font-size: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .03em;
 }

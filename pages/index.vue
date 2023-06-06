@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  import HomeHero from '~/components/layout/HomeHero.vue';
+  import HomeContact from '~/components/layout/HomeContact.vue';
+import HomeEducation from '~/components/layout/HomeEducation.vue';
+import HomeHero from '~/components/layout/HomeHero.vue';
   import HomeIntro from '~/components/layout/HomeIntro.vue';
   import HomeProjects from '~/components/layout/HomeProjects.vue';
 
@@ -31,6 +33,16 @@
       :id="page.projects_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
       :title="page.projects_heading"
       :projects="page.projects_featured_projects"
+    />
+    <HomeEducation
+      :id="page.education_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
+      :title="page.education_heading"
+      :credentials="page.education_credentials"
+    />
+    <HomeContact
+      :id="page.contact_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
+      :title="page.contact_heading"
+      :subtitle="page.contact_subhead"
     />
   </main>
 </template>

@@ -74,6 +74,7 @@
       position: absolute;
       top: calc(100% + var(--dialog-gap));
       right: calc(var(--dialog-align) * -1);
+      z-index: 1;
       width: max-content;
       padding: 0;
       margin: 0;

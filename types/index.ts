@@ -27,6 +27,18 @@ declare global {
     height: number;
   }
 
+  interface FormFields {
+    [key: string]: {
+      input_type: string;
+      character_limit: number;
+      display: string;
+      type: string;
+      icon: string;
+      width: number;
+      handle: string;
+    };
+  }
+
   type NavItem = {
     page: Resource & {
       entry_id: number | null;
@@ -100,6 +112,10 @@ declare global {
     technologies: Array<string>;
   }
 
+  type ContactForm = Entry & {
+    fields: FormFields;
+  };
+
   type HomePage = Entry & {
     hero_heading: string;
     hero_subhead: string;
@@ -113,6 +129,9 @@ declare global {
     projects_cta_text: string;
     education_heading: string;
     education_credentials: Array<EducationCredential>;
+    contact_heading: string;
+    contact_subhead: string;
+    contact_form: ContactForm;
   };
 
   type PaginationLink = {
