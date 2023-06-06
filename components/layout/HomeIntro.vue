@@ -131,7 +131,7 @@
         padding: clamp(1.75rem, 1.66666667vw, 4rem) clamp(1.5rem, 1.45833333vw, 3rem);
         margin-right: auto;
         margin-left: auto;
-        text-align: center;
+        // text-align: center;
         background: #02223c;
         border-radius: .5rem;
       }

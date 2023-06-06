@@ -111,7 +111,7 @@
     }
 
     &__project-link {
-      display: inline-block;
+      display: block;
       margin-bottom: 1.25rem;
       text-transform: lowercase;
     }
@@ -127,7 +127,12 @@
       }
 
       &__item {
-        max-width: auto;
+        max-width: none;
+
+        &::before {
+          top: 50%;
+          transform: translate(0, -50%);
+        }
 
         &:nth-child(even) {
           justify-self: flex-end;
@@ -135,6 +140,15 @@
 
         & + & {
           margin: 0;
+        }
+      }
+
+      &__image {
+        max-width: none;
+
+        img {
+          width: 100%;
+          object-fit: cover;
         }
       }
     }
@@ -147,8 +161,6 @@
       }
 
       &__item {
-        max-width: auto;
-
         &::before {
           display: none;
         }
@@ -162,6 +174,10 @@
       &__item:nth-child(even) &__image::before {
         left: auto;
         right: .5rem;
+      }
+
+      &__content {
+        background: none;
       }
     }
   }
