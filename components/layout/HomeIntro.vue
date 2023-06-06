@@ -4,17 +4,13 @@
       <div class="home-intro__wrap">
         <h2 class="sr-only home-intro__title">{{ title }}</h2>
         <div class="home-intro__image-column">
-          <div class="home-intro__image-wrap" v-if="image">
-            <!-- <img :src="image.permalink" alt="Image" class="home-intro__image"> -->
-            <nuxt-img
-              :src="`http://placekitten.com/${image.width}/${image.height}`"
-              :alt="image.alt"
-              width="420"
-              height="534"
-              loading="lazy"
-              class="home-intro__image"
-            />
-          </div>
+          <OutlineImage
+            v-if="image"
+            class="home-intro__image-wrap"
+            :image="image"
+            :ideal-width="420"
+            :ideal-height="534"
+          />
           <ul class="home-intro__contact" v-if="links">
             <li class="home-intro__contact-item" v-for="link in links">
               <a
@@ -40,41 +36,6 @@
 
     &__image-column {
       max-width: 22.5rem;
-    }
-
-    &__image-wrap {
-      position: relative;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: .5rem;
-        left: .5rem;
-        width: 100%;
-        height: 100%;
-        border-radius: .5rem;
-        border: .125rem solid var(--c-accent-3);
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: .075;
-        border-radius: .5rem;
-        background: var(--c-accent-3);
-        mix-blend-mode: multiply;
-      }
-    }
-
-    &__image {
-      position: relative;
-      display: block;
-      border-radius: .5rem;
-      filter: grayscale(1);
     }
 
     &__contact {

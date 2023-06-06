@@ -118,7 +118,7 @@
   // gsap setup
   const hero     = ref<HTMLElement>();
   const skillsTl = ref<GSAPTimeline>();
-  const markTl   = ref<GSAPTimeline>();
+  // const markTl   = ref<GSAPTimeline>();
   let ctx: gsap.Context;
 
   onMounted(() => {
@@ -127,7 +127,7 @@
         return;
       }
 
-      const cursor = self.selector('.home-hero__watermark .hero-watermark__cursor');
+      // const cursor = self.selector('.home-hero__watermark .hero-watermark__cursor');
       const icons  = self.selector('.home-hero__icon-item');
       const heroTl = gsap.timeline({
         repeat: -1,

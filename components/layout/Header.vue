@@ -51,82 +51,6 @@
   </header>
 </template>
 
-<script setup lang="ts">
-  import { gsap } from 'gsap';
-
-  // API setup
-  const { baseApiUrl, apiEndpoints } = useAppConfig();
-  const menuState = useMenuState();
-
-  // API
-  const navEndpoint = `${baseApiUrl}${apiEndpoints.mainNav}`;
-  const { data: resp } = await useFetch<NavResponse>( navEndpoint );
-
-  // Gsap
-  const header = ref<HTMLElement>();
-  const tl = ref<GSAPTimeline>();
-  let ctx: gsap.Context;
-
-  /**
-   * Toggle menu
-   *
-   * @param {string} state - The state of the menu
-   */
-  const toggleMenu = (state:string = 'open') => {
-    if (!tl.value) {
-      return;
-    }
-
-    if ('closed' === state) {
-      tl.value.reversed( !tl.value.reversed() );
-    } else {
-      tl.value.play();
-    }
-  };
-
-  watch(menuState, (newVal) => toggleMenu(newVal));
-
-  onMounted(() => {
-    const getScrollProgress = () => {
-      const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      return progress > 1 ? 1 : progress;
-    }
-    // Track scroll position.
-    window.addEventListener('scroll', () => {
-      document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
-    });
-
-    ctx = gsap.context((self) => {
-      if (!self.selector) {
-        return;
-      }
-
-      // const header = self.selector('.header');
-      const menu = self.selector('.header__menu');
-      const list = self.selector('.header__menu-list');
-      tl.value = gsap.timeline({
-          paused: true,
-          defaults: {
-            duration: 0.5,
-            ease: 'power2.inOut',
-          },
-        })
-        .to(menu, {
-          y: 0,
-        })
-        .from(list, {
-          opacity: 0,
-        });
-    }, header.value);
-
-    document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
-  });
-
-  onUnmounted(() => {
-    ctx.revert();
-  })
-</script>
-
 <style lang="scss">
   :root {
     --header-height: 4rem;
@@ -420,3 +344,79 @@
     }
   }
 </style>
+
+<script setup lang="ts">
+  import { gsap } from 'gsap';
+
+  // API setup
+  const { baseApiUrl, apiEndpoints } = useAppConfig();
+  const menuState = useMenuState();
+
+  // API
+  const navEndpoint = `${baseApiUrl}${apiEndpoints.mainNav}`;
+  const { data: resp } = await useFetch<NavResponse>( navEndpoint );
+
+  // Gsap
+  const header = ref<HTMLElement>();
+  const tl = ref<GSAPTimeline>();
+  let ctx: gsap.Context;
+
+  /**
+   * Toggle menu
+   *
+   * @param {string} state - The state of the menu
+   */
+  const toggleMenu = (state:string = 'open') => {
+    if (!tl.value) {
+      return;
+    }
+
+    if ('closed' === state) {
+      tl.value.reversed( !tl.value.reversed() );
+    } else {
+      tl.value.play();
+    }
+  };
+
+  watch(menuState, (newVal) => toggleMenu(newVal));
+
+  onMounted(() => {
+    const getScrollProgress = () => {
+      const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      return progress > 1 ? 1 : progress;
+    }
+    // Track scroll position.
+    window.addEventListener('scroll', () => {
+      document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
+    });
+
+    ctx = gsap.context((self) => {
+      if (!self.selector) {
+        return;
+      }
+
+      // const header = self.selector('.header');
+      const menu = self.selector('.header__menu');
+      const list = self.selector('.header__menu-list');
+      tl.value = gsap.timeline({
+          paused: true,
+          defaults: {
+            duration: 0.5,
+            ease: 'power2.inOut',
+          },
+        })
+        .to(menu, {
+          y: 0,
+        })
+        .from(list, {
+          opacity: 0,
+        });
+    }, header.value);
+
+    document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
+  });
+
+  onUnmounted(() => {
+    ctx.revert();
+  })
+</script>

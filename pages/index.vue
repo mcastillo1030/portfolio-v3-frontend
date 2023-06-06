@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import HomeHero from '~/components/layout/HomeHero.vue';
-import HomeIntro from '~/components/layout/HomeIntro.vue';
+  import HomeIntro from '~/components/layout/HomeIntro.vue';
+  import HomeProjects from '~/components/layout/HomeProjects.vue';
+
   const { baseApiUrl, apiEndpoints } = useAppConfig();
   const homeEndpoint = `${baseApiUrl}${apiEndpoints.pages}/home`;
   const { data: resp } = await useFetch<PaginatedResponse>( homeEndpoint );
@@ -24,6 +26,11 @@ import HomeIntro from '~/components/layout/HomeIntro.vue';
       :image="page.intro_image"
       :links="page.intro_contact_links"
       :text="page.intro_text"
+    />
+    <HomeProjects
+      :id="page.projects_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
+      :title="page.projects_heading"
+      :projects="page.projects_featured_projects"
     />
   </main>
 </template>

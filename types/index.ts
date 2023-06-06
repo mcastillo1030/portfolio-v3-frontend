@@ -69,11 +69,11 @@ declare global {
     share_image_alt: string|null;
   };
 
-  type TechnologyTaxonomy = Resource & {
-    title: string;
-    slug: string;
-    api_url: string;
-  };
+  // type TechnologyTaxonomy = Resource & {
+  //   title: string;
+  //   slug: string;
+  //   api_url: string;
+  // };
 
   type Entry = SEOData & {
     api_url: string;
@@ -109,7 +109,7 @@ declare global {
     intro_contact_links: Array<ContactLink>;
     intro_text: string;
     projects_heading: string;
-    projects_featured_projects: Array<Entry>;
+    projects_featured_projects: Array<ProjectPage>;
     projects_cta_text: string;
     education_heading: string;
     education_credentials: Array<EducationCredential>;
