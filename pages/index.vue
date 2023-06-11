@@ -1,49 +1,56 @@
-<script setup lang="ts">
-  import HomeContact from '~/components/layout/HomeContact.vue';
-import HomeEducation from '~/components/layout/HomeEducation.vue';
-import HomeHero from '~/components/layout/HomeHero.vue';
-  import HomeIntro from '~/components/layout/HomeIntro.vue';
-  import HomeProjects from '~/components/layout/HomeProjects.vue';
-
-  const { baseApiUrl, apiEndpoints } = useAppConfig();
-  const homeEndpoint = `${baseApiUrl}${apiEndpoints.pages}/home`;
-  const { data: resp } = await useFetch<PaginatedResponse>( homeEndpoint );
-  let page: HomePage;
-
-  if ( resp.value !== null ) {
-    page = resp.value.data[0] as HomePage;
-  }
-</script>
-
 <template>
   <main class="c-main">
     <HomeHero
-      :title="page.hero_heading"
-      :subtitle="page.hero_subhead"
-      :icons="page.hero_skill_icons"
+      :title="data.heroHeading"
+      :subtitle="data.heroSubhead"
+      :icons="data.heroSkills"
     />
     <HomeIntro
-      :id="page.intro_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
-      :title="page.intro_heading"
-      :image="page.intro_image"
-      :links="page.intro_contact_links"
-      :text="page.intro_text"
+      :title="data.introHeading"
+      :image="data.introImage"
+      :links="data.introContact"
+      :text="data.introText"
     />
     <HomeProjects
-      :id="page.projects_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
-      :title="page.projects_heading"
-      :projects="page.projects_featured_projects"
-    />
-    <HomeEducation
-      :id="page.education_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
-      :title="page.education_heading"
-      :credentials="page.education_credentials"
+      :title="data.projectsHeading"
+      :projects="data.projectsFeatured"
     />
     <HomeContact
-      :id="page.contact_heading.toLocaleLowerCase().replace(/\s/g, '-') + '-section'"
-      :title="page.contact_heading"
-      :subtitle="page.contact_subhead"
+      :title="data.contactHeading"
+      :subtitle="data.contactSubhead"
+      :items="data.contactItems"
     />
   </main>
 </template>
 
+<script setup lang="ts">
+  const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
+    title,template,slug,
+    heroHeading,heroSubhead,
+    heroSkills,introHeading,
+    introImage{
+      alt,caption,
+      "assetDimensions": asset->metadata.dimensions,
+      "assetId": asset._ref,
+    },
+    introText,
+    introContact[]->{
+      title,linkType,
+      icon,inFooter,
+      url,attachment
+    },
+    projectsHeading,contactHeading,
+    contactSubhead, contactItems[]->{
+      title, icon, inFooter,
+      linkType, url, attachment
+    },
+    "projectsFeatured": *[_type == 'project'][0..3]{
+      mainImage{
+        alt,caption,
+        "assetId": asset._ref,
+      },
+      title, slug, excerpt
+    }
+  }`;
+  const { data } = await useSanityQuery<SanityPage>(query);
+</script>

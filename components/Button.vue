@@ -1,3 +1,90 @@
+<template>
+  <a
+    v-if="element === 'a'"
+    :href="href"
+    :target="external ? '_blank' : '_self'"
+    :class="`button ${external ? 'button--external' : ''} ${classes}`"
+  >
+    <IconsExternalLink v-if="external" classes="button__icon" />
+    <slot />
+  </a>
+  <button
+  v-else
+    :type="type"
+    :class="`button ${external ? 'button--external' : (pagination ? 'button--pagination' : '')} ${classes}`"
+    :disabled="disabled"
+  >
+    <IconsArrow v-if="pagination" class="button__icon button__icon--arrow" />
+    <slot />
+  </button>
+</template>
+
+<style lang="scss">
+  .button {
+    --border-color: transparent;
+    display: inline-block;
+    padding: .75rem 1.6875rem;
+    color: var(--c-background);
+    background: var(--c-action);
+    border: 0;
+    border-radius: .5rem;
+    text-decoration: none;
+    text-transform: lowercase;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 0 0 2px var(--border-color);
+    transition:
+      color .2s ease-out,
+      box-shadow .2s ease-out,
+      background-color .2s ease-out;
+
+    &.reversed {
+      --border-color: var(--c-action);
+      color: var(--c-action);
+      background: transparent;
+    }
+
+    &.reversed:hover {
+      --border-color: var(--c-accent-2);
+      color: var(--c-accent-2);
+    }
+
+    &--external,
+    &--pagination {
+      display: inline-flex;
+      align-items: center;
+      // padding-left: .75rem;
+      padding: .6875rem .75rem;
+      column-gap: .75rem;
+    }
+
+    &--pagination {
+      flex-direction: row-reverse;
+    }
+
+    &--pagination.flip {
+      flex-direction: row;
+    }
+
+    &:hover {
+      --border-color: var(--c-action);
+      color: var(--c-action);
+      background: transparent;
+    }
+
+    &__icon {
+      width: 1.125rem;
+      height: 1.125rem;
+      fill: none;
+      stroke: currentColor;
+    }
+
+    &.flip &__icon--arrow {
+      transform: rotate(180deg);
+    }
+  }
+</style>
+
 <script lang="ts">
   type Buttontype = 'button' | 'submit' | 'reset';
 
@@ -26,71 +113,14 @@
       type: String,
       default: ''
     },
+    pagination: {
+      type: Boolean,
+      default: false
+    },
   };
+
   export default {
     name: 'Button',
     props,
   };
 </script>
-
-<style lang="scss">
-  .button {
-    --border-color: transparent;
-    display: inline-block;
-    padding: .75rem 1.6875rem;
-    color: var(--c-background);
-    background: var(--c-action);
-    border: 0;
-    border-radius: .5rem;
-    text-decoration: none;
-    text-transform: lowercase;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 0 0 2px var(--border-color);
-    transition:
-      color .2s ease-out,
-      box-shadow .2s ease-out,
-      background-color .2s ease-out;
-
-    &--external {
-      display: inline-flex;
-      align-items: center;
-      // padding-left: .75rem;
-      padding: .6875rem .75rem;
-      column-gap: .75rem;
-    }
-
-    &:hover {
-      --border-color: var(--c-action);
-      color: var(--c-action);
-      background: transparent;
-    }
-
-    &__icon {
-      width: 1.125rem;
-      height: 1.125rem;
-      fill: none;
-      stroke: currentColor;
-    }
-  }
-</style>
-
-<template>
-  <a
-    v-if="element === 'a'"
-    :href="href"
-    :target="external ? '_blank' : '_self'"
-    :class="`button ${external ? 'button--external' : ''} ${classes}`"
-  >
-    <IconsExternalLink v-if="external" classes="button__icon" />
-    <slot />
-  </a>
-  <button
-    v-else
-    :type="type"
-    :class="`button ${external ? 'button--external' : ''} ${classes}`"
-    :disabled="disabled"
-  >
-    <slot />
-  </button>
-</template>

@@ -6,16 +6,31 @@
       </div>
       <div class="footer__bottom">
         <nav class="footer__nav" aria-label="Footer Nav">
-          <ul v-if="resp !== null" class="footer__list">
-            <li v-for="item in resp.data" class="footer__item">
+          <ul v-if="items" class="footer__list">
+            <li v-for="item in items" class="footer__item">
               <a
+                v-if="item.linkType === 'url'"
                 class="footer__link"
-                :href="item.page.permalink"
-                :download="item.page.attachment ? item.page.title : null"
+                :href="item.url"
               >
-                <IconsNavItem :type="item.page.icon.value" classes="footer__icon" />
-                <span class="footer__link-label tooltip">{{ item.page.title }}</span>
+                <IconsNavItem :type="item.icon" classes="footer__icon" />
+                <span class="footer__link-label tooltip">{{ item.title }}</span>
               </a>
+              <SanityFile
+                v-else
+                :asset-id="item.attachment?.asset._ref || 'null'"
+                download="marlon-castillo-resume.pdf"
+              >
+                <template #default="{src}">
+                  <a
+                    :href="src"
+                    class="footer__link"
+                  >
+                    <IconsNavItem :type="item.icon" classes="footer__icon" />
+                    <span class="footer__link-label tooltip">{{ item.title }}</span>
+                  </a>
+                </template>
+              </SanityFile>
             </li>
           </ul>
         </nav>
@@ -26,9 +41,10 @@
 </template>
 
 <script setup lang="ts">
-  const { baseApiUrl, apiEndpoints } = useAppConfig();
-  const navEndpoint = `${baseApiUrl}${apiEndpoints.footerNav}`;
-  const { data: resp } = await useFetch<NavResponse>( navEndpoint );
+  const query = groq`*[_type == 'contactLink' && inFooter == true]{
+    linkType, title, icon, url, attachment
+  }`;
+  const { data: items } = useSanityQuery<Array<ContactLink>>(query);
 </script>
 
 <style lang="scss">

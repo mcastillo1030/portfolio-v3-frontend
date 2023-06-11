@@ -2,23 +2,32 @@
   <section class="home-projects">
     <div class="container home-projects__container">
       <header class="home-projects__header">
-        <h2 class="home-projects__title">{{ title }}</h2>
-        <a :href="`/projects`" class="home-projects__listing-link">View all</a>
+        <h2 v-if="title" class="home-projects__title">{{ title }}</h2>
+        <NuxtLink to="/projects" class="home-projects__listing-link">View More</NuxtLink>
       </header>
-      <ul class="home-projects__list">
+      <ul class="home-projects__list" v-if="projects">
         <li class="home-projects__item" v-for="(project, index) in projects">
-          <OutlineImage
-            v-if="project.featured_image"
-            class="home-projects__image accent"
-            :class="index % 2 === 0 ? 'reverse' : ''"
-            :image="project.featured_image"
-            :ideal-width="380"
-            :ideal-height="380"
-          />
+          <SanityImage
+            v-if="project.mainImage"
+            :asset-id="project.mainImage.assetId"
+            :w="380"
+            :h="380"
+          >
+            <template #default="{src}">
+              <OutlineImage
+                class="home-projects__image accent"
+                :class="index % 2 === 0 ? 'reverse' : ''"
+                :src="src"
+                :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+                :width="380"
+                :height="380"
+              />
+            </template>
+          </SanityImage>
           <div class="home-projects__content">
             <h3 class="home-projects__project-title epsilon">{{ project.title }}</h3>
             <p class="home-projects__project-excerpt">{{ project.excerpt }}</p>
-            <a :href="`/projects/${project.id}`" class="home-projects__project-link">Read about this project</a>
+            <NuxtLink :to="`/projects/${project.slug.current}`" class="home-projects__project-link">Read about this project</NuxtLink>
             <Button element="a" href="https://google.com" external class="home-projects__button">View Project Site</Button>
           </div>
         </li>
@@ -29,7 +38,7 @@
 
 <style lang="scss">
   .home-projects {
-    margin-top: clamp(5rem, 3.18rem + 7.767vw, 12.5rem);
+    margin-top: clamp(5rem, 2.777rem + 9.486vw, 12.5rem);
 
     &__header {
       display: flex;
@@ -107,20 +116,21 @@
     }
 
     &__project-excerpt {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
     }
 
     &__project-link {
       display: block;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
       text-transform: lowercase;
+      color: var(--c-accent-1);
     }
   }
 
   @media screen and (min-width: c.$b-medium) {
     .home-projects {
       &__list {
-        --column-gap: clamp(3.125rem, 0.208rem + 6.076vw, 7.5rem);
+        --column-gap: clamp(3.125rem, 1.828rem + 5.534vw, 7.5rem);
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: var(--column-gap);
@@ -154,7 +164,7 @@
     }
   }
 
-  @media screen and (min-width: c.$b-xlarge) {
+  @media screen and (min-width: 1350px) {
     .home-projects {
       &__list {
         grid-template-columns: repeat(3, 1fr);
@@ -185,7 +195,7 @@
 
 <script setup lang="ts">
   defineProps<{
-    title: string;
-    projects: Array<ProjectPage>;
+    title?: string;
+    projects?: Array<ProjectLineItem>;
   }>();
 </script>

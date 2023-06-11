@@ -1,167 +1,114 @@
-import { Link } from "zhead";
+import { PortableTextBlock } from "@portabletext/types";
 
 export {};
 
 declare global {
-  interface Icon {
-    value: string;
-    label: string;
-    key: string;
+  interface SanityField {
+    _ref?: string;
+    _type?: string;
   }
 
-  interface Resource {
-    id: string;
-    url: string;
-    permalink: string;
+  interface Slug extends SanityField {
+    current: string;
   }
 
-  interface Structure {
+  interface SanityDocument extends SanityField {
+    _rev?: string;
+    _key?: string;
+    _id: string;
+    _updatedAt: string;
+  }
+
+  type ProjectTechnology = SanityField & {
+    icon: string;
     title: string;
-    handle: string;
-  }
-
-  interface Asset extends Resource {
-    alt: string;
-    api_url: string;
-    width: number;
-    height: number;
-  }
-
-  interface FormFields {
-    [key: string]: {
-      input_type: string;
-      character_limit: number;
-      display: string;
-      type: string;
-      icon: string;
-      width: number;
-      handle: string;
-    };
-  }
-
-  type NavItem = {
-    page: Resource & {
-      entry_id: number | null;
-      icon: Icon;
-      title: string;
-      uri: string;
-      attachment?: Asset;
-    };
-    depth: number;
-    children: Array<NavItem>;
   };
+
+  type SanityAsset = SanityField & {
+    asset: SanityField;
+  }
+
+  type CustomSanityImage = SanityField & {
+    alt: string|null;
+    caption: string|null;
+    assetId: string;
+  }
+
+  type ProjectLineItem = SanityDocument & {
+    mainImage: CustomSanityImage;
+    title: string;
+    slug: Slug;
+    excerpt: string|null;
+  }
 
   type ContactLink = {
     title: string;
-    icon: Icon;
-    is_asset: boolean;
+    linkType: string;
+    icon: string;
+    inFooter: boolean;
     url: string|undefined;
-    file: Array<Asset>;
-    id: string;
+    attachment: SanityAsset|null;
   }
 
-  type SkillIcon = {
-    icon: Icon,
-    id: string
-  };
-
-  type EducationCredential = {
-    kind: Icon;
+  type NavLink = {
+    _key: string;
+    icon: string;
+    link: {
+      title: string;
+      slug: Slug;
+    };
     title: string;
-    specialty: string;
-    organization: string;
-    id: string;
-  }
-
-  type SEOData = {
-    meta_description: string|null;
-    meta_title: string|null;
-    share_image: Asset|null;
-    share_meta: string|null;
-    share_image_alt: string|null;
+    type: string;
+    attachment: SanityAsset | null;
   };
 
-  // type TechnologyTaxonomy = Resource & {
-  //   title: string;
-  //   slug: string;
-  //   api_url: string;
-  // };
-
-  type Entry = SEOData & {
-    api_url: string;
-    blueprint: Structure;
-    collection: Structure;
-    date: string;
-    id: string;
-    is_entry: boolean;
-    last_modified: string;
-    locale: string;
-    order: number;
-    permalink: string;
-    published: boolean;
-    slug: string;
+  type EducationItem = {
+    _key: string;
+    institution: string;
+    specialization: string;
     title: string;
-    updated_at: string;
-    uri: string;
+    type: string;
   };
 
-  type ProjectPage = Entry & {
-    content: string;
-    excerpt: string;
-    featured_image: Asset|null;
-    technologies: Array<string>;
-  }
-
-  type ContactForm = Entry & {
-    fields: FormFields;
+  type PageSEO = {
+    seoTitle: string;
+    seoDescription: string;
+    seoImage: SanityAsset;
   };
 
-  type HomePage = Entry & {
-    hero_heading: string;
-    hero_subhead: string;
-    hero_skill_icons: Array<SkillIcon>;
-    intro_heading: string;
-    intro_image: Asset;
-    intro_contact_links: Array<ContactLink>;
-    intro_text: string;
-    projects_heading: string;
-    projects_featured_projects: Array<ProjectPage>;
-    projects_cta_text: string;
-    education_heading: string;
-    education_credentials: Array<EducationCredential>;
-    contact_heading: string;
-    contact_subhead: string;
-    contact_form: ContactForm;
+  type SanityProject = PageSEO & SanityDocument & {
+    title: string;
+    link: string;
+    mainImage: CustomSanityImage;
+    technologies: Array<ProjectTechnology>;
+    body: Array<PortableTextBlock>;
   };
 
-  type PaginationLink = {
-    url: string|null;
-    label: string;
-    active: boolean;
+  type SanityPage = PageSEO & SanityDocument & {
+    title: string;
+    template: string;
+    slug: Slug;
+    heroHeading?: string;
+    heroSubhead?: string;
+    heroSkills?: Array<string>;
+    introHeading?: string;
+    introImage?: CustomSanityImage;
+    introText?: string;
+    introContact: Array<ContactLink>;
+    projectsHeading?: string;
+    projectsFeatured?: Array<ProjectLineItem>;
+    contactHeading?: string;
+    contactSubhead?: string;
+    contactItems?: Array<ContactLink>;
+    miscHeading?: string;
+    miscText?: string;
+    educationHeading?: string;
+    educationItems?: Array<EducationItem>;
   };
 
-  type PaginationMeta = {
-    current_page: number;
-    from: number;
-    last_page: number;
-    links: Array<PaginationLink>;
-    path: string;
-    per_page: number;
-    to: number;
-    total: number;
-  };
-
-  type NavResponse = {
-    data: Array<NavItem>;
-  };
-
-  type PaginatedResponse = {
-    data: Array<Entry|HomePage>;
-    links: Array<PaginationLink>;
-    meta: PaginationMeta;
-  };
-
-  type EntryResponse = {
-    data: Entry;
+  type SanityNav = SanityDocument & {
+    title: string;
+    slug: Slug;
+    links: Array<NavLink>;
   };
 }

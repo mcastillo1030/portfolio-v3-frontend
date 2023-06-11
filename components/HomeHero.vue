@@ -5,7 +5,7 @@
       <div class="home-hero__wrap">
         <ul class="home-hero__icons" v-if="icons">
           <li class="home-hero__icon-item" :class="index === 0 ? 'active' : ''" v-for="(item, index) in icons">
-            <IconsTaxonomy :type="item.icon.value" class="home-hero__icon" />
+            <IconsTaxonomy :type="item" class="home-hero__icon" />
           </li>
         </ul>
         <p class="home-hero__subtitle">{{ subtitle }}</p>
@@ -32,6 +32,16 @@
       width: 55%;
       max-width: 49.6875rem;
       opacity: .25;
+    }
+
+    .light-mode &__watermark {
+      opacity: .125;
+    }
+
+    @media (prefers-color-scheme: light) {
+      &__watermark {
+        opacity: .125;
+      }
     }
 
     &__wrap {
@@ -82,7 +92,7 @@
       grid-column: 1;
       grid-row: 1;
       margin: 0;
-      width: clamp(3rem, 2.272rem + 3.107vw, 6rem);
+      width: clamp(3rem, 2.111rem + 3.794vw, 6rem);
       color: var(--c-accent-1);
       opacity: 0;
       vertical-align: middle;
@@ -95,13 +105,13 @@
     &__subtitle {
       margin: 0;
       color: var(--c-action);
-      font-size: clamp(1rem, 0.757rem + 1.036vw, 2rem);
+      font-size: clamp(1rem, 0.704rem + 1.265vw, 2rem);
       text-transform: lowercase;
     }
 
     &__title {
       margin: 0;
-      font-size: clamp(3rem, 2.788rem + 0.906vw, 3.875rem);
+      font-size: clamp(3rem, 2.741rem + 1.107vw, 3.875rem);
     }
   }
 
@@ -118,7 +128,6 @@
   // gsap setup
   const hero     = ref<HTMLElement>();
   const skillsTl = ref<GSAPTimeline>();
-  // const markTl   = ref<GSAPTimeline>();
   let ctx: gsap.Context;
 
   onMounted(() => {
@@ -127,7 +136,6 @@
         return;
       }
 
-      // const cursor = self.selector('.home-hero__watermark .hero-watermark__cursor');
       const icons  = self.selector('.home-hero__icon-item');
       const heroTl = gsap.timeline({
         repeat: -1,
@@ -178,16 +186,6 @@
       });
 
       skillsTl.value = heroTl;
-      // markTl.value   = gsap.timeline({
-      //   defaults: {
-      //     delay: 1,
-      //     ease: 'none',
-      //   },
-      //   duration: 1,
-      //   repeat: -1,
-      // })
-      // .add(gsap.set(cursor, {opacity: 0}))
-      // .add(gsap.set(cursor, {opacity: 1}), '+=1');
     }, hero.value);
   });
 
@@ -198,6 +196,6 @@
   defineProps<{
     title?: string,
     subtitle?: string,
-    icons?: Array<SkillIcon>,
+    icons?: Array<string>,
   }>();
 </script>

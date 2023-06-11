@@ -141,7 +141,7 @@
     }
   }
 
-  @media screen and (min-width: c.$b-medium-large) {
+  @media screen and (min-width: c.$b-large) {
     .contrast-toggle {
       &__options {
         top: unset;

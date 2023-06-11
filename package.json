@@ -9,12 +9,14 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/image-edge": "^1.0.0-28094923.e859bba",
     "@types/node": "^18",
     "nuxt": "^3.5.1",
     "sass": "^1.62.1"
   },
   "dependencies": {
-    "gsap": "npm:@gsap/shockingly@^3.11.5"
+    "@nuxtjs/sanity": "^1.7.2",
+    "@sanity/client": "^6.1.2",
+    "gsap": "npm:@gsap/shockingly@^3.11.5",
+    "highlight.js": "^11.8.0"
   }
 }

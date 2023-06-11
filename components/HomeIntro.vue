@@ -4,27 +4,50 @@
       <div class="home-intro__wrap">
         <h2 class="sr-only home-intro__title">{{ title }}</h2>
         <div class="home-intro__image-column">
-          <OutlineImage
+          <SanityImage
             v-if="image"
-            class="home-intro__image-wrap"
-            :image="image"
-            :ideal-width="420"
-            :ideal-height="534"
-          />
+            :asset-id="image.assetId ? image.assetId : 'null'"
+            :w="500"
+            :h="400"
+          >
+            <template #default="{src}">
+              <OutlineImage
+                class="home-intro__image-wrap"
+                :src="src"
+                :alt="image.alt ? image.alt : ''"
+                :width="500"
+                :height="400"
+              />
+            </template>
+          </SanityImage>
           <ul class="home-intro__contact" v-if="links">
             <li class="home-intro__contact-item" v-for="link in links">
               <a
-                :href="link.is_asset ? link.file[0]?.permalink : link.url"
+                v-if="link.linkType === 'url'"
+                :href="link.url"
                 class="home-intro__contact-link"
-                :download="link.is_asset ? link.file[0]?.permalink : null"
               >
-                <IconsNavItem :type="link.icon.value" class="home-intro__contact-icon" />
+                <IconsNavItem :type="link.icon" class="home-intro__contact-icon" />
                 <span class="home-intro__contact-text tooltip">{{ link.title }}</span>
               </a>
+              <SanityFile
+                v-else
+                :asset-id="link.attachment?.asset._ref || 'null'"
+                download="marlon-castillo-resume.pdf"
+              >
+                <template #default="{src}">
+                  <a :href="src" class="home-intro__contact-link">
+                    <IconsNavItem :type="link.icon" classes="home-intro__contact-icon" />
+                    <span class="home-intro__contact-text tooltip">{{ link.title }}</span>
+                  </a>
+                </template>
+              </SanityFile>
             </li>
           </ul>
         </div>
-        <div class="home-intro__text-column">{{ text }}</div>
+        <div class="home-intro__text-column">
+          <div class="home-intro__text-inner">{{ text }}</div>
+        </div>
       </div>
     </div>
   </section>
@@ -119,7 +142,7 @@
           left: 50%;
           width: 100%;
           height: 70%;
-          border-radius: .5rem;
+          border-top-right-radius: .5rem;
           border-top: .125rem dotted var(--c-accent-3);
           border-right: .125rem dotted var(--c-accent-3);
         }
@@ -128,20 +151,22 @@
       &__text-column {
         position: relative;
         width: 85%;
-        padding: clamp(1.75rem, 1.66666667vw, 4rem) clamp(1.5rem, 1.45833333vw, 3rem);
         margin-right: auto;
         margin-left: auto;
-        // text-align: center;
+      }
+
+      &__text-inner {
+        padding: clamp(1.75rem, 1.083rem + 2.846vw, 4rem) clamp(1.5rem, 1.055rem + 1.897vw, 3rem);
         background: #02223c;
         border-radius: .5rem;
       }
 
-      .light-mode &__text-column {
+      .light-mode &__text-inner {
         background: #ededed;
       }
 
       @media (prefers-color-scheme: light) {
-        &__text-column {
+        &__text-inner {
           background: #ededed;
         }
       }
@@ -155,8 +180,9 @@
         display: grid;
         grid-template-columns: 2fr 3fr;
         align-items: center;
-        column-gap: clamp(5.375rem, 6.97916667vw, 8.34rem);
-        max-width: 72rem;
+        // gap: clamp(5.375rem, 6.97916667vw, 8.34rem);
+        gap: clamp(6.033rem, 8.537vw, 8.75rem);
+        max-width: 71.625rem;
         margin: 0 auto;
       }
 
@@ -172,7 +198,7 @@
           border-radius: 0;
           border-top: .125rem dotted var(--c-accent-3);
           border-right: 0;
-          transform: translateX(-50%);
+          transform: translate(-50%, 0);
         }
       }
 
@@ -186,7 +212,7 @@
 <script setup lang="ts">
   defineProps<{
     title?: string;
-    image?: Asset;
+    image?: CustomSanityImage;
     links?: Array<ContactLink>;
     text?: string;
   }>();

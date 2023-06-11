@@ -2,21 +2,33 @@
   <header class="header" ref="header">
     <div class="container header__container">
       <div class="header__inner">
-        <a href="/" class="header__logo-link">
-          <Logo classes="header__logo" />
-          <Mark classes="header__mark" />
-        </a>
+        <NuxtLink to="/" class="header__logo-link">
+          <IconsLogo classes="header__logo" />
+          <IconsMark classes="header__mark" />
+        </NuxtLink>
         <nav class="header__nav" aria-label="Main Menu">
-          <ul v-if="resp !== null" class="header__list">
-            <li v-for="item in resp.data" class="header__item">
-              <a
+          <ul v-if="data !== null" class="header__list">
+            <li v-for="item in data.links" class="header__item">
+              <NuxtLink
+                v-if="item.type === 'link'"
                 class="header__link"
-                :href="item.page.url"
-                :download="item.page.attachment ? item.page.title : null"
+                :to="`/${item.link.slug.current}`"
               >
-                <IconsNavItem :type="item.page.icon.value" classes="header__link-icon" />
-                <span class="header__link-text tooltip">{{ item.page.title }}</span>
-              </a>
+                <IconsNavItem :type="item.icon" classes="header__link-icon" />
+                <span class="header__link-text tooltip">{{ item.title }}</span>
+              </NuxtLink>
+              <SanityFile
+                v-else
+                :asset-id="item.attachment?.asset._ref || 'null'"
+                download="marlon-castillo-resume.pdf"
+              >
+                <template #default="{src}">
+                  <a :href="src" class="header__link">
+                    <IconsNavItem :type="item.icon" classes="header__link-icon" />
+                    <span class="header__link-text tooltip">{{ item.title }}</span>
+                  </a>
+                </template>
+              </SanityFile>
             </li>
           </ul>
         </nav>
@@ -33,17 +45,28 @@
     </div>
     <div class="header__menu">
       <nav class="header__menu-nav" aria-label="Mobile Menu">
-        <ul class="header__menu-list" v-if="resp !== null">
-          <li v-for="item in resp.data" class="header__menu-item">
-            <a
+        <ul class="header__menu-list" v-if="data !== null">
+          <li v-for="item in data.links" class="header__menu-item">
+            <NuxtLink
+              v-if="item.type === 'link'"
               class="header__item-link"
-              :href="item.page.url"
-              :download="item.page.attachment ? item.page.title : null"
+              :to="`/${item.link.slug.current}`"
             >
-              <!-- <span class="header__item-icon"></span> -->
-              <IconsNavItem :type="item.page.icon.value" classes="header__item-icon" />
-              <span class="header__item-text">{{ item.page.title }}</span>
-            </a>
+              <IconsNavItem :type="item.icon" classes="header__item-icon" />
+              <span class="header__item-text">{{ item.title }}</span>
+            </NuxtLink>
+            <SanityFile
+              v-else
+              :asset-id="item.attachment?.asset._ref || 'null'"
+              download="marlon-castillo-resume.pdf"
+            >
+              <template #default="{src}">
+                <a :href="src" target="_blank" class="header__item-link" @click="menuState = 'closed'">
+                  <IconsNavItem :type="item.icon" classes="header__item-icon" />
+                  <span class="header__item-text">{{ item.title }}</span>
+                </a>
+              </template>
+            </SanityFile>
           </li>
         </ul>
       </nav>
@@ -68,7 +91,6 @@
       display: flex;
       gap: 4.5rem 3.625rem;
       align-items: center;
-      // justify-content: space-between;
       padding: 1rem 0;
     }
 
@@ -115,10 +137,6 @@
       transition: background-color .2s ease-out;
     }
 
-    // .light-mode &__menu {
-    //   background: #e0e0e0;
-    // }
-
     &__menu-list {
       padding: 0;
       margin: 0;
@@ -139,6 +157,10 @@
 
       &:hover {
         color: var(--c-accent-1);
+      }
+
+      &.router-link-active {
+        color: var(--c-selection);
       }
     }
   }
@@ -195,6 +217,10 @@
         &:hover {
           color: var(--c-foreground);
         }
+
+        &.router-link-active {
+          color: var(--c-selection);
+        }
       }
 
       &__link-icon {
@@ -225,6 +251,14 @@
           border-width: 0 .5rem .5rem .5rem;
           border-color: transparent transparent var(--c-action) transparent;
           transform: translate(-50%, -.5rem);
+        }
+      }
+
+      &__link.router-link-active &__link-text {
+        background: var(--c-selection);
+
+        &::before {
+          border-color: transparent transparent var(--c-selection) transparent;
         }
       }
 
@@ -334,6 +368,10 @@
         }
       }
 
+      &__link.router-link-active &__link-text::before {
+        border-color: transparent var(--c-selection) transparent transparent;
+      }
+
       &__link:hover &__link-text {
         transform: translate(.75rem, -50%);
       }
@@ -348,13 +386,22 @@
 <script setup lang="ts">
   import { gsap } from 'gsap';
 
-  // API setup
-  const { baseApiUrl, apiEndpoints } = useAppConfig();
+  // State setup
   const menuState = useMenuState();
 
-  // API
-  const navEndpoint = `${baseApiUrl}${apiEndpoints.mainNav}`;
-  const { data: resp } = await useFetch<NavResponse>( navEndpoint );
+  // API setup
+  const query = groq`*[_type == 'nav'][0]{
+    title,
+    slug,
+    links[]{
+      title,
+      type,
+      icon,
+      link->{title, slug},
+      attachment
+    }
+  }`;
+  const { data } = useSanityQuery<SanityNav>(query);
 
   // Gsap
   const header = ref<HTMLElement>();
@@ -395,7 +442,6 @@
         return;
       }
 
-      // const header = self.selector('.header');
       const menu = self.selector('.header__menu');
       const list = self.selector('.header__menu-list');
       tl.value = gsap.timeline({
