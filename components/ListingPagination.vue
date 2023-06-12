@@ -1,11 +1,14 @@
 <template>
   <section class="listing-pagination">
     <div class="container listing-pagination__container">
-      <ul class="listing-pagination__buttons" v-if="total && items && lastId && pageSize">
+      <ul class="listing-pagination__buttons">
         <li
           class="listing-pagination__button listing-pagination__button--prev"
-          v-if="consumed > 0"
-          @click="paginatePrev"
+          v-if="currentPage > 1"
+          @click="(evt) => {
+            paginatePrev(evt);
+            scrollToTop();
+          }"
         >
           <Button
             :disabled="loading"
@@ -15,8 +18,11 @@
         </li>
         <li
           class="listing-pagination__button listing-pagination__button--next"
-          v-if="total - (consumed * pageSize) > items.length"
-          @click="paginateNext"
+          v-if="currentPage < totalPages"
+          @click="(evt) => {
+            paginateNext(evt);
+            scrollToTop();
+          }"
         >
           <Button
             :disabled="loading"
@@ -58,14 +64,15 @@
 </style>
 
 <script setup lang="ts">
+import scrollToTop from '~/utils/scrollTopHelper';
+
   const consumed = usePagesConsumed();
   const loading = usePaginationLoading();
 
   defineProps<{
-    total?: number;
-    items?: Array<ProjectLineItem|PostLineItem>;
-    lastId?: string;
-    pageSize?: number;
+    loading: boolean;
+    totalPages: number;
+    currentPage: number;
     paginatePrev: (e: MouseEvent) => void;
     paginateNext: (e: MouseEvent) => void;
   }>();

@@ -1,7 +1,8 @@
 <template>
   <section class="post-listing" v-if="posts">
     <div class="container post-listing__container">
-      <h2 v-if="route.query.category" class="post-listing__category-title">Rants about "{{ getCategoryName(posts[0]) }}"</h2>
+      <!-- <h2 v-if="route.query.category" class="post-listing__category-title">Rants about "{{ getCategoryName(posts[0]) }}"</h2> -->
+      <h2 v-if="route.query.category && postsTitle" class="post-listing__category-title">{{ typeof postsTitle === 'string' ?  postsTitle : postsTitle() }}</h2>
       <ul class="post-listing__posts">
         <li class="post-listing__post" v-for="post in posts">
           <div class="post-listing__inner">
@@ -20,7 +21,10 @@
                     <NuxtLink
                       :to="`/rants?category=${category._id}`"
                       class="post-listing__tag-link"
-                      @click="() => onCategoryChange && onCategoryChange(category._id)"
+                      @click="() => {
+                        onTagClick && onTagClick(category._id);
+                        scrollToTop();
+                      }"
                     >{{ category.title }}</NuxtLink>
                   </li>
                 </ul>
@@ -116,6 +120,8 @@
 </style>
 
 <script setup lang="ts">
+import scrollToTop from '~/utils/scrollTopHelper';
+
   const route = useRoute();
 
   const getCategoryName = (post: PostLineItem) => {
@@ -129,6 +135,7 @@
 
   defineProps<{
     posts?: Array<PostLineItem>;
-    onCategoryChange?: (id: string) => void;
+    postsTitle?: string|(() => string);
+    onTagClick?: (id: string) => void;
   }>();
 </script>

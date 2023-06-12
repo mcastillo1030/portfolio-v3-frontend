@@ -2,16 +2,16 @@
   <div class="c-main">
     <MarkHero :title="pageTitle" />
     <PostListing
-      :posts="currentPosts"
-      :onCategoryChange="setActiveCategory"
+      :posts="posts"
+      :on-tag-click="setCategory"
+      :posts-title="getTitleWithCategory"
     />
     <ListingPagination
-      :items="currentPosts"
-      :total="totalPostsCount"
-      :lastId="currentLastPostId"
       :paginateNext="getOlderPosts"
       :paginatePrev="getNewerPosts"
-      :pageSize="5"
+      :total-pages="totalPages"
+      :current-page="page"
+      :loading="paginationLoading"
     />
   </div>
 </template>
@@ -20,14 +20,23 @@
   const { $urlFor } = useNuxtApp();
   const { siteTitle } = useAppConfig();
   const route = useRoute();
-  const isLoading = usePaginationLoading();
-  const pagesConsumed = usePagesConsumed();
 
+  // Reactives
   const pageTitle = ref<string>();
-  const currentPosts = ref<Array<PostLineItem>>();
-  const currentLastPostId = ref<string>();
-  const totalPostsCount = ref<number>();
-  const currentCategory = ref<string>(route.query.category as string || '*');
+  const posts = ref<Array<PostLineItem>>();
+  const currentCatId = ref<string>(route.query.category as string || '*');
+  const paginationLoading = ref<boolean>(false);
+  const page = ref<number>(1);
+
+  // Vars
+  const pageSize = 5;
+  const cagegories = [
+    { _id: '*', title: 'All' },
+  ];
+  let totalPages = 1;
+  let totalPosts: number;
+
+  // API
   const query = groq`{
     "page": *[_type == 'page' && slug.current == "${route.name}"][0]{
       title,seoTitle,seoDescription,seoImage,
@@ -38,76 +47,98 @@
     "totalPosts": count(*[_type == 'post']),
   }`;
 
-  const { data } = await useSanityQuery<{
-    page: {
-      title: string;
-      seoTitle: string;
-      seoDescription: string;
-      seoImage: SanityAsset;
-    };
-    currentPosts: Array<PostLineItem>;
-    totalPosts: number;
-  }>(query, {cat: currentCategory.value});
-
-
-  if (data.value) {
-    pageTitle.value = data.value.page.title;
-    currentPosts.value = data.value.currentPosts
-    totalPostsCount.value = data.value.totalPosts;
-    currentLastPostId.value = data.value.currentPosts[data.value.currentPosts.length - 1]._id;
-  }
-
-  const fetchAndUpdatePosts = async (dir: string) => {
-    if (!dir || !currentPosts.value || !currentPosts.value) {
+  const initPage = (data: Ref<PostsPageResponse | Array<PostLineItem>>, reverse = false) => {
+    if ( typeof data === 'undefined' ) {
       return;
     }
 
-    isLoading.value = true;
+    if ('page' in data.value) {
+      pageTitle.value = data.value.page.title;
+      posts.value = data.value.currentPosts
+      totalPosts = data.value.totalPosts;
+      totalPages = Math.ceil(totalPosts / pageSize);
+    } else {
+      posts.value = data.value;
+    }
+
+    [...posts.value].forEach(post => {
+      post.categories.forEach(cat => {
+        if (!cagegories.find(c => c._id === cat._id)) {
+          cagegories.push(cat);
+        }
+      });
+    });
+
+    if (reverse) {
+      posts.value = posts.value.reverse();
+    }
+  };
+
+  const fetchAndUpdatePosts = async (dir: string) => {
+    if (!dir || !posts.value) {
+      return;
+    }
+
+    paginationLoading.value = true;
 
     const timestamp = dir === 'newer' ?
-      currentPosts.value[0].publishedAt :
-      currentPosts.value[currentPosts.value.length - 1].publishedAt;
+      posts.value[0].publishedAt :
+      posts.value[posts.value.length - 1].publishedAt;
+    const id = dir === 'newer' ?
+      posts.value[0]._id :
+      posts.value[posts.value.length - 1]._id;
     const newQuery = groq`*[
       _type == 'post' &&
       !(_id in path("drafts.**")) &&
-      publishedAt ${dir === 'newer' ? '>' : '<'} "${timestamp}" && (categories[]._ref match $cat)
-    ]|order(publishedAt desc)[0...5]{
+      (dateTime(publishedAt) ${dir === 'newer' ? '>' : '<'} dateTime("${timestamp}") || (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")) && (categories[]._ref match $cat)
+    ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...5]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
-    const { data: newData } = await useSanityQuery<Array<PostLineItem>>(newQuery, {cat: currentCategory.value});
-    // console.log(newQuery);
+    const { data: newData } = await useSanityQuery<Array<PostLineItem>>(newQuery, {cat: currentCatId.value});
 
-    if (newData.value) {
-      currentPosts.value = newData.value;
-      currentLastPostId.value = newData.value[newData.value.length - 1]._id;
+    initPage(newData, dir === 'newer');
 
-      if (dir === 'newer') {
-        pagesConsumed.value--;
-      } else {
-        pagesConsumed.value++;
-      }
+    if (dir === 'newer') {
+      page.value--;
+    } else {
+      page.value++;
     }
 
-    isLoading.value = false;
+    paginationLoading.value = false;
   };
 
   const getOlderPosts = (e: MouseEvent) => {
     e.preventDefault();
     fetchAndUpdatePosts('older');
+    // console.log('getOlderPosts');
   };
 
   const getNewerPosts = (e: MouseEvent) => {
     e.preventDefault();
     fetchAndUpdatePosts('newer');
+    // console.log('getNewerPosts');
   };
 
-  const setActiveCategory = (cat: string) => {
-    currentCategory.value = cat;
+  // const setActiveCategory = (cat: string) => {
+  //   currentCatId.value = cat;
+  //   refreshSanityQuery();
+  // };
+
+  const setCategory = (id: string) => {
+    currentCatId.value = id;
+    refreshSanityQuery();
+    page.value = 1;
   };
 
-  onMounted(() => {
-    pagesConsumed.value = 0;
-  });
+  const getTitleWithCategory = () => {
+    const cat = cagegories.find((c) => c._id === currentCatId.value);
+    const title = cat ? `Rants about "${cat.title}"` : 'All Rants';
+    return title;
+  };
+
+  // Init
+  const { data, refresh: refreshSanityQuery } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
+  initPage(data);
 
   useSeoMeta({
     title: data.value.page.seoTitle + ' | ' + siteTitle,

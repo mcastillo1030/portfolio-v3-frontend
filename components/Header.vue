@@ -174,10 +174,6 @@
       &:hover {
         color: var(--c-accent-1);
       }
-
-      &.router-link-active {
-        color: var(--c-selection);
-      }
     }
   }
 
@@ -236,6 +232,23 @@
 
         &.router-link-active {
           color: var(--c-selection);
+        }
+
+        &.router-link-active {
+          display: inline-block;
+          position: relative;
+          color: var(--c-selection);
+        }
+
+        &.router-link-active::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: .125rem;
+          background: var(--c-selection);
+          transform: translateY(.5rem);
         }
       }
 

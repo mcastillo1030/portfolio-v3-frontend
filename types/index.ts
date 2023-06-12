@@ -131,4 +131,15 @@ declare global {
     slug: Slug;
     links: Array<NavLink>;
   };
+
+  type PostsPageResponse = {
+    page: {
+      title: string;
+      seoTitle: string;
+      seoDescription: string;
+      seoImage: SanityAsset;
+    };
+    currentPosts: Array<PostLineItem>;
+    totalPosts: number;
+  };
 }
