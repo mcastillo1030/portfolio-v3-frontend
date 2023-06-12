@@ -10,11 +10,23 @@
 </template>
 
 <script setup lang="ts">
+  const { $urlFor } = useNuxtApp();
+  const { siteTitle } = useAppConfig();
   const route = useRoute();
   const query = groq`*[_type == "page" && slug.current == "${route.name}"][0]{
     title, introHeading, introText,
     miscHeading, miscText,
-    educationHeading, educationItems
+    educationHeading, educationItems,
+    seoTitle, seoDescription, seoImage,
   }`;
   const { data } = await useSanityQuery<SanityPage>(query);
+
+  useSeoMeta({
+    title: data.value.seoTitle + ' | ' + siteTitle,
+    ogTitle: data.value.seoTitle + ' | ' + siteTitle,
+    description: data.value.seoDescription,
+    ogDescription: data.value.seoDescription,
+    ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
+    twitterCard: 'summary_large_image',
+  });
 </script>

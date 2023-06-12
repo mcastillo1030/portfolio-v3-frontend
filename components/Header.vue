@@ -2,7 +2,7 @@
   <header class="header" ref="header">
     <div class="container header__container">
       <div class="header__inner">
-        <NuxtLink to="/" class="header__logo-link">
+        <NuxtLink to="/" class="header__logo-link" :class="loading ? 'header__logo-link--loading' : ''">
           <IconsLogo classes="header__logo" />
           <IconsMark classes="header__mark" />
         </NuxtLink>
@@ -97,6 +97,22 @@
     &__logo-link {
       width: 50%;
       max-width: 9.5rem;
+
+      &--loading {
+        animation: loading 1.5s ease-in-out infinite;
+      }
+    }
+
+    @keyframes loading {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
     }
 
     &__logo {
@@ -385,6 +401,7 @@
 
 <script setup lang="ts">
   import { gsap } from 'gsap';
+  const loading = useAppLoading();
 
   // State setup
   const menuState = useMenuState();

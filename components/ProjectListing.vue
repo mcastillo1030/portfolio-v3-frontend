@@ -98,5 +98,8 @@
 </style>
 
 <script setup lang="ts">
-  const projects = useProjectsList();
+  // const projects = useProjectsList();
+  defineProps<{
+    projects?: Array<ProjectLineItem>;
+  }>();
 </script>

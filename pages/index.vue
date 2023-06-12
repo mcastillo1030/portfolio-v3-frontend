@@ -24,6 +24,9 @@
 </template>
 
 <script setup lang="ts">
+  const { $urlFor } = useNuxtApp();
+  const { siteTitle } = useAppConfig();
+  const loading = useAppLoading();
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,
     heroHeading,heroSubhead,
@@ -50,7 +53,23 @@
         "assetId": asset._ref,
       },
       title, slug, excerpt
-    }
+    },
+    seoTitle, seoDescription, seoImage,
   }`;
-  const { data } = await useSanityQuery<SanityPage>(query);
+  const { data, pending } = useSanityQuery<SanityPage>(query, {lazy: true});
+
+  watch(pending, (value) => {
+    loading.value = value;
+  });
+
+  if (data.value) {
+    useSeoMeta({
+      title: data.value.seoTitle + ' | ' + siteTitle,
+      ogTitle: data.value.seoTitle + ' | ' + siteTitle,
+      description: data.value.seoDescription,
+      ogDescription: data.value.seoDescription,
+      ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
+      twitterCard: 'summary_large_image',
+    });
+  }
 </script>

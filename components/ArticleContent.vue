@@ -1,36 +1,42 @@
 <template>
-  <section class="project-content" v-if="project">
-    <div class="project-content__container container">
-      <div class="project-content__wrap">
-        <div class="project-content__head">
+  <section class="article-content">
+    <div class="article-content__container container">
+      <div class="article-content__wrap">
+        <div class="article-content__head">
           <SanityImage
-            v-if="project.mainImage"
-            :asset-id="project.mainImage.assetId"
+            v-if="image"
+            :asset-id="image.assetId"
             :w="667"
             :h="500"
           >
             <template #default="{src}">
               <OutlineImage
-                class="project-content__image reverse"
+                class="article-content__image reverse"
                 :src="src"
-                :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+                :alt="image.alt ? image.alt : 'Article Image'"
                 :width="667"
                 :height="500"
               />
             </template>
           </SanityImage>
           <Button
-            v-if="project.link"
+            v-if="link"
             element="a"
             external
-            :href="project.link"
-            class="project-content__button"
+            :href="link"
+            class="article-content__button"
           >View Project</Button>
         </div>
-        <ArticleMeta class="project-content__meta" :technologies="project.technologies" :content="project.body" />
-        <div class="project-content__content">
-          <div class="project-content__wysiwyg">
-            <SanityContent :blocks="project.body" :serializers="serializers" />
+        <ArticleMeta
+          v-if="body || technologies"
+          class="article-content__meta"
+          :technologies="technologies"
+          :categories="categories"
+          :content="body"
+        />
+        <div class="article-content__content" v-if="body">
+          <div class="article-content__wysiwyg">
+            <SanityContent :blocks="body" :serializers="serializers" />
           </div>
         </div>
       </div>
@@ -39,7 +45,7 @@
 </template>
 
 <style lang="scss">
-  .project-content {
+  .article-content {
     &__wrap {
       margin-top: clamp(3.375rem, 2.893rem + 2.055vw, 5rem);
       max-width: 78.375rem;
@@ -126,7 +132,7 @@
   }
 
   @media screen and (min-width: c.$b-xlarge) {
-    .project-content {
+    .article-content {
       &__wrap {
         display: grid;
         grid-template-columns: 3fr 2fr;
@@ -156,6 +162,7 @@
 
 <script setup lang="ts">
   import type { Serializers } from '@nuxtjs/sanity/dist/runtime/components/sanity-content';
+import { PortableTextBlock } from '@portabletext/types';
   import { resolveComponent } from 'vue';
 
   const serializers:Serializers = {
@@ -172,6 +179,11 @@
   };
 
   defineProps<{
-    project?: SanityProject;
+    // project?: SanityProject;
+    image?: CustomSanityImage;
+    body?: Array<PortableTextBlock>;
+    link?: string;
+    technologies?: Array<ProjectTechnology>;
+    categories?: Array<{_id: string, title: string}>;
   }>();
 </script>

@@ -11,8 +11,8 @@ export const useColorMode = () => useState<string>('colorMode', () => {
 
 export const useMenuState = () => useState<string>('menuState', () => 'closed');
 
-export const useProjectsList = () => useState<ProjectLineItem[]>('projectsList', () => []);
-
-export const useCurrentProjectId = () => useState<string>('currentProjectId', () => '');
-
 export const usePagesConsumed = () => useState<number>('pagesConsumed', () => 0);
+
+export const usePaginationLoading = () => useState<boolean>('isLoading', () => false);
+
+export const useAppLoading = () => useState<boolean>('appLoading', () => false);

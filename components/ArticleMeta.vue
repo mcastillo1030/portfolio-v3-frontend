@@ -9,14 +9,25 @@
         </li>
       </ul>
     </div>
+    <div class="article-meta__categories" v-if="categories">
+      <h2 class="article-meta__categories-title zeta">Tags</h2>
+      <ul class="article-meta__tags">
+        <li class="article-meta__tag" v-for="category in categories">
+          <NuxtLink
+            :to="`/rants?category=${category._id}`"
+            class="article-meta__tag-link"
+          >{{ category.title }}</NuxtLink>
+        </li>
+      </ul>
+    </div>
     <div class="article-meta__toc" v-if="content" :data-open="open">
       <h2 class="article-meta__toc-title zeta" id="article-meta__toc-title">
         <span class="article-meta__title-text sr-only">Contents</span>
         <button
-          class="article-meta__toc-toggle"
+          class="article-meta__toc-toggle zeta"
           type="button"
           aria-label="Toggle TOC Menu"
-          @click="open = !open"
+          @click="toggleMenu"
         >
           <span class="article-meta__toggle-text">Contents</span>
           <IconsChevron class="article-meta__toggle-icon" />
@@ -38,22 +49,31 @@
     background: var(--c-menu-bg);
     border-radius: .5rem;
 
-    &__stack-title {
+    &__stack-title,
+    &__categories-title {
       margin: 0 0 .25rem;
       color: var(--c-accent-2);
     }
 
-    &__technologies {
-      display: flex;
+    &__technologies,
+    &__tags {
       padding: 0;
       margin: 0;
       list-style: none;
+    }
+
+    &__technologies {
+      display: flex;
       gap: 1.125rem;
+    }
+
+    &__technology,
+    &__tag {
+      padding: 0;
     }
 
     &__technology {
       position: relative;
-      padding: 0;
 
       &:hover {
         cursor: help;
@@ -99,6 +119,13 @@
       transform: translate(-50%, 1rem);
     }
 
+    &__tag-link {
+      color: var(--c-accent-2);
+      font-size: .875rem;
+      text-decoration-style: dashed;
+      text-transform: lowercase;
+    }
+
     &__toc-nav {
       position: relative;
       overflow: hidden;
@@ -115,9 +142,10 @@
       justify-content: space-between;
       width: 100%;
       padding: 0 0 .5rem;
+      margin: 0;
       color: var(--c-accent-2);
       text-align: left;
-      text-transform: lowercase;
+      // text-transform: lowercase;
       background: none;
       border: none;
       border-bottom: .0625rem solid var(--c-accent-2);
@@ -198,13 +226,16 @@
   import { PortableTextBlock } from '@portabletext/types';
   import gsap from 'gsap';
   import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { e } from 'ofetch/dist/error-04138797';
 
   gsap.registerPlugin(ScrollToPlugin);
 
   const meta = ref<HTMLElement>();
   const open = ref<Boolean>(false);
   const tl = ref<GSAPTimeline>();
+  const isAnimating = ref<Boolean>(false);
   let ctx: gsap.Context;
+  // let isAnimating: boolean = false;
 
   const getBuiltTree = (content: Array<PortableTextBlock>) => {
     const validHeadings = ['h2', 'h3', 'h4'];
@@ -249,11 +280,24 @@
     return tree.join('');
   };
 
+  const toggleMenu = (e: MouseEvent) => {
+    e.preventDefault();
+
+    if (isAnimating.value) {
+      return;
+    }
+
+    open.value = !open.value;
+  };
+
   const buildTimeline = (menu: HTMLUListElement, items: HTMLLIElement[], isOpen:Boolean) => {
     const tl = gsap.timeline({
       paused: true,
       defaults: {
         ease: 'power2.out',
+      },
+      onStart: () => {
+        isAnimating.value = true;
       },
       onComplete: () => {
         if (isOpen) {
@@ -264,6 +308,8 @@
 
         gsap.set(menu, {clearProps: 'all'});
         gsap.set(items, {clearProps: 'all'});
+
+        isAnimating.value = false;
       },
     });
 
@@ -359,7 +405,7 @@
       return;
     }
 
-    console.log('here');
+    // console.log('here');
 
     tl.value = buildTimeline(ctx.selector('.article-meta__toc-nav')[0], ctx.selector('.article-meta__toc-item'), val);
     playTimeline();
@@ -367,6 +413,7 @@
 
   defineProps<{
     technologies?: Array<ProjectTechnology>,
+    categories?: Array<{_id: string, title: string}>,
     content?: Array<PortableTextBlock>,
   }>();
 </script>

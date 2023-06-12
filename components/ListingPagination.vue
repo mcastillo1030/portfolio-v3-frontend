@@ -1,11 +1,11 @@
 <template>
   <section class="listing-pagination">
     <div class="container listing-pagination__container">
-      <ul class="listing-pagination__buttons" v-if="total && items && current">
+      <ul class="listing-pagination__buttons" v-if="total && items && lastId && pageSize">
         <li
           class="listing-pagination__button listing-pagination__button--prev"
           v-if="consumed > 0"
-          @click="fetchNewer"
+          @click="paginatePrev"
         >
           <Button
             :disabled="loading"
@@ -15,8 +15,8 @@
         </li>
         <li
           class="listing-pagination__button listing-pagination__button--next"
-          v-if="total - (consumed * 4) > items.length"
-          @click="fetchOlder"
+          v-if="total - (consumed * pageSize) > items.length"
+          @click="paginateNext"
         >
           <Button
             :disabled="loading"
@@ -58,49 +58,15 @@
 </style>
 
 <script setup lang="ts">
-  const loading = ref<boolean>(false);
-  const items = useProjectsList();
-  const current = useCurrentProjectId();
   const consumed = usePagesConsumed();
-
-  const fetchAndUpdate = async (direction:string) => {
-    loading.value = true;
-    const timestamp = direction === 'newer' ?
-      items.value[0]._updatedAt :
-      items.value.filter((item) => item._id === current.value)[0]._updatedAt;
-    const query = groq`*[_type == "project" && !(_id in path("drafts.**")) && _updatedAt ${direction === 'newer' ? '>' : '<'} "${timestamp}"] | order(_updatedAt desc) [0...4] {
-      _id,_updatedAt, slug, title, excerpt, mainImage{
-        alt,caption,"assetId": asset._ref,
-      }
-    }`;
-
-    const {data} = await useSanityQuery<Array<ProjectLineItem>>(query);
-
-    if (data.value) {
-      items.value = data.value;
-      current.value = data.value[data.value.length - 1]._id;
-
-      if (direction === 'older') {
-        consumed.value++;
-      } else {
-        consumed.value--;
-      }
-    }
-
-    loading.value = false;
-  };
-
-  const fetchNewer = (e:MouseEvent) => {
-    e.preventDefault();
-    fetchAndUpdate('newer');
-  };
-
-  const fetchOlder = (e:MouseEvent) => {
-    e.preventDefault();
-    fetchAndUpdate('older');
-  };
+  const loading = usePaginationLoading();
 
   defineProps<{
     total?: number;
+    items?: Array<ProjectLineItem|PostLineItem>;
+    lastId?: string;
+    pageSize?: number;
+    paginatePrev: (e: MouseEvent) => void;
+    paginateNext: (e: MouseEvent) => void;
   }>();
 </script>

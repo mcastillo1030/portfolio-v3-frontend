@@ -10,4 +10,5 @@ export default defineAppConfig({
     socialNav: '/navs/social/tree',
     globals: '/globals',
   },
+  siteTitle: 'Marlon Castillo',
 })

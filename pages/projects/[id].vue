@@ -1,7 +1,12 @@
 <template>
   <div class="c-main">
-    <TextHero :title="data.title" />
-    <ProjectContent :project="data" />
+    <TextHero subtitle="Projects" :title="data.title" />
+    <ArticleContent
+      :body="data.body"
+      :image="data.mainImage"
+      :link="data.link"
+      :technologies="data.technologies"
+    />
   </div>
 </template>
 

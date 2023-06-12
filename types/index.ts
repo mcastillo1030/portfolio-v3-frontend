@@ -41,6 +41,14 @@ declare global {
     excerpt: string|null;
   }
 
+  type PostLineItem = SanityDocument & {
+    title: string;
+    slug: Slug;
+    publishedAt: string;
+    categories: Array<{_id: string, title: string}>;
+    excerpt: string|null;
+  }
+
   type ContactLink = {
     title: string;
     linkType: string;
@@ -82,6 +90,18 @@ declare global {
     mainImage: CustomSanityImage;
     technologies: Array<ProjectTechnology>;
     body: Array<PortableTextBlock>;
+  };
+
+  type SanityPost = SanityDocument & {
+    title: string;
+    publishedAt: string;
+    mainImage: CustomSanityImage;
+    categories: Array<{_id: string, title: string}>;
+    body: Array<PortableTextBlock>;
+    author: {
+      name: string;
+      image: CustomSanityImage;
+    };
   };
 
   type SanityPage = PageSEO & SanityDocument & {

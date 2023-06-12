@@ -1,6 +1,6 @@
 <template>
   <div class="highlight-code-block" v-if="code" ref="codeBlock">
-    <span v-if="filename" class="highlight-code-block__label">{{ filename }}</span>
+    <span class="highlight-code-block__label">{{ filename ||language }}</span>
     <button type="button" class="highlight-code-block__button" @click="copyToClipboard">
       <span v-if="!copied" class="highlight-code-block__copy-action">
         <IconsCopy class="highlight-code-block__icon highlight-code-block__icon--copy" />
@@ -82,6 +82,7 @@
       &.hljs {
         padding-top: 2rem;
         tab-size: 2;
+        width: 100%;
       }
     }
   }
@@ -89,13 +90,20 @@
 
 <script setup lang="ts">
   import hljs from 'highlight.js/lib/core';
-  // import bash from 'highlight.js/lib/languages/bash';
   import javascript from 'highlight.js/lib/languages/javascript';
-  // import xml from 'highlight.js/lib/languages/xml';
-  // import json from 'highlight.js/lib/languages/json';
+  import xml from 'highlight.js/lib/languages/xml';
+  import php from 'highlight.js/lib/languages/php';
+  import css from 'highlight.js/lib/languages/css';
+  import scss from 'highlight.js/lib/languages/scss';
+  import bash from 'highlight.js/lib/languages/bash';
   import 'highlight.js/styles/vs2015.css';
 
   hljs.registerLanguage('javascript', javascript);
+  hljs.registerLanguage('xml', xml);
+  hljs.registerLanguage('php', php);
+  hljs.registerLanguage('css', css);
+  hljs.registerLanguage('scss', scss);
+  hljs.registerLanguage('bash', bash);
 
   const copied = ref<Boolean>(false);
   const codeBlock = ref<HTMLElement>();
@@ -116,8 +124,8 @@
     }, 2000);
   };
 
-  const getHighlightedCode = (code: string, language: string = 'javascript') => {
-    return hljs.highlight(code, { language }).value;
+  const getHighlightedCode = (code: string, lang: string = 'javascript') => {
+    return hljs.highlight(code, { language: lang === 'html' ? 'xml' : lang }).value;
   };
 
   defineProps<{
