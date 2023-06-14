@@ -1,17 +1,12 @@
 <template>
-  <SanityImage
+  <OutlineImage
     v-if="asset._ref"
+    class="project-content__image reverse"
     :asset-id="asset._ref"
-  >
-    <template #default="{src}">
-      <OutlineImage
-        class="project-content__image reverse"
-        :src="src"
-        :alt="alt"
-        :caption="caption"
-      />
-    </template>
-  </SanityImage>
+    :alt="alt"
+    :caption="caption"
+    :sizes="true"
+  />
 </template>
 
 <script setup lang="ts">

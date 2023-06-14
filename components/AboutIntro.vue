@@ -4,7 +4,10 @@
       <div class="about-intro__wrap">
         <div class="about-intro__text-column">
           <h2 v-if="title" class="about-intro__title">{{ title }}</h2>
-          <div v-if="text" class="about-intro__text">{{ text }}</div>
+          <!-- <div v-if="text" class="about-intro__text">
+            <SanityContent :blocks="text" :serializers="serializers" />
+          </div> -->
+          <Wysiwyg v-if="text" class="about-intro__text" :body="text" />
         </div>
         <div class="about-intro__graphic-column">
           <IconsPeepMarlon class="about-intro__graphic" />
@@ -104,8 +107,10 @@
 </style>
 
 <script setup lang="ts">
+  import type { PortableTextBlock } from '@portabletext/types';
+
   defineProps<{
     title?: string
-    text?: string
+    text?: Array<PortableTextBlock>
   }>();
 </script>

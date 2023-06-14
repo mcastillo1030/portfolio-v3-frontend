@@ -2,7 +2,6 @@
   <div class="c-main">
     <MarkHero :title="pageTitle" />
     <PostListing
-      :posts="posts"
       :on-tag-click="setCategory"
       :posts-title="getTitleWithCategory"
     />
@@ -36,30 +35,24 @@
   let totalPages = 1;
   let totalPosts: number;
 
-  // API
-  const query = groq`{
-    "page": *[_type == 'page' && slug.current == "${route.name}"][0]{
-      title,seoTitle,seoDescription,seoImage,
-    },
-    "currentPosts": *[_type == 'post' && !(_id in path("drafts.**")) && (categories[]._ref match $cat)]|order(publishedAt desc)[0...5]{
-      _id, slug, title, publishedAt, categories[]->{_id, title}
-    },
-    "totalPosts": count(*[_type == 'post']),
-  }`;
+  const initPage = async () => {
+    const query = groq`{
+      'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
+        title,seoTitle,seoDescription,seoImage,
+      },
+      'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...5]{
+        _id, slug, title, publishedAt, categories[]->{_id, title}
+      },
+      'totalPosts': count(*[_type == 'post']),
+    }`;
 
-  const initPage = (data: Ref<PostsPageResponse | Array<PostLineItem>>, reverse = false) => {
-    if ( typeof data === 'undefined' ) {
-      return;
-    }
+    const { data } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
 
-    if ('page' in data.value) {
-      pageTitle.value = data.value.page.title;
-      posts.value = data.value.currentPosts
-      totalPosts = data.value.totalPosts;
-      totalPages = Math.ceil(totalPosts / pageSize);
-    } else {
-      posts.value = data.value;
-    }
+    pageTitle.value = data.value.page.title;
+    posts.value = data.value.currentPosts
+    totalPosts = data.value.totalPosts;
+    totalPages = Math.ceil(totalPosts / pageSize);
+
 
     [...posts.value].forEach(post => {
       post.categories.forEach(cat => {
@@ -69,12 +62,69 @@
       });
     });
 
-    if (reverse) {
-      posts.value = posts.value.reverse();
+    useSeoMeta({
+      title: data.value.page.seoTitle + ' | ' + siteTitle,
+      ogTitle: data.value.page.seoTitle + ' | ' + siteTitle,
+      description: data.value.page.seoDescription,
+      ogDescription: data.value.page.seoDescription,
+      ogImage: $urlFor(data.value.page.seoImage.asset._ref).size(1200, 628).url(),
+      twitterCard: 'summary_large_image',
+    });
+  };
+
+  const updatePagination = async (query: string, reverseOrdering = false) => {
+    if (!query) {
+      return;
+    }
+
+    const {data} = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
+
+    posts.value = data.value;
+
+    [...posts.value].forEach(post => {
+      post.categories.forEach(cat => {
+        if (!cagegories.find(c => c._id === cat._id)) {
+          cagegories.push(cat);
+        }
+      });
+    });
+
+    if (reverseOrdering) {
+      posts.value = posts.value?.reverse();
     }
   };
 
-  const fetchAndUpdatePosts = async (dir: string) => {
+  const updatePage = async () => {
+    const query = groq`{
+      'currentPosts': *[
+          _type == 'post' &&
+          !(_id in path('drafts.**')) &&
+          (categories[]._ref match $cat)
+      ]|order(publishedAt desc)[0...5]{
+          _id, slug, title, publishedAt, categories[]->{_id, title}
+      },
+      'totalPosts': count(*[
+        _type == 'post' &&
+        (categories[]._ref match $cat)
+      ])
+    }`;
+
+    const { data } = await useSanityQuery<PostsPageResponse>(query, {
+      cat: currentCatId.value
+    });
+
+    posts.value = data.value.currentPosts;
+
+    [...posts.value].forEach(post => {
+      post.categories.forEach(cat => {
+        if (!cagegories.find(c => c._id === cat._id)) {
+          cagegories.push(cat);
+        }
+      });
+    });
+  };
+
+  const fetchAndUpdate = async (dir: string) => {
     if (!dir || !posts.value) {
       return;
     }
@@ -90,13 +140,16 @@
     const newQuery = groq`*[
       _type == 'post' &&
       !(_id in path("drafts.**")) &&
-      (dateTime(publishedAt) ${dir === 'newer' ? '>' : '<'} dateTime("${timestamp}") || (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")) && (categories[]._ref match $cat)
+      (
+        dateTime(publishedAt) ${dir === 'newer' ? '>' : '<'} dateTime("${timestamp}") ||
+        (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")
+      ) &&
+      (categories[]._ref match $cat)
     ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...5]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
-    const { data: newData } = await useSanityQuery<Array<PostLineItem>>(newQuery, {cat: currentCatId.value});
 
-    initPage(newData, dir === 'newer');
+    updatePagination(newQuery, dir === 'newer');
 
     if (dir === 'newer') {
       page.value--;
@@ -109,25 +162,18 @@
 
   const getOlderPosts = (e: MouseEvent) => {
     e.preventDefault();
-    fetchAndUpdatePosts('older');
-    // console.log('getOlderPosts');
+    fetchAndUpdate('older');
   };
 
   const getNewerPosts = (e: MouseEvent) => {
     e.preventDefault();
-    fetchAndUpdatePosts('newer');
-    // console.log('getNewerPosts');
+    fetchAndUpdate('newer');
   };
-
-  // const setActiveCategory = (cat: string) => {
-  //   currentCatId.value = cat;
-  //   refreshSanityQuery();
-  // };
 
   const setCategory = (id: string) => {
     currentCatId.value = id;
-    refreshSanityQuery();
     page.value = 1;
+    updatePage();
   };
 
   const getTitleWithCategory = () => {
@@ -137,15 +183,5 @@
   };
 
   // Init
-  const { data, refresh: refreshSanityQuery } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
-  initPage(data);
-
-  useSeoMeta({
-    title: data.value.page.seoTitle + ' | ' + siteTitle,
-    ogTitle: data.value.page.seoTitle + ' | ' + siteTitle,
-    description: data.value.page.seoDescription,
-    ogDescription: data.value.page.seoDescription,
-    ogImage: $urlFor(data.value.page.seoImage.asset._ref).size(1200, 628).url(),
-    twitterCard: 'summary_large_image',
-  });
+  initPage();
 </script>

@@ -39,6 +39,7 @@ declare global {
     title: string;
     slug: Slug;
     excerpt: string|null;
+    link?: string;
   }
 
   type PostLineItem = SanityDocument & {
@@ -90,6 +91,7 @@ declare global {
     mainImage: CustomSanityImage;
     technologies: Array<ProjectTechnology>;
     body: Array<PortableTextBlock>;
+    excerpt: string|null;
   };
 
   type SanityPost = SanityDocument & {
@@ -102,6 +104,7 @@ declare global {
       name: string;
       image: CustomSanityImage;
     };
+    excerpt: string|null;
   };
 
   type SanityPage = PageSEO & SanityDocument & {
@@ -113,15 +116,16 @@ declare global {
     heroSkills?: Array<string>;
     introHeading?: string;
     introImage?: CustomSanityImage;
-    introText?: string;
+    introText?: Array<PortableTextBlock>;
     introContact: Array<ContactLink>;
     projectsHeading?: string;
     projectsFeatured?: Array<ProjectLineItem>;
+    projectsFeaturedDefault?: Array<ProjectLineItem>;
     contactHeading?: string;
     contactSubhead?: string;
     contactItems?: Array<ContactLink>;
     miscHeading?: string;
-    miscText?: string;
+    miscText?: Array<PortableTextBlock>;
     educationHeading?: string;
     educationItems?: Array<EducationItem>;
   };
@@ -130,6 +134,17 @@ declare global {
     title: string;
     slug: Slug;
     links: Array<NavLink>;
+  };
+
+  type ProjectsPageResponse = {
+    page: {
+      title: string;
+      seoTitle: string;
+      seoDescription: string;
+      seoImage: SanityAsset;
+    };
+    currentProjects: Array<ProjectLineItem>;
+    totalProjects: number;
   };
 
   type PostsPageResponse = {

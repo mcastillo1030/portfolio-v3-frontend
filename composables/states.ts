@@ -13,6 +13,6 @@ export const useMenuState = () => useState<string>('menuState', () => 'closed');
 
 export const usePagesConsumed = () => useState<number>('pagesConsumed', () => 0);
 
-export const usePaginationLoading = () => useState<boolean>('isLoading', () => false);
+// export const usePaginationLoading = () => useState<boolean>('isLoading', () => false);
 
 export const useAppLoading = () => useState<boolean>('appLoading', () => false);

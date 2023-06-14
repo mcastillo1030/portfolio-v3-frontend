@@ -4,22 +4,15 @@
       <div class="home-intro__wrap">
         <h2 class="sr-only home-intro__title">{{ title }}</h2>
         <div class="home-intro__image-column">
-          <SanityImage
+          <OutlineImage
             v-if="image"
-            :asset-id="image.assetId ? image.assetId : 'null'"
-            :w="500"
-            :h="400"
-          >
-            <template #default="{src}">
-              <OutlineImage
-                class="home-intro__image-wrap"
-                :src="src"
-                :alt="image.alt ? image.alt : ''"
-                :width="500"
-                :height="400"
-              />
-            </template>
-          </SanityImage>
+            class="home-intro__image-wrap overlay"
+            :asset-id="image.assetId"
+            :alt="image.alt ? image.alt : 'Home Image'"
+            :width="500"
+            :height="400"
+            :sizes="true"
+          />
           <ul class="home-intro__contact" v-if="links">
             <li class="home-intro__contact-item" v-for="link in links">
               <a
@@ -45,8 +38,8 @@
             </li>
           </ul>
         </div>
-        <div class="home-intro__text-column">
-          <div class="home-intro__text-inner">{{ text }}</div>
+        <div class="home-intro__text-column" v-if="text">
+          <div class="home-intro__text-inner" v-html="text"></div>
         </div>
       </div>
     </div>
@@ -59,6 +52,12 @@
 
     &__image-column {
       max-width: 22.5rem;
+    }
+
+    &__image-wrap {
+      img {
+        aspect-ratio: 420 / 534;
+      }
     }
 
     &__contact {
@@ -188,7 +187,7 @@
 
       &__image-column {
         position: static;
-        max-width: 26.25rem;
+        max-width: 100%;
 
         &::before {
           top: 50%;

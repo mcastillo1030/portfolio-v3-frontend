@@ -10,8 +10,13 @@ export default defineNuxtConfig({
     transpile: ['gsap'],
   },
   css: ['@/assets/scss/global.scss'],
+  gtm: {
+    id: 'GTM-5L4X6GD',
+    defer: true,
+  },
   modules: [
     '@nuxtjs/sanity',
+    '@zadigetvoltaire/nuxt-gtm',
   ],
   nitro: {
     prerender: {

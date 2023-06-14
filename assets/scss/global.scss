@@ -87,6 +87,79 @@
   margin: 0 auto;
 }
 
+.wysiwyg {
+  h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+    color: var(--c-foreground);
+  }
+
+  a {
+    color: var(--c-action);
+  }
+
+  em {
+    font-weight: 500;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0 0 0 1.6rem;
+  }
+
+  ul li {
+    position: relative;
+    // display: flex;
+    // align-items: center;
+    // gap: .6rem;
+
+    &::before {
+      content: '\FE61';
+      position: absolute;
+      top: 0;
+      left: -1.6rem;
+      display: block;
+      color: var(--c-accent-2);
+    }
+  }
+
+  ol {
+    padding-left: 3.25rem;
+    counter-reset: listCounter -1;
+  }
+
+  ol li {
+    counter-increment: listCounter;
+
+    &::marker {
+      content: counter(listCounter, decimal) " => ";
+      color: var(--c-accent-2);
+    }
+  }
+
+  blockquote {
+    position: relative;
+    padding: 0;
+    padding-left: 1rem;
+    margin: 1.75rem 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: .25rem;
+      height: 100%;
+      background: var(--c-accent-2);
+      border-radius: .5rem;
+    }
+  }
+}
+
 @media screen and (min-width: 1200px) {
   .container {
     --s-gutter-left: 10.5rem;

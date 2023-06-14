@@ -23,7 +23,11 @@
                 download="marlon-castillo-resume.pdf"
               >
                 <template #default="{src}">
-                  <a :href="src" class="header__link">
+                  <a
+                    :href="src"
+                    class="header__link"
+                    @click="gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' })"
+                  >
                     <IconsNavItem :type="item.icon" classes="header__link-icon" />
                     <span class="header__link-text tooltip">{{ item.title }}</span>
                   </a>
@@ -55,13 +59,17 @@
               <IconsNavItem :type="item.icon" classes="header__item-icon" />
               <span class="header__item-text">{{ item.title }}</span>
             </NuxtLink>
-            <SanityFile
-              v-else
-              :asset-id="item.attachment?.asset._ref || 'null'"
-              download="marlon-castillo-resume.pdf"
-            >
+            <SanityFile v-else :asset-id="item.attachment?.asset._ref || 'null'" download="marlon-castillo-resume.pdf">
               <template #default="{src}">
-                <a :href="src" target="_blank" class="header__item-link" @click="menuState = 'closed'">
+                <a
+                  :href="src"
+                  target="_blank"
+                  class="header__item-link"
+                  @click="() => {
+                    menuState = 'closed';
+                    gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' });
+                  }"
+                >
                   <IconsNavItem :type="item.icon" classes="header__item-icon" />
                   <span class="header__item-text">{{ item.title }}</span>
                 </a>
@@ -414,10 +422,11 @@
 
 <script setup lang="ts">
   import { gsap } from 'gsap';
-  const loading = useAppLoading();
 
   // State setup
+  const loading = useAppLoading();
   const menuState = useMenuState();
+  const gtm = useGtm();
 
   // API setup
   const query = groq`*[_type == 'nav'][0]{
@@ -454,6 +463,10 @@
       tl.value.play();
     }
   };
+
+  // const trackDownload = () => {
+  //   gtm?.trackEvent({action: 'download', target: 'document', value: 'resume', event: 'header-button'});
+  // };
 
   watch(menuState, (newVal) => toggleMenu(newVal));
 
@@ -494,5 +507,5 @@
 
   onUnmounted(() => {
     ctx.revert();
-  })
+  });
 </script>

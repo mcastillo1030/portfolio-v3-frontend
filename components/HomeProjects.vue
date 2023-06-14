@@ -7,31 +7,28 @@
       </header>
       <ul class="home-projects__list" v-if="projects">
         <li class="home-projects__item" v-for="(project, index) in projects">
-          <SanityImage
+          <OutlineImage
             v-if="project.mainImage"
+            class="home-projects__image accent"
             :asset-id="project.mainImage.assetId"
-            :w="380"
-            :h="380"
-          >
-            <template #default="{src}">
-              <OutlineImage
-                class="home-projects__image accent"
-                :class="index % 2 === 0 ? 'reverse' : ''"
-                :src="src"
-                :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
-                :width="380"
-                :height="380"
-              />
-            </template>
-          </SanityImage>
+            :class="index % 2 === 0 ? 'reverse' : ''"
+            :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+            :width="380"
+            :height="380"
+            :sizes="true"
+          />
           <div class="home-projects__content">
             <h3 class="home-projects__project-title epsilon">{{ project.title }}</h3>
             <p class="home-projects__project-excerpt">{{ project.excerpt }}</p>
             <NuxtLink :to="`/projects/${project.slug.current}`" class="home-projects__project-link">Read about this project</NuxtLink>
-            <Button element="a" href="https://google.com" external class="home-projects__button">View Project Site</Button>
+            <Button v-if="project.link" element="a" :href="project.link" external class="home-projects__button">View Project Site</Button>
           </div>
         </li>
       </ul>
+      <div class="home-projects__none" v-else>
+        <h3 class="home-projects__none-title delta">Nothing to see here...yet</h3>
+        <p class="home-projects__none-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+      </div>
     </div>
   </section>
 </template>

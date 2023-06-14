@@ -13,7 +13,7 @@
     />
     <HomeProjects
       :title="data.projectsHeading"
-      :projects="data.projectsFeatured"
+      :projects="data.projectsFeatured || data.projectsFeaturedDefault"
     />
     <HomeContact
       :title="data.contactHeading"
@@ -26,7 +26,7 @@
 <script setup lang="ts">
   const { $urlFor } = useNuxtApp();
   const { siteTitle } = useAppConfig();
-  const loading = useAppLoading();
+  // const loading = useAppLoading();
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,
     heroHeading,heroSubhead,
@@ -42,34 +42,35 @@
       icon,inFooter,
       url,attachment
     },
-    projectsHeading,contactHeading,
-    contactSubhead, contactItems[]->{
-      title, icon, inFooter,
-      linkType, url, attachment
-    },
-    "projectsFeatured": *[_type == 'project'][0..3]{
+    projectsHeading,projectsFeatured[]->{
       mainImage{
         alt,caption,
         "assetId": asset._ref,
       },
-      title, slug, excerpt
+      title, slug, link, excerpt
+    },
+    contactHeading,contactSubhead,
+    contactItems[]->{
+      title, icon, inFooter,
+      linkType, url, attachment
+    },
+    "projectsFeaturedDefault": *[_type == 'project'][0..3]{
+      mainImage{
+        alt,caption,
+        "assetId": asset._ref,
+      },
+      title, slug, link, excerpt
     },
     seoTitle, seoDescription, seoImage,
   }`;
-  const { data, pending } = useSanityQuery<SanityPage>(query, {lazy: true});
+  const { data } = await useSanityQuery<SanityPage>(query);
 
-  watch(pending, (value) => {
-    loading.value = value;
+  useSeoMeta({
+    title: data.value.seoTitle + ' | ' + siteTitle,
+    ogTitle: data.value.seoTitle + ' | ' + siteTitle,
+    description: data.value.seoDescription,
+    ogDescription: data.value.seoDescription,
+    ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
+    twitterCard: 'summary_large_image',
   });
-
-  if (data.value) {
-    useSeoMeta({
-      title: data.value.seoTitle + ' | ' + siteTitle,
-      ogTitle: data.value.seoTitle + ' | ' + siteTitle,
-      description: data.value.seoDescription,
-      ogDescription: data.value.seoDescription,
-      ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
-      twitterCard: 'summary_large_image',
-    });
-  }
 </script>

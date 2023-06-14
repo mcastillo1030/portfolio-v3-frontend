@@ -50,7 +50,8 @@
       flex-direction: column;
       justify-content: flex-end;
       height: 100%;
-      padding-bottom: clamp(3.5rem, 2.529rem + 4.142vw, 7.5rem);
+      // padding-bottom: clamp(3.5rem, 2.529rem + 4.142vw, 7.5rem);
+      padding-bottom: clamp(3.5rem, 2.314rem + 5.059vw, 7.5rem);
     }
 
     &__icons {
@@ -85,6 +86,12 @@
     @keyframes hero-blink {
       0% {
         opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &__icons::after {
+        animation: none;
       }
     }
 
@@ -131,6 +138,8 @@
   let ctx: gsap.Context;
 
   onMounted(() => {
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
     ctx = gsap.context((self) => {
       if (!self.selector) {
         return;
@@ -140,6 +149,8 @@
       const heroTl = gsap.timeline({
         repeat: -1,
       });
+
+      heroTl.addLabel('start');
 
       [...icons].forEach((icon, i) => {
         const next = icon.nextElementSibling || icons[0];
@@ -187,6 +198,18 @@
 
       skillsTl.value = heroTl;
     }, hero.value);
+
+    if (motionQuery.matches) {
+      skillsTl.value?.pause();
+    }
+
+    motionQuery.addEventListener('change', (e) => {
+      if (e.matches) {
+        skillsTl.value?.pause('start');
+      } else {
+        skillsTl.value?.play('start');
+      }
+    });
   });
 
   onUnmounted(() => {

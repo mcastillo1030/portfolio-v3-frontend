@@ -3,22 +3,15 @@
     <div class="article-content__container container">
       <div class="article-content__wrap">
         <div class="article-content__head">
-          <SanityImage
+          <OutlineImage
             v-if="image"
+            class="article-content__image reverse"
             :asset-id="image.assetId"
-            :w="667"
-            :h="500"
-          >
-            <template #default="{src}">
-              <OutlineImage
-                class="article-content__image reverse"
-                :src="src"
-                :alt="image.alt ? image.alt : 'Article Image'"
-                :width="667"
-                :height="500"
-              />
-            </template>
-          </SanityImage>
+            :alt="image.alt ? image.alt : 'Article Image'"
+            :width="800"
+            :height="600"
+            :sizes="true"
+          />
           <Button
             v-if="link"
             element="a"
@@ -35,9 +28,7 @@
           :content="body"
         />
         <div class="article-content__content" v-if="body">
-          <div class="article-content__wysiwyg">
-            <SanityContent :blocks="body" :serializers="serializers" />
-          </div>
+          <Wysiwyg class="v-article-content__wysiwyg" :body="body" />
         </div>
       </div>
     </div>
@@ -59,75 +50,6 @@
     &__content {
       max-width: 45rem;
       margin-top: 2.625rem;
-    }
-
-    &__wysiwyg {
-      h2, h3, h4, h5, h6 {
-        margin-bottom: 1rem;
-        color: var(--c-foreground);
-      }
-
-      a {
-        color: var(--c-action);
-      }
-
-      em {
-        font-weight: 500;
-      }
-
-      ul,
-      ol {
-        margin: 1rem 0;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      ul li {
-        display: flex;
-        align-items: center;
-        gap: .6rem;
-
-        &::before {
-          content: '\FE61';
-          display: block;
-          color: var(--c-accent-2);
-        }
-      }
-
-      ol {
-        padding-left: 3.25rem;
-        counter-reset: listCounter -1;
-      }
-
-      ol li {
-        counter-increment: listCounter;
-
-        &::marker {
-          content: counter(listCounter, decimal) " => ";
-          color: var(--c-accent-2);
-        }
-      }
-
-      blockquote {
-        position: relative;
-        padding: 0;
-        padding-left: 1rem;
-        margin: 1.75rem 0;
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: .25rem;
-          height: 100%;
-          background: var(--c-accent-2);
-          border-radius: .5rem;
-        }
-      }
     }
   }
 
@@ -161,22 +83,7 @@
 </style>
 
 <script setup lang="ts">
-  import type { Serializers } from '@nuxtjs/sanity/dist/runtime/components/sanity-content';
-import { PortableTextBlock } from '@portabletext/types';
-  import { resolveComponent } from 'vue';
-
-  const serializers:Serializers = {
-    types: {
-      image: resolveComponent('ImageBlock'),
-      code: resolveComponent('HighlightCodeBlock'),
-
-    },
-    styles: {
-      h2: resolveComponent('InlineHeadingWithId'),
-      h3: resolveComponent('InlineHeadingWithId'),
-      h4: resolveComponent('InlineHeadingWithId'),
-    }
-  };
+  import type { PortableTextBlock } from '@portabletext/types';
 
   defineProps<{
     // project?: SanityProject;

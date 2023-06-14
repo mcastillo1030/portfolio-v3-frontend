@@ -13,7 +13,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     loadingState.value = true;
   });
 
-  nuxtApp.hook('page:finish', () => {
+  nuxtApp.hook('page:transition:finish', () => {
     loadingState.value = false;
   });
 });

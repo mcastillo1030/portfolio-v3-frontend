@@ -4,27 +4,34 @@
       <ul v-if="projects" class="project-listing__projects">
         <li class="project-listing__project" v-for="project in projects">
           <h2 class="project-listing__title gamma">{{ project.title }}</h2>
-          <SanityImage
+          <OutlineImage
             v-if="project.mainImage"
+            class="project-listing__image reverse"
             :asset-id="project.mainImage.assetId"
-            :w="525"
-            :h="353"
-          >
-            <template #default="{src}">
-              <OutlineImage
-                class="project-listing__image reverse"
-                :src="src"
-                :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
-                :width="525"
-                :height="353"
-              />
-            </template>
-          </SanityImage>
+            :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+            :width="525"
+            :height="353"
+          />
           <p class="project-listing__excerpt">{{ project.excerpt }}</p>
-          <NuxtLink :to="`/projects/${project.slug.current}`" class="project-listing__link">Read about this project</NuxtLink>
-          <Button element="a" href="https://google.com" external class="project-listing__button">View Project Site</Button>
+          <NuxtLink
+            :to="`/projects/${project.slug.current}`"
+            class="project-listing__link"
+            @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })"
+          >Read about this project</NuxtLink>
+          <Button
+            v-if="project.link"
+            element="a"
+            :href="project.link"
+            external
+            class="project-listing__button"
+            @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-button', value: project.title, target: project.link })"
+          >View Project Site</Button>
         </li>
       </ul>
+      <div class="project-listing__no-results" v-else>
+        <h2 class="project-listing__no-results-title">Nothing to see here...yet</h2>
+        <p class="project-listing__no-results-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+      </div>
     </div>
   </section>
 </template>
@@ -98,7 +105,8 @@
 </style>
 
 <script setup lang="ts">
-  // const projects = useProjectsList();
+  const gtm = useGtm();
+
   defineProps<{
     projects?: Array<ProjectLineItem>;
   }>();

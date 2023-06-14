@@ -1,14 +1,15 @@
 <template>
   <div class="c-main">
     <MarkHero :title="pageTitle" />
-    <ProjectListing :projects="currentProjects" />
+    <ProjectListing
+      :projects="projects"
+    />
     <ListingPagination
-      :items="currentProjects"
-      :total="totalProjectsCount"
-      :lastId="currentLastProjectId"
       :paginateNext="getOlderProjects"
       :paginatePrev="getNewerProjects"
-      :pageSize="4"
+      :total-pages="totalPages"
+      :current-page="page"
+      :loading="paginationLoading"
     />
   </div>
 </template>
@@ -17,72 +18,94 @@
   const { $urlFor } = useNuxtApp();
   const { siteTitle } = useAppConfig();
   const route = useRoute();
-  const isLoading = usePaginationLoading();
-  const pagesConsumed = usePagesConsumed();
 
+  // Reactives
   const pageTitle = ref<string>();
-  const currentProjects = ref<Array<ProjectLineItem>>();
-  const currentLastProjectId = ref<string>();
-  const totalProjectsCount = ref<number>();
+  const projects = ref<Array<ProjectLineItem>>();
+  const paginationLoading = ref<boolean>(false);
+  const page = ref<number>(1);
+
+  // Vars
+  const pageSize = 4;
+  let totalPages = 1;
+  let totalProjects: number;
   const query = groq`{
     "page": *[_type == 'page' && slug.current == "${route.name}"][0]{
       title,seoTitle,seoDescription,seoImage
     },
-    "currentProjects": *[_type == 'project' && !(_id in path("drafts.**"))]|order(_updatedAt desc)[0...4]{
-      _id,_updatedAt, slug, title, excerpt, mainImage{
+    "currentProjects": *[
+      _type == 'project' &&
+      !(_id in path("drafts.**"))
+      ]|order(_updatedAt desc)[0...${pageSize}]{
+      _id,_updatedAt, slug, title, link, excerpt, mainImage{
         alt,caption,
         "assetId": asset._ref,
       },
     },
     "totalProjects": count(*[_type == 'project']),
   }`;
-  const { data } = await useSanityQuery<{
-    page: {
-      title: string;
-      seoTitle: string;
-      seoDescription: string;
-      seoImage: SanityAsset;
-    };
-    currentProjects: Array<ProjectLineItem>;
-    totalProjects: number;
-  }>(query);
+  const { data } = await useSanityQuery<ProjectsPageResponse>(query);
 
-  if (data.value) {
-    pageTitle.value = data.value.page.title;
-    currentProjects.value = data.value.currentProjects;
-    totalProjectsCount.value = data.value.totalProjects;
-    currentLastProjectId.value = data.value.currentProjects[data.value.currentProjects.length - 1]._id;
-  }
-
-  const fetchAndUpdateProjects = async (dir: string) => {
-    if (!dir || !currentProjects.value || !currentLastProjectId.value) {
+  // Methods
+  const initPage = (
+    data: Ref<ProjectsPageResponse|Array<ProjectLineItem>>,
+    reverse: boolean = false
+  ) => {
+    if (!data.value) {
       return;
     }
 
-    isLoading.value = true;
+    if ('page' in data.value) {
+      pageTitle.value = data.value.page.title;
+      projects.value = data.value.currentProjects;
+      totalProjects = data.value.totalProjects;
+      totalPages = Math.ceil(totalProjects / pageSize);
+    } else {
+      projects.value = data.value;
+    }
+
+    if (reverse) {
+      projects.value = projects.value.reverse();
+    }
+  };
+
+  const fetchAndUpdateProjects = async (dir: string) => {
+    if (!dir || !projects.value) {
+      return;
+    }
+
+    paginationLoading.value = true;
     const timestamp = dir === 'newer' ?
-      currentProjects.value[0]._updatedAt :
-      currentProjects.value.filter((item) => item._id === currentLastProjectId.value)[0]._updatedAt;
-    const query = groq`*[_type == "project" && !(_id in path("drafts.**")) && _updatedAt ${dir === 'newer' ? '>' : '<'} "${timestamp}"] | order(_updatedAt desc) [0...4] {
-      _id,_updatedAt, slug, title, excerpt, mainImage{
+      projects.value[0]._updatedAt :
+      projects.value[projects.value.length - 1]._updatedAt;
+    const id = dir === 'newer' ?
+      projects.value[0]._id :
+      projects.value[projects.value.length - 1]._id;
+    const query = groq`*[
+      _type == "project" &&
+      !(_id in path("drafts.**")) &&
+      (
+        _updatedAt ${dir === 'newer' ? '>' : '<'} "${timestamp}" ||
+        (
+          _updatedAt == "${timestamp}" &&
+          _id ${dir === 'newer' ? '>' : '<'} "${id}"
+        )
+      )]|order(_updatedAt desc) [0...${pageSize}]{
+      _id,_updatedAt, slug, title, link, excerpt, mainImage{
         alt,caption,"assetId": asset._ref,
-      }
-    }`;
+      }}`;
 
     const {data} = await useSanityQuery<Array<ProjectLineItem>>(query);
 
-    if (data.value) {
-      currentProjects.value = data.value;
-      currentLastProjectId.value = data.value[data.value.length - 1]._id;
+    initPage(data, dir === 'newer');
 
-      if (dir === 'older') {
-        pagesConsumed.value++;
-      } else {
-        pagesConsumed.value--;
-      }
+    if (dir === 'older') {
+      page.value++;
+    } else {
+      page.value--;
     }
 
-    isLoading.value = false;
+    paginationLoading.value = false;
   };
 
   const getOlderProjects = (e: MouseEvent) => {
@@ -95,10 +118,8 @@
     fetchAndUpdateProjects('newer');
   };
 
-  onMounted(() => {
-    pagesConsumed.value = 0;
-  });
-
+  // Init
+  initPage(data);
   useSeoMeta({
     title: data.value.page.seoTitle + ' | ' + siteTitle,
     ogTitle: data.value.page.seoTitle + ' | ' + siteTitle,
