@@ -57,6 +57,12 @@
         background: var(--c-header-bg);
         outline: none;
       }
+
+      &:focus {
+        outline: .125rem dashed var(--c-action);
+        outline-offset: .125rem;
+        opacity: 1;
+      }
     }
 
     &:hover &__button {
@@ -96,6 +102,7 @@
   import css from 'highlight.js/lib/languages/css';
   import scss from 'highlight.js/lib/languages/scss';
   import bash from 'highlight.js/lib/languages/bash';
+  import sql from 'highlight.js/lib/languages/sql';
   import 'highlight.js/styles/vs2015.css';
 
   hljs.registerLanguage('javascript', javascript);
@@ -104,6 +111,7 @@
   hljs.registerLanguage('css', css);
   hljs.registerLanguage('scss', scss);
   hljs.registerLanguage('bash', bash);
+  hljs.registerLanguage('sql', sql);
 
   const copied = ref<Boolean>(false);
   const codeBlock = ref<HTMLElement>();
@@ -125,7 +133,8 @@
   };
 
   const getHighlightedCode = (code: string, lang: string = 'javascript') => {
-    return hljs.highlight(code, { language: lang === 'html' ? 'xml' : lang }).value;
+    const language = lang === 'html' ? 'xml' : (lang === 'mysql' ? 'sql' : lang);
+    return hljs.highlight(code, { language }).value;
   };
 
   defineProps<{

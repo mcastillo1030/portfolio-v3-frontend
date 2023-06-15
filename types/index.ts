@@ -40,6 +40,7 @@ declare global {
     slug: Slug;
     excerpt: string|null;
     link?: string;
+    publishedAt: string;
   }
 
   type PostLineItem = SanityDocument & {

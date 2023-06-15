@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     projectId: 'hcfjxht8',
     apiVersion: '2023-06-07',
   },
+  ssr: true,
   typescript: {
     shim: false,
   },
@@ -38,5 +39,8 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  devtools: {
+    enabled: false,
   },
 })

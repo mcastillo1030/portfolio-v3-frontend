@@ -48,6 +48,9 @@
   watch(colorMode, changeColorMode);
 
   useHead({
+    htmlAttrs: {
+      lang: 'en',
+    },
     link: [
       computed(() => {
         return {

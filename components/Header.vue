@@ -47,7 +47,7 @@
         </ul>
       </div>
     </div>
-    <div class="header__menu">
+    <div class="header__menu" inert>
       <nav class="header__menu-nav" aria-label="Mobile Menu">
         <ul class="header__menu-list" v-if="data !== null">
           <li v-for="item in data.links" class="header__menu-item">
@@ -109,6 +109,11 @@
       &--loading {
         animation: loading 1.5s ease-in-out infinite;
       }
+
+      &:focus {
+        outline: .125rem dashed var(--c-action);
+        outline-offset: .125rem;
+      }
     }
 
     @keyframes loading {
@@ -150,6 +155,11 @@
       margin: 0;
     }
 
+    &__util-btn:focus {
+      outline: .125rem dashed var(--c-action);
+      outline-offset: .125rem;
+    }
+
     &__menu {
       position: absolute;
       top: 0;
@@ -181,6 +191,11 @@
 
       &:hover {
         color: var(--c-accent-1);
+      }
+
+      &:focus {
+        outline: .125rem dashed var(--c-action);
+        outline-offset: .125rem;
       }
     }
   }
@@ -239,10 +254,6 @@
         }
 
         &.router-link-active {
-          color: var(--c-selection);
-        }
-
-        &.router-link-active {
           display: inline-block;
           position: relative;
           color: var(--c-selection);
@@ -257,6 +268,10 @@
           height: .125rem;
           background: var(--c-selection);
           transform: translateY(.5rem);
+        }
+
+        &.router-link-active:focus {
+          outline: .125rem dashed var(--c-selection);
         }
       }
 
@@ -299,6 +314,7 @@
         }
       }
 
+      &__link:focus &__link-text,
       &__link:hover &__link-text {
         opacity: 1;
         transform: translate(-50%, 1rem);
@@ -409,6 +425,7 @@
         border-color: transparent var(--c-selection) transparent transparent;
       }
 
+      &__link:focus &__link-text,
       &__link:hover &__link-text {
         transform: translate(.75rem, -50%);
       }
@@ -421,7 +438,8 @@
 </style>
 
 <script setup lang="ts">
-  import { gsap } from 'gsap';
+  import { Console } from 'console';
+import { gsap } from 'gsap';
 
   // State setup
   const loading = useAppLoading();
@@ -464,10 +482,6 @@
     }
   };
 
-  // const trackDownload = () => {
-  //   gtm?.trackEvent({action: 'download', target: 'document', value: 'resume', event: 'header-button'});
-  // };
-
   watch(menuState, (newVal) => toggleMenu(newVal));
 
   onMounted(() => {
@@ -475,9 +489,102 @@
       const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
       return progress > 1 ? 1 : progress;
     }
-    // Track scroll position.
+
+    const menuQuery = window.matchMedia('(max-width: 768px)')
+
     window.addEventListener('scroll', () => {
       document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
+    });
+
+    document.addEventListener('menu-opened', () => {
+      if (!menuQuery.matches) {
+        return;
+      }
+
+      const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
+      menu?.removeAttribute('inert');
+      menu?.focus();
+    });
+
+    document.addEventListener('menu-closed', () => {
+      if (!menuQuery.matches) {
+        return;
+      }
+
+      const trigger: HTMLButtonElement|null|undefined = header.value?.querySelector('.header__util-item--menu button');
+      const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
+      trigger?.focus();
+      menu?.setAttribute('inert', '');
+    });
+
+    header.value?.addEventListener('keydown', (e) => {
+      if (!menuQuery.matches) {
+        return;
+      }
+
+      if (e.key === 'Escape' && menuState.value === 'open') {
+        // toggleMenu('closed');
+        menuState.value = 'closed';
+      }
+
+
+      const {target} = e;
+
+      if (!header.value?.contains(target as Node) || menuState.value === 'closed') {
+        return;
+      }
+
+      // const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
+
+      // keyboard trap
+      const focusableElements = Array.from(header.value?.querySelectorAll('.header__item-link, .header__util-item--menu button') || []);
+
+      const focusNext = (idx: number) => {
+        let next = idx + 1;
+        if (next >= focusableElements.length) {
+          next = 0;
+        }
+
+        (focusableElements[next] as HTMLElement).focus();
+      };
+
+      const focusPrev = (idx: number) => {
+        let prev = idx - 1;
+        if (prev < 0) {
+          prev = focusableElements.length - 1;
+        }
+
+        (focusableElements[prev] as HTMLElement).focus();
+      };
+
+      switch (e.key) {
+        case 'Tab':
+          if (e.shiftKey) {
+            e.preventDefault();
+            focusPrev(focusableElements.indexOf(target as HTMLElement));
+          } else {
+            e.preventDefault();
+            focusNext(focusableElements.indexOf(target as HTMLElement));
+          }
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          focusNext(focusableElements.indexOf(target as HTMLElement));
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          focusPrev(focusableElements.indexOf(target as HTMLElement));
+          break;
+        default:
+          break;
+      }
+    });
+
+    menuQuery.addEventListener('change', (e) => {
+      if (!e.matches && menuState.value === 'open') {
+        menuState.value = 'closed';
+        header.value?.focus();
+      }
     });
 
     ctx = gsap.context((self) => {
@@ -492,6 +599,12 @@
           defaults: {
             duration: 0.5,
             ease: 'power2.inOut',
+          },
+          onComplete: () => {
+            document.dispatchEvent(new Event('menu-opened'));
+          },
+          onReverseComplete: () => {
+            document.dispatchEvent(new Event('menu-closed'));
           },
         })
         .to(menu, {

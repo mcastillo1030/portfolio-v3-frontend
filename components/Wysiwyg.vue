@@ -15,6 +15,7 @@
     },
     marks: {
       internalLink: resolveComponent('InternalLink'),
+      inlineCode: resolveComponent('InlineCode')
     },
     styles: {
       h2: resolveComponent('InlineHeadingWithId'),

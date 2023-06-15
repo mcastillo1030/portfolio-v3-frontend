@@ -84,6 +84,16 @@
       width: 1.5rem;
       height: 1.5rem;
       color: var(--c-accent-1);
+
+      &.taxonomy--php {
+        width: 2rem;
+        height: auto;
+      }
+
+      &.taxonomy--cf {
+        width: 1.8rem;
+        height: auto;
+      }
     }
 
     &__technology-text {
@@ -145,7 +155,6 @@
       margin: 0;
       color: var(--c-accent-2);
       text-align: left;
-      // text-transform: lowercase;
       background: none;
       border: none;
       border-bottom: .0625rem solid var(--c-accent-2);
@@ -404,8 +413,6 @@ import { e } from 'ofetch/dist/error-04138797';
     if (!tl.value || !ctx || !ctx.selector) {
       return;
     }
-
-    // console.log('here');
 
     tl.value = buildTimeline(ctx.selector('.article-meta__toc-nav')[0], ctx.selector('.article-meta__toc-item'), val);
     playTimeline();

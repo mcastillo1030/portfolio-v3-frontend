@@ -39,7 +39,7 @@
           </ul>
         </div>
         <div class="home-intro__text-column" v-if="text">
-          <div class="home-intro__text-inner" v-html="text"></div>
+          <Wysiwyg :body="text" class="home-intro__text-inner" />
         </div>
       </div>
     </div>
@@ -209,10 +209,12 @@
 </style>
 
 <script setup lang="ts">
+import { PortableTextBlock } from '@portabletext/types';
+
   defineProps<{
     title?: string;
     image?: CustomSanityImage;
     links?: Array<ContactLink>;
-    text?: string;
+    text?: Array<PortableTextBlock>;
   }>();
 </script>

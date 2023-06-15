@@ -68,6 +68,11 @@
       &:hover {
         color: var(--c-foreground);
       }
+
+      &:focus {
+        outline: .125rem dashed var(--c-action);
+        outline-offset: .125rem;
+      }
     }
 
     &__options {
@@ -133,6 +138,11 @@
       &:hover {
         color: var(--c-foreground);
       }
+
+      &:focus {
+        outline: .125rem solid var(--c-accent-2);
+        outline-offset: .125rem;
+      }
     }
 
     &__option-label {
@@ -186,6 +196,20 @@
       }
 
       toggleOpen.value = false;
+    });
+
+    document.addEventListener('focusin', (evt) => {
+      const { target } = evt;
+
+      if (!toggleComp.value?.contains(target as Node) && toggleOpen.value) {
+        toggleOpen.value = false;
+      }
+    });
+
+    document.addEventListener('keyup', (evt) => {
+      if (evt.key === 'Escape') {
+        toggleOpen.value = false;
+      }
     });
   });
 </script>

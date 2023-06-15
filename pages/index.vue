@@ -24,9 +24,10 @@
 </template>
 
 <script setup lang="ts">
+  const { baseUrl } = useAppConfig();
   const { $urlFor } = useNuxtApp();
   const { siteTitle } = useAppConfig();
-  // const loading = useAppLoading();
+
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,
     heroHeading,heroSubhead,
@@ -68,9 +69,13 @@
   useSeoMeta({
     title: data.value.seoTitle + ' | ' + siteTitle,
     ogTitle: data.value.seoTitle + ' | ' + siteTitle,
+    twitterTitle: data.value.seoTitle + ' | ' + siteTitle,
     description: data.value.seoDescription,
+    twitterDescription: data.value.seoDescription,
+    ogUrl: baseUrl,
     ogDescription: data.value.seoDescription,
     ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
+    twitterImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
     twitterCard: 'summary_large_image',
   });
 </script>

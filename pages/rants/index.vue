@@ -2,6 +2,7 @@
   <div class="c-main">
     <MarkHero :title="pageTitle" />
     <PostListing
+      :posts="posts"
       :on-tag-click="setCategory"
       :posts-title="getTitleWithCategory"
     />
@@ -16,9 +17,15 @@
 </template>
 
 <script setup lang="ts">
+  const { baseUrl } = useAppConfig();
   const { $urlFor } = useNuxtApp();
   const { siteTitle } = useAppConfig();
   const route = useRoute();
+
+  // SEO
+  const seoTitle = ref<string>();
+  const seoDescription = ref<string>();
+  const seoImage = ref<SanityAsset>();
 
   // Reactives
   const pageTitle = ref<string>();
@@ -40,10 +47,10 @@
       'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
         title,seoTitle,seoDescription,seoImage,
       },
-      'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...5]{
+      'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...${pageSize}]{
         _id, slug, title, publishedAt, categories[]->{_id, title}
       },
-      'totalPosts': count(*[_type == 'post']),
+      'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
     }`;
 
     const { data } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
@@ -55,6 +62,10 @@
 
 
     [...posts.value].forEach(post => {
+      if (!post.categories) {
+        return;
+      }
+
       post.categories.forEach(cat => {
         if (!cagegories.find(c => c._id === cat._id)) {
           cagegories.push(cat);
@@ -62,14 +73,9 @@
       });
     });
 
-    useSeoMeta({
-      title: data.value.page.seoTitle + ' | ' + siteTitle,
-      ogTitle: data.value.page.seoTitle + ' | ' + siteTitle,
-      description: data.value.page.seoDescription,
-      ogDescription: data.value.page.seoDescription,
-      ogImage: $urlFor(data.value.page.seoImage.asset._ref).size(1200, 628).url(),
-      twitterCard: 'summary_large_image',
-    });
+    seoTitle.value = data.value.page.seoTitle;
+    seoDescription.value = data.value.page.seoDescription;
+    seoImage.value = data.value.page.seoImage;
   };
 
   const updatePagination = async (query: string, reverseOrdering = false) => {
@@ -82,6 +88,10 @@
     posts.value = data.value;
 
     [...posts.value].forEach(post => {
+      if (!post.categories) {
+        return;
+      }
+
       post.categories.forEach(cat => {
         if (!cagegories.find(c => c._id === cat._id)) {
           cagegories.push(cat);
@@ -106,6 +116,7 @@
       'totalPosts': count(*[
         _type == 'post' &&
         (categories[]._ref match $cat)
+        && !(_id in path('drafts.**'))
       ])
     }`;
 
@@ -137,7 +148,7 @@
     const id = dir === 'newer' ?
       posts.value[0]._id :
       posts.value[posts.value.length - 1]._id;
-    const newQuery = groq`*[
+    const query = groq`*[
       _type == 'post' &&
       !(_id in path("drafts.**")) &&
       (
@@ -145,11 +156,11 @@
         (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")
       ) &&
       (categories[]._ref match $cat)
-    ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...5]{
+    ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...${pageSize}]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
 
-    updatePagination(newQuery, dir === 'newer');
+    updatePagination(query, dir === 'newer');
 
     if (dir === 'newer') {
       page.value--;
@@ -184,4 +195,17 @@
 
   // Init
   initPage();
+
+  useSeoMeta({
+    title: computed(() => seoTitle.value + ' | ' + siteTitle),
+    ogTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
+    twitterTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
+    description: computed(() => seoDescription.value),
+    ogDescription: computed(() => seoDescription.value),
+    twitterDescription: computed(() => seoDescription.value),
+    ogImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
+    twitterImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
+    twitterCard: 'summary_large_image',
+    ogUrl: baseUrl + route.path,
+  });
 </script>

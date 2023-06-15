@@ -10,7 +10,7 @@
   --l-max-content: 102.5rem;
   // (T)ypography
   --t-font: 'Fira Code', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-  --t-line-height: 1.5;
+  --t-line-height: 1.75;
   // (C)olors
   --c-foreground: #d6deeb;
   --c-background: #011627;
@@ -81,6 +81,19 @@
   background: var(--c-action);
 }
 
+.inline-code {
+  padding: .25rem;
+  color: var(--c-background);
+  font-size: .875rem;
+  font-family: var(--t-font);
+  background: var(--c-accent-3);
+  border-radius: .25rem;
+
+  &::selection {
+    background: var(--c-foreground);
+  }
+}
+
 .container {
   max-width: var(--l-max-content);
   padding: 0 var(--s-gutter-right) 0 var(--s-gutter-left);
@@ -90,7 +103,15 @@
 .wysiwyg {
   h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
-    color: var(--c-foreground);
+    // color: var(--c-foreground);
+  }
+
+  h2 {
+    color: var(--c-accent-2);
+  }
+
+  h4 {
+    color: var(--c-accent-0);
   }
 
   a {

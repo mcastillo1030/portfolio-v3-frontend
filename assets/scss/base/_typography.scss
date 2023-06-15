@@ -47,7 +47,7 @@ h6,
 .epsilon,
 .zeta {
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 p,
@@ -152,6 +152,11 @@ a {
   &:hover {
     text-decoration: none;
   }
+
+  &:focus {
+    outline: .125rem dashed var(--c-action);
+    outline-offset: .125rem;
+  }
 }
 
 address {
@@ -200,7 +205,17 @@ figure {
 
 	figcaption {
 		margin-top: 1.375rem;
-		color: var(--c-accent-1);
+		color: var(--c-accent-3);
 		font-style: italic;
 	}
+}
+
+.light-mode figure figcaption {
+  color: var(--c-accent-1);
+}
+
+@media (prefers-color-scheme: light) {
+  .dark-mode figure figcaption {
+    color: var(--c-accent-1);
+  }
 }

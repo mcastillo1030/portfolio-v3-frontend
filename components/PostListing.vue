@@ -21,7 +21,7 @@
             </h2>
             <div class="post-listing__meta">
               <p class="post-listing__date">Posted {{ dateFormatter(post.publishedAt) }}</p>
-              <div class="post-listing__categories">
+              <div class="post-listing__categories" v-if="post.categories">
                 <p class="post-listing__categories-title zeta">Tags:</p>
                 <ul class="post-listing__tags">
                   <li class="post-listing__tag" v-for="category in post.categories">

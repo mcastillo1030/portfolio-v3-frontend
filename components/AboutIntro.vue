@@ -4,9 +4,6 @@
       <div class="about-intro__wrap">
         <div class="about-intro__text-column">
           <h2 v-if="title" class="about-intro__title">{{ title }}</h2>
-          <!-- <div v-if="text" class="about-intro__text">
-            <SanityContent :blocks="text" :serializers="serializers" />
-          </div> -->
           <Wysiwyg v-if="text" class="about-intro__text" :body="text" />
         </div>
         <div class="about-intro__graphic-column">
