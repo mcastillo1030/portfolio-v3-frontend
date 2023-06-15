@@ -16,7 +16,8 @@
 
 <script setup lang="ts">
   const { $urlFor } = useNuxtApp();
-  const { baseUrl, siteTitle } = useAppConfig();
+  const { baseUrl } = useRuntimeConfig();
+  const { siteTitle } = useAppConfig();
   const route = useRoute();
 
   // SEO

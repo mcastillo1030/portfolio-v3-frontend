@@ -15,14 +15,15 @@
 </template>
 
 <script setup lang="ts">
-  const { baseUrl, siteTitle } = useAppConfig();
+  const { baseUrl } = useRuntimeConfig();
+  const { siteTitle } = useAppConfig();
   const { $urlFor } = useNuxtApp();
   const route = useRoute();
 
   const slug = route.params.id;
   const query = groq`*[_type == 'post' && slug.current == "${slug}"][0]{
     title,publishedAt,body,excerpt,categories[]->{_id,title},mainImage{
-      excerpt,alt,caption, "assetId": asset._ref,
+      alt,caption, "assetId": asset._ref,
     },author->{name,image{alt,caption, "assetId": asset._ref}}
   }`
   const { data } = await useSanityQuery<SanityPost>(query);

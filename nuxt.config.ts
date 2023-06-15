@@ -23,6 +23,9 @@ export default defineNuxtConfig({
       crawlLinks: true,
     }
   },
+  runtimeConfig: {
+    baseUrl: 'https://marloncastillo.dev',
+  },
   sanity: {
     projectId: 'hcfjxht8',
     apiVersion: '2023-06-07',
