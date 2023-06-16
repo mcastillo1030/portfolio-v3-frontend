@@ -128,14 +128,14 @@
   seoImage.value = data.value.page.seoImage;
 
   useSeoMeta({
-    title: computed(() => seoTitle.value + ' | ' + siteTitle),
-    ogTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
-    twitterTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
-    description: computed(() => seoDescription.value),
-    ogDescription: computed(() => seoDescription.value),
-    twitterDescription: computed(() => seoDescription.value),
-    ogImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
-    twitterImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
+    title: seoTitle.value + ' | ' + siteTitle,
+    ogTitle: seoTitle.value + ' | ' + siteTitle,
+    twitterTitle: seoTitle.value + ' | ' + siteTitle,
+    description: seoDescription.value,
+    ogDescription: seoDescription.value,
+    twitterDescription: seoDescription.value,
+    ogImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
+    twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
   });
