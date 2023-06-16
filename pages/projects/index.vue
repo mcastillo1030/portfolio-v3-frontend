@@ -38,44 +38,14 @@
   let totalProjects: number;
 
   // Methods
-  const initPage = async () => {
-    const query = groq`{
-      'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
-        title,seoTitle,seoDescription,seoImage
-      },
-      'currentProjects': *[
-        _type == 'project' &&
-        !(_id in path("drafts.**"))
-        ]|order(publishedAt desc)[0...${pageSize}]{
-        _id,publishedAt,slug,title,link,excerpt,mainImage{
-          alt,caption,
-          'assetId': asset._ref,
-        },
-      },
-      'totalProjects': count(*[_type == 'project' && !(_id in path("drafts.**"))]),
-    }`;
-    const { data, pending } = await useSanityQuery<ProjectsPageResponse>(query);
-
-    resultsLoading.value = pending.value;
-    pageTitle.value = data.value.page.title;
-    projects.value = data.value.currentProjects;
-    totalProjects = data.value.totalProjects;
-    totalPages = Math.ceil(totalProjects / pageSize);
-    seoTitle.value = data.value.page.seoTitle;
-    seoDescription.value = data.value.page.seoDescription;
-    seoImage.value = data.value.page.seoImage;
-
-    // console.log(seoTitle.value, seoDescription.value, seoImage.value);
-  };
-
-  const updatePagination = async (query: string, reverseOrdering = false) => {
-    if (!query) {
+  const updatePagination = async (q: string, reverseOrdering = false) => {
+    if (!q) {
       return;
     }
-    const { data, pending } = await useSanityQuery<Array<ProjectLineItem>>(query);
+    const { data: d, pending: p } = await useSanityQuery<Array<ProjectLineItem>>(query);
 
-    projects.value = data.value;
-    resultsLoading.value = pending.value;
+    projects.value = d.value;
+    resultsLoading.value = p.value;
 
     if (reverseOrdering)  {
       projects.value = projects.value.reverse();
@@ -94,7 +64,7 @@
     const id = dir === 'newer' ?
       projects.value[0]._id :
       projects.value[projects.value.length - 1]._id;
-    const query = groq`*[
+    const q = groq`*[
       _type == 'project' &&
       !(_id in path("drafts.**")) &&
       (
@@ -108,7 +78,7 @@
         alt,caption,'assetId': asset._ref,
       }}`;
 
-    updatePagination(query, dir === 'newer');
+    updatePagination(q, dir === 'newer');
 
     if (dir === 'newer') {
       page.value--;
@@ -130,7 +100,33 @@
   };
 
   // Init
-  initPage();
+  // initPage();
+  const query = groq`{
+    'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
+      title,seoTitle,seoDescription,seoImage
+    },
+    'currentProjects': *[
+      _type == 'project' &&
+      !(_id in path("drafts.**"))
+      ]|order(publishedAt desc)[0...${pageSize}]{
+      _id,publishedAt,slug,title,link,excerpt,mainImage{
+        alt,caption,
+        'assetId': asset._ref,
+      },
+    },
+    'totalProjects': count(*[_type == 'project' && !(_id in path("drafts.**"))]),
+  }`;
+  const { data, pending } = await useSanityQuery<ProjectsPageResponse>(query);
+
+  resultsLoading.value = pending.value;
+  pageTitle.value = data.value.page.title;
+  projects.value = data.value.currentProjects;
+  totalProjects = data.value.totalProjects;
+  totalPages = Math.ceil(totalProjects / pageSize);
+  seoTitle.value = data.value.page.seoTitle;
+  seoDescription.value = data.value.page.seoDescription;
+  seoImage.value = data.value.page.seoImage;
+
   useSeoMeta({
     title: computed(() => seoTitle.value + ' | ' + siteTitle),
     ogTitle: computed(() => seoTitle.value + ' | ' + siteTitle),

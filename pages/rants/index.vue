@@ -42,51 +42,19 @@
   let totalPages = 1;
   let totalPosts: number;
 
-  const initPage = async () => {
-    const query = groq`{
-      'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
-        title,seoTitle,seoDescription,seoImage,
-      },
-      'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...${pageSize}]{
-        _id, slug, title, publishedAt, categories[]->{_id, title}
-      },
-      'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
-    }`;
+  // const initPage = async () => {
 
-    const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
+  // };
 
-    resultsLoading.value = pending.value;
-    pageTitle.value = data.value.page.title;
-    posts.value = data.value.currentPosts
-    totalPosts = data.value.totalPosts;
-    totalPages = Math.ceil(totalPosts / pageSize);
-
-    [...posts.value].forEach(post => {
-      if (!post.categories) {
-        return;
-      }
-
-      post.categories.forEach(cat => {
-        if (!cagegories.find(c => c._id === cat._id)) {
-          cagegories.push(cat);
-        }
-      });
-    });
-
-    seoTitle.value = data.value.page.seoTitle;
-    seoDescription.value = data.value.page.seoDescription;
-    seoImage.value = data.value.page.seoImage;
-  };
-
-  const updatePagination = async (query: string, reverseOrdering = false) => {
-    if (!query) {
+  const updatePagination = async (q: string, reverseOrdering = false) => {
+    if (!q) {
       return;
     }
 
-    const { data, pending } = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
+    const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
 
-    posts.value = data.value;
-    resultsLoading.value = pending.value;
+    posts.value = d.value;
+    resultsLoading.value = p.value;
 
     [...posts.value].forEach(post => {
       if (!post.categories) {
@@ -106,7 +74,7 @@
   };
 
   const updatePage = async () => {
-    const query = groq`{
+    const q = groq`{
       'currentPosts': *[
           _type == 'post' &&
           !(_id in path('drafts.**')) &&
@@ -121,12 +89,12 @@
       ])
     }`;
 
-    const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {
+    const { data: d, pending: p } = await useSanityQuery<PostsPageResponse>(q, {
       cat: currentCatId.value
     });
 
-    posts.value = data.value.currentPosts;
-    resultsLoading.value = pending.value;
+    posts.value = d.value.currentPosts;
+    resultsLoading.value = p.value;
 
     [...posts.value].forEach(post => {
       post.categories.forEach(cat => {
@@ -150,7 +118,7 @@
     const id = dir === 'newer' ?
       posts.value[0]._id :
       posts.value[posts.value.length - 1]._id;
-    const query = groq`*[
+    const q = groq`*[
       _type == 'post' &&
       !(_id in path("drafts.**")) &&
       (
@@ -162,7 +130,7 @@
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
 
-    updatePagination(query, dir === 'newer');
+    updatePagination(q, dir === 'newer');
 
     if (dir === 'newer') {
       page.value--;
@@ -196,17 +164,50 @@
   };
 
   // Init
-  initPage();
+  // initPage();
+  const query = groq`{
+    'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
+      title,seoTitle,seoDescription,seoImage,
+    },
+    'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...${pageSize}]{
+      _id, slug, title, publishedAt, categories[]->{_id, title}
+    },
+    'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
+  }`;
+
+  const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
+
+  resultsLoading.value = pending.value;
+  pageTitle.value = data.value.page.title;
+  posts.value = data.value.currentPosts
+  totalPosts = data.value.totalPosts;
+  totalPages = Math.ceil(totalPosts / pageSize);
+
+  [...posts.value].forEach(post => {
+    if (!post.categories) {
+      return;
+    }
+
+    post.categories.forEach(cat => {
+      if (!cagegories.find(c => c._id === cat._id)) {
+        cagegories.push(cat);
+      }
+    });
+  });
+
+  seoTitle.value = data.value.page.seoTitle;
+  seoDescription.value = data.value.page.seoDescription;
+  seoImage.value = data.value.page.seoImage;
 
   useSeoMeta({
-    title: computed(() => seoTitle.value + ' | ' + siteTitle),
-    ogTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
-    twitterTitle: computed(() => seoTitle.value + ' | ' + siteTitle),
-    description: computed(() => seoDescription.value),
-    ogDescription: computed(() => seoDescription.value),
-    twitterDescription: computed(() => seoDescription.value),
-    ogImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
-    twitterImage: computed(() => seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png'),
+    title: seoTitle.value + ' | ' + siteTitle,
+    ogTitle: seoTitle.value + ' | ' + siteTitle,
+    twitterTitle: seoTitle.value + ' | ' + siteTitle,
+    description: seoDescription.value,
+    ogDescription: seoDescription.value,
+    twitterDescription: seoDescription.value,
+    ogImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
+    twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
   });
