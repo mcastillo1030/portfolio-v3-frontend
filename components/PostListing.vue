@@ -2,48 +2,51 @@
   <section class="post-listing">
     <div class="container post-listing__container">
       <h2 v-if="route.query.category && postsTitle" class="post-listing__category-title">{{ typeof postsTitle === 'string' ?  postsTitle : postsTitle() }}</h2>
-      <ul class="post-listing__posts" v-if="posts">
-        <li class="post-listing__post" v-for="post in posts">
-          <div class="post-listing__inner">
-            <h3 v-if="route.query" class="post-listing__title gamma">
-              <NuxtLink
-                :to="`/rants/${post.slug.current}`"
-                class="post-listing__link"
-                @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
-              >{{ post.title }}</NuxtLink>
-            </h3>
-            <h2 v-else class="post-listing__title gamma">
-              <NuxtLink
-                :to="`/rants/${post.slug.current}`"
-                class="post-listing__link"
-                @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
-              >{{ post.title }}</NuxtLink>
-            </h2>
-            <div class="post-listing__meta">
-              <p class="post-listing__date">Posted {{ dateFormatter(post.publishedAt) }}</p>
-              <div class="post-listing__categories" v-if="post.categories">
-                <p class="post-listing__categories-title zeta">Tags:</p>
-                <ul class="post-listing__tags">
-                  <li class="post-listing__tag" v-for="category in post.categories">
-                    <NuxtLink
-                      :to="`/rants?category=${category._id}`"
-                      class="post-listing__tag-link"
-                      @click="() => {
-                        onTagClick && onTagClick(category._id);
-                        scrollTo('.post-listing');
-                        gtm?.trackEvent({ action: 'click', event: 'post-listing-tag', value: category.title });
-                      }"
-                    >{{ category.title }}</NuxtLink>
-                  </li>
-                </ul>
+      <CliSpinner v-if="loading" class="post-listing__spinner" />
+      <div v-else class="post-listing__wrap">
+        <ul class="post-listing__posts" v-if="posts">
+          <li class="post-listing__post" v-for="post in posts">
+            <div class="post-listing__inner">
+              <h3 v-if="route.query" class="post-listing__title gamma">
+                <NuxtLink
+                  :to="`/rants/${post.slug.current}`"
+                  class="post-listing__link"
+                  @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
+                >{{ post.title }}</NuxtLink>
+              </h3>
+              <h2 v-else class="post-listing__title gamma">
+                <NuxtLink
+                  :to="`/rants/${post.slug.current}`"
+                  class="post-listing__link"
+                  @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
+                >{{ post.title }}</NuxtLink>
+              </h2>
+              <div class="post-listing__meta">
+                <p class="post-listing__date">Posted {{ dateFormatter(post.publishedAt) }}</p>
+                <div class="post-listing__categories" v-if="post.categories">
+                  <p class="post-listing__categories-title zeta">Tags:</p>
+                  <ul class="post-listing__tags">
+                    <li class="post-listing__tag" v-for="category in post.categories">
+                      <NuxtLink
+                        :to="`/rants?category=${category._id}`"
+                        class="post-listing__tag-link"
+                        @click="() => {
+                          onTagClick && onTagClick(category._id);
+                          scrollTo('.post-listing');
+                          gtm?.trackEvent({ action: 'click', event: 'post-listing-tag', value: category.title });
+                        }"
+                      >{{ category.title }}</NuxtLink>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
-      <div class="post-listing__no-results" v-else>
-        <h2 class="post-listing__no-results-title">Nothing to see here...yet</h2>
-        <p class="post-listing__no-results-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+          </li>
+        </ul>
+        <div class="post-listing__no-results" v-else>
+          <h2 class="post-listing__no-results-title">Nothing to see here...yet</h2>
+          <p class="post-listing__no-results-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -140,5 +143,6 @@
     posts?: Array<PostLineItem>;
     postsTitle?: string|(() => string);
     onTagClick?: (id: string) => void;
+    loading?: boolean;
   }>();
 </script>

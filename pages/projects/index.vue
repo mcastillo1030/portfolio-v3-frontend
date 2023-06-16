@@ -3,13 +3,14 @@
     <MarkHero :title="pageTitle" />
     <ProjectListing
       :projects="projects"
+      :loading="resultsLoading"
     />
     <ListingPagination
       :paginateNext="getOlderProjects"
       :paginatePrev="getNewerProjects"
       :total-pages="totalPages"
       :current-page="page"
-      :loading="paginationLoading"
+      :loading="resultsLoading"
     />
   </div>
 </template>
@@ -28,7 +29,7 @@
   // Reactives
   const pageTitle = ref<string>();
   const projects = ref<Array<ProjectLineItem>>();
-  const paginationLoading = ref<boolean>(false);
+  const resultsLoading = ref<boolean>(true);
   const page = ref<number>(1);
 
   // Vars
@@ -53,8 +54,9 @@
       },
       'totalProjects': count(*[_type == 'project' && !(_id in path("drafts.**"))]),
     }`;
-    const { data } = await useSanityQuery<ProjectsPageResponse>(query);
+    const { data, pending } = await useSanityQuery<ProjectsPageResponse>(query);
 
+    resultsLoading.value = pending.value;
     pageTitle.value = data.value.page.title;
     projects.value = data.value.currentProjects;
     totalProjects = data.value.totalProjects;
@@ -70,9 +72,10 @@
     if (!query) {
       return;
     }
-    const { data } = await useSanityQuery<Array<ProjectLineItem>>(query);
+    const { data, pending } = await useSanityQuery<Array<ProjectLineItem>>(query);
 
     projects.value = data.value;
+    resultsLoading.value = pending.value;
 
     if (reverseOrdering)  {
       projects.value = projects.value.reverse();
@@ -84,7 +87,7 @@
       return;
     }
 
-    paginationLoading.value = true;
+    // resultsLoading.value = true;
     const timestamp = dir === 'newer' ?
       projects.value[0].publishedAt :
       projects.value[projects.value.length - 1].publishedAt;
@@ -113,7 +116,7 @@
       page.value++;
     }
 
-    paginationLoading.value = false;
+    // resultsLoading.value = false;
   };
 
   const getOlderProjects = (e: MouseEvent) => {

@@ -17,7 +17,7 @@
 
 <style lang="scss">
   .home-hero {
-    height: calc(100dvh - var(--header-height));
+    height: calc(100svh - var(--header-height));
     min-height: 37.5rem;
 
     &__container {

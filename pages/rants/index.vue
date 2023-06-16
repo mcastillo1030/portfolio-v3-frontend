@@ -11,7 +11,7 @@
       :paginatePrev="getNewerPosts"
       :total-pages="totalPages"
       :current-page="page"
-      :loading="paginationLoading"
+      :loading="resultsLoading"
     />
   </div>
 </template>
@@ -31,7 +31,7 @@
   const pageTitle = ref<string>();
   const posts = ref<Array<PostLineItem>>();
   const currentCatId = ref<string>(route.query.category as string || '*');
-  const paginationLoading = ref<boolean>(false);
+  const resultsLoading = ref<boolean>(true);
   const page = ref<number>(1);
 
   // Vars
@@ -53,13 +53,13 @@
       'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
     }`;
 
-    const { data } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
+    const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
 
+    resultsLoading.value = pending.value;
     pageTitle.value = data.value.page.title;
     posts.value = data.value.currentPosts
     totalPosts = data.value.totalPosts;
     totalPages = Math.ceil(totalPosts / pageSize);
-
 
     [...posts.value].forEach(post => {
       if (!post.categories) {
@@ -83,9 +83,10 @@
       return;
     }
 
-    const {data} = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
+    const { data, pending } = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
 
     posts.value = data.value;
+    resultsLoading.value = pending.value;
 
     [...posts.value].forEach(post => {
       if (!post.categories) {
@@ -120,11 +121,12 @@
       ])
     }`;
 
-    const { data } = await useSanityQuery<PostsPageResponse>(query, {
+    const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {
       cat: currentCatId.value
     });
 
     posts.value = data.value.currentPosts;
+    resultsLoading.value = pending.value;
 
     [...posts.value].forEach(post => {
       post.categories.forEach(cat => {
@@ -140,7 +142,7 @@
       return;
     }
 
-    paginationLoading.value = true;
+    // resultsLoading.value = true;
 
     const timestamp = dir === 'newer' ?
       posts.value[0].publishedAt :
@@ -168,7 +170,7 @@
       page.value++;
     }
 
-    paginationLoading.value = false;
+    // resultsLoading.value = false;
   };
 
   const getOlderPosts = (e: MouseEvent) => {

@@ -1,36 +1,39 @@
 <template>
   <section class="project-listing">
     <div class="container project-listing__container">
-      <ul v-if="projects" class="project-listing__projects">
-        <li class="project-listing__project" v-for="project in projects">
-          <h2 class="project-listing__title gamma">{{ project.title }}</h2>
-          <OutlineImage
-            v-if="project.mainImage"
-            class="project-listing__image reverse"
-            :asset-id="project.mainImage.assetId"
-            :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
-            :width="525"
-            :height="353"
-          />
-          <p class="project-listing__excerpt">{{ project.excerpt }}</p>
-          <NuxtLink
-            :to="`/projects/${project.slug.current}`"
-            class="project-listing__link"
-            @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })"
-          >Read about this project</NuxtLink>
-          <Button
-            v-if="project.link"
-            element="a"
-            :href="project.link"
-            external
-            class="project-listing__button"
-            @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-button', value: project.title, target: project.link })"
-          >View Project Site</Button>
-        </li>
-      </ul>
-      <div class="project-listing__no-results" v-else>
-        <h2 class="project-listing__no-results-title">Nothing to see here...yet</h2>
-        <p class="project-listing__no-results-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+      <CliSpinner v-if="loading" class="project-listing__spinner" />
+      <div v-else class="project-listing__wrap">
+        <ul v-if="projects" class="project-listing__projects">
+          <li class="project-listing__project" v-for="project in projects">
+            <h2 class="project-listing__title gamma">{{ project.title }}</h2>
+            <OutlineImage
+              v-if="project.mainImage"
+              class="project-listing__image reverse"
+              :asset-id="project.mainImage.assetId"
+              :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+              :width="525"
+              :height="353"
+            />
+            <p class="project-listing__excerpt">{{ project.excerpt }}</p>
+            <NuxtLink
+              :to="`/projects/${project.slug.current}`"
+              class="project-listing__link"
+              @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })"
+            >Read about this project</NuxtLink>
+            <Button
+              v-if="project.link"
+              element="a"
+              :href="project.link"
+              external
+              class="project-listing__button"
+              @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-button', value: project.title, target: project.link })"
+            >View Project Site</Button>
+          </li>
+        </ul>
+        <div class="project-listing__no-results" v-else>
+          <h2 class="project-listing__no-results-title">Nothing to see here...yet</h2>
+          <p class="project-listing__no-results-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -109,5 +112,6 @@
 
   defineProps<{
     projects?: Array<ProjectLineItem>;
+    loading?: boolean;
   }>();
 </script>
