@@ -42,7 +42,7 @@
       right: 1rem;
       z-index: 2;
       padding: .5rem .75rem;
-      color: var(--c-action);
+      color: var(--c-accent-1);
       opacity: 0;
       background: transparent;
       border: none;
@@ -54,12 +54,15 @@
 
       &:focus,
       &:hover {
-        background: var(--c-header-bg);
+        // background: var(--c-header-bg);
+        // background: rgb(1, 22, 39, .5);
+        background: rgb(251, 251, 251, .35);
         outline: none;
       }
 
       &:focus {
-        outline: .125rem dashed var(--c-action);
+        // outline: .125rem dashed var(--c-action);
+        outline: .125rem dashed rgb(251, 251, 251, .35);
         outline-offset: .125rem;
         opacity: 1;
       }

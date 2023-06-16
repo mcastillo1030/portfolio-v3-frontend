@@ -172,6 +172,16 @@
       &.open &__options {
         transform: translateX(0);
       }
+
+      &__option-btn {
+        flex-flow: row-reverse;
+        padding: .75rem 1.5rem .75rem 1rem;
+      }
+
+      &__option-label {
+        margin-right: 0;
+        margin-left: 1rem;
+      }
     }
   }
 </style>

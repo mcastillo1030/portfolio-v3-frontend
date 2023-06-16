@@ -36,7 +36,8 @@
     }
 
     if ( 'system' === newMode )  {
-      document.querySelector('body')?.classList.remove('light-mode');
+      const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.querySelector('body')?.classList.toggle('light-mode', systemMode === 'light');
     } else {
       document.querySelector('body')?.classList.toggle('light-mode', newMode === 'light');
     }
@@ -111,7 +112,8 @@
 
   onMounted(() => {
     const hasColorMode = typeof localStorage !== 'undefined' && localStorage.getItem('color-mode') !== null;
-    const wantsMode = hasColorMode ? String(localStorage.getItem('color-mode')) : 'dark';
+    const systemMode = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const wantsMode = hasColorMode ? String(localStorage.getItem('color-mode')) : systemMode;
 
     changeColorMode(wantsMode);
     gtm?.trackView(route.name as string, route.path);

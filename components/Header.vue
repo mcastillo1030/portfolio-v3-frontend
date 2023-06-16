@@ -275,7 +275,8 @@
         }
       }
 
-      &__link-icon {
+      &__link-icon,
+      .contrast-toggle__trigger-icon {
         max-width: 1.5rem;
         max-height: 1.5rem;
         vertical-align: middle;
@@ -318,6 +319,11 @@
       &__link:hover &__link-text {
         opacity: 1;
         transform: translate(-50%, 1rem);
+      }
+
+      &__util {
+        width: 2rem;
+        justify-content: center;
       }
 
       &__util-item--menu {
@@ -431,15 +437,14 @@
       }
 
       &__util {
-        margin: auto auto 6rem;
+        margin: auto auto 5rem;
       }
     }
   }
 </style>
 
 <script setup lang="ts">
-  import { Console } from 'console';
-import { gsap } from 'gsap';
+  import { gsap } from 'gsap';
 
   // State setup
   const loading = useAppLoading();

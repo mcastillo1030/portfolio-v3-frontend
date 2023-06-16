@@ -164,11 +164,11 @@
         background: #ededed;
       }
 
-      @media (prefers-color-scheme: light) {
-        &__text-inner {
-          background: #ededed;
-        }
-      }
+      // @media (prefers-color-scheme: light) {
+      //   &__text-inner {
+      //     background: #ededed;
+      //   }
+      // }
     }
   }
 

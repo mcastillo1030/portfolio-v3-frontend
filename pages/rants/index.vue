@@ -51,7 +51,7 @@
       return;
     }
 
-    const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(query, {cat: currentCatId.value}, {server: false});
+    const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(q, {cat: currentCatId.value}, {server: false});
 
     posts.value = d.value;
     resultsLoading.value = p.value;

@@ -42,7 +42,7 @@
     if (!q) {
       return;
     }
-    const { data: d, pending: p } = await useSanityQuery<Array<ProjectLineItem>>(query);
+    const { data: d, pending: p } = await useSanityQuery<Array<ProjectLineItem>>(q);
 
     projects.value = d.value;
     resultsLoading.value = p.value;
