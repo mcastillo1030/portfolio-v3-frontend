@@ -5,7 +5,7 @@
       <div v-else class="project-listing__wrap">
         <ul v-if="projects" class="project-listing__projects">
           <li class="project-listing__project" v-for="project in projects">
-            <h2 class="project-listing__title gamma">{{ project.title }}</h2>
+            <h2 class="project-listing__title delta">{{ project.title }}</h2>
             <OutlineImage
               v-if="project.mainImage"
               class="project-listing__image reverse"

@@ -144,6 +144,7 @@
       margin: 0;
       font-size: .875rem;
       text-align: center;
+      text-transform: lowercase;
     }
 
     @media screen and (min-width: c.$b-large) {
