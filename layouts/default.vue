@@ -97,16 +97,12 @@
           content: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
         };
       }),
-      {
-        name: 'theme-color',
-        media: '(prefers-color-scheme: light)',
-        content: '#fbfbfb',
-      },
-      {
-        name: 'theme-color',
-        media: '(prefers-color-scheme: dark)',
-        content: '#011627',
-      },
+      computed(() => {
+        return {
+          name: 'theme-color',
+          content: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
+        };
+      }),
     ],
   });
 
