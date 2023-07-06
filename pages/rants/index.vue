@@ -5,6 +5,7 @@
       :posts="posts"
       :on-tag-click="setCategory"
       :posts-title="getTitleWithCategory"
+      :loading="resultsLoading"
     />
     <ListingPagination
       :paginateNext="getOlderPosts"
@@ -30,7 +31,8 @@
   // Reactives
   const pageTitle = ref<string>();
   const posts = ref<Array<PostLineItem>>();
-  const currentCatId = ref<string>(route.query.category as string || '*');
+  const currentCat = ref<string>(route.query.category as string || 'All');
+  // const currentCatId = ref<string>(route.query.category as string || '*');
   const resultsLoading = ref<boolean>(true);
   const page = ref<number>(1);
 
@@ -42,16 +44,14 @@
   let totalPages = 1;
   let totalPosts: number;
 
-  // const initPage = async () => {
-
-  // };
-
   const updatePagination = async (q: string, reverseOrdering = false) => {
     if (!q) {
       return;
     }
 
-    const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(q, {cat: currentCatId.value}, {server: false});
+    resultsLoading.value = true;
+
+    const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(q, {}, {server: false});
 
     posts.value = d.value;
     resultsLoading.value = p.value;
@@ -71,30 +71,32 @@
     if (reverseOrdering) {
       posts.value = posts.value?.reverse();
     }
+
+    setTimeout(() => {
+      resultsLoading.value = false;
+    }, 500);
   };
 
   const updatePage = async () => {
+    resultsLoading.value = true;
     const q = groq`{
       'currentPosts': *[
           _type == 'post' &&
-          !(_id in path('drafts.**')) &&
-          (categories[]._ref match $cat)
+          !(_id in path('drafts.**'))
+          ${printCategoryQueryFragment()}
       ]|order(publishedAt desc)[0...5]{
           _id, slug, title, publishedAt, categories[]->{_id, title}
       },
       'totalPosts': count(*[
-        _type == 'post' &&
-        (categories[]._ref match $cat)
+        _type == 'post'
         && !(_id in path('drafts.**'))
+        ${printCategoryQueryFragment()}
       ])
     }`;
 
-    const { data: d, pending: p } = await useSanityQuery<PostsPageResponse>(q, {
-      cat: currentCatId.value
-    });
+    const { data: d } = await useSanityQuery<PostsPageResponse>(q);
 
     posts.value = d.value.currentPosts;
-    resultsLoading.value = p.value;
 
     [...posts.value].forEach(post => {
       post.categories.forEach(cat => {
@@ -103,14 +105,16 @@
         }
       });
     });
+
+    setTimeout(() => {
+      resultsLoading.value = false;
+    }, 500);
   };
 
   const fetchAndUpdate = async (dir: string) => {
     if (!dir || !posts.value) {
       return;
     }
-
-    // resultsLoading.value = true;
 
     const timestamp = dir === 'newer' ?
       posts.value[0].publishedAt :
@@ -124,8 +128,8 @@
       (
         dateTime(publishedAt) ${dir === 'newer' ? '>' : '<'} dateTime("${timestamp}") ||
         (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")
-      ) &&
-      (categories[]._ref match $cat)
+      )
+      ${printCategoryQueryFragment()}
     ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...${pageSize}]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
@@ -137,8 +141,6 @@
     } else {
       page.value++;
     }
-
-    // resultsLoading.value = false;
   };
 
   const getOlderPosts = (e: MouseEvent) => {
@@ -151,31 +153,41 @@
     fetchAndUpdate('newer');
   };
 
-  const setCategory = (id: string) => {
-    currentCatId.value = id;
+  const printCategoryQueryFragment = () => {
+    let fragment = '';
+
+    if ( currentCat.value !== 'All' ) {
+      fragment = ` && categories[]->title match "${currentCat.value}"`;
+    }
+
+    return fragment;
+  };
+
+  const setCategory = (category: string) => {
+    // currentCatId.value = id;
+    currentCat.value = category;
     page.value = 1;
     updatePage();
   };
 
   const getTitleWithCategory = () => {
-    const cat = cagegories.find((c) => c._id === currentCatId.value);
-    const title = cat ? `Rants about "${cat.title}"` : 'All Rants';
+    // const cat = cagegories.find((c) => c.title.toLowerCase().includes(currentCat.value));
+    const title = currentCat.value !== 'All' ? `Rants about "${currentCat.value}"` : 'All Rants';
     return title;
   };
 
   // Init
-  // initPage();
   const query = groq`{
     'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
       title,seoTitle,seoDescription,seoImage,
     },
-    'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))]|order(publishedAt desc)[0...${pageSize}]{
+    'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))${printCategoryQueryFragment()}]|order(publishedAt desc)[0...${pageSize}]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     },
     'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
   }`;
 
-  const { data, pending } = await useSanityQuery<PostsPageResponse>(query, {cat: currentCatId.value});
+  const { data, pending } = await useSanityQuery<PostsPageResponse>(query);
 
   resultsLoading.value = pending.value;
   pageTitle.value = data.value.page.title;

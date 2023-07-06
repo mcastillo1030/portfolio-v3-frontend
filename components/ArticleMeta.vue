@@ -14,7 +14,7 @@
       <ul class="article-meta__tags">
         <li class="article-meta__tag" v-for="category in categories">
           <NuxtLink
-            :to="`/rants?category=${category._id}`"
+            :to="`/rants?category=${category.title}`"
             class="article-meta__tag-link"
           >{{ category.title }}</NuxtLink>
         </li>

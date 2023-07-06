@@ -28,11 +28,10 @@
                   <ul class="post-listing__tags">
                     <li class="post-listing__tag" v-for="category in post.categories">
                       <NuxtLink
-                        :to="`/rants?category=${category._id}`"
+                        :to="`/rants?category=${category.title}`"
                         class="post-listing__tag-link"
                         @click="() => {
-                          onTagClick && onTagClick(category._id);
-                          scrollTo('.post-listing');
+                          onTagClick && onTagClick(category.title);
                           gtm?.trackEvent({ action: 'click', event: 'post-listing-tag', value: category.title });
                         }"
                       >{{ category.title }}</NuxtLink>
@@ -138,6 +137,10 @@
 
   const gtm = useGtm();
   const route = useRoute();
+
+  onUpdated(() => {
+    scrollTo('.post-listing');
+  });
 
   defineProps<{
     posts?: Array<PostLineItem>;

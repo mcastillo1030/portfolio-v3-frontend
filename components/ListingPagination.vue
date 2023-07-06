@@ -6,7 +6,6 @@
           class="listing-pagination__button listing-pagination__button--prev"
           v-if="currentPage > 1"
           @click="(evt) => {
-            scrollTo('.c-main');
             paginatePrev(evt);
             gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage - 1});
           }"
@@ -21,7 +20,6 @@
           class="listing-pagination__button listing-pagination__button--next"
           v-if="currentPage < totalPages"
           @click="(evt) => {
-            scrollTo('.c-main');
             paginateNext(evt);
             gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage + 1});
           }"
@@ -66,8 +64,6 @@
 </style>
 
 <script setup lang="ts">
-  import scrollTo from '~/utils/smoothScroll.js';
-
   const gtm = useGtm();
   const route = useRoute();
 
