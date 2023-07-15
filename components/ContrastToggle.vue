@@ -89,7 +89,7 @@
       border-radius: .5rem;
       list-style: none;
       transform: translateY(-1rem);
-      filter: drop-shadow(0 0 .0625rem var(--c-action));
+      filter: drop-shadow(0 0 .0625rem var(--c-foreground));
       transition:
         opacity .2s ease-out,
         visibility .2s ease-out,

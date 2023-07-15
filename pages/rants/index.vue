@@ -3,9 +3,8 @@
     <MarkHero :title="pageTitle" />
     <PostListing
       :posts="posts"
-      :on-clear-click="clearCategory"
+      :category="currentCat"
       :on-tag-click="setCategory"
-      :posts-title="getTitleWithCategory"
       :loading="resultsLoading"
     />
     <ListingPagination
@@ -169,15 +168,20 @@
   };
 
   const setCategory = (category: string) => {
+    // currentCatId.value = id;
     currentCat.value = category;
     page.value = 1;
     updatePage();
   };
 
   const clearCategory = () => {
-    currentCat.value = 'All';
-    page.value = 1;
-    updatePage();
+    setCategory('All');
+  };
+
+  const getTitleWithCategory = () => {
+    // const cat = cagegories.find((c) => c.title.toLowerCase().includes(currentCat.value));
+    const title = currentCat.value !== 'All' ? `Rants about "${currentCat.value}"` : 'All Rants';
+    return title;
   };
 
   // Init
@@ -226,5 +230,15 @@
     twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
+  });
+
+  onBeforeRouteUpdate((to) => {
+    const { query } = to;
+
+    if (query.category) {
+      return;
+    }
+
+    clearCategory();
   });
 </script>

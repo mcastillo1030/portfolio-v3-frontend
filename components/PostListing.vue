@@ -1,8 +1,8 @@
 <template>
   <section class="post-listing">
     <div class="container post-listing__container">
-      <header v-if="route.query.category && postsTitle" class="post-listing__header">
-        <h2 class="post-listing__category-title">{{ typeof postsTitle === 'string' ?  postsTitle : postsTitle() }}</h2>
+      <header v-if="category && category !== 'All'" class="post-listing__header">
+        <h2  class="post-listing__category-title">Rants about "{{ category }}"</h2>
         <NuxtLink to="/rants" class="post-listing__category-btn">
           <IconsMenuClose class="post-listing__clear-icon" />
           <span class="post-listing__clear-text tooltip">Clear</span>
@@ -13,7 +13,7 @@
         <ul class="post-listing__posts" v-if="posts">
           <li class="post-listing__post" v-for="post in posts">
             <div class="post-listing__inner">
-              <h3 v-if="route.query" class="post-listing__title gamma">
+              <h3 v-if="category" class="post-listing__title gamma">
                 <NuxtLink
                   :to="`/rants/${post.slug.current}`"
                   class="post-listing__link"
@@ -217,17 +217,23 @@
   import scrollTo from '~/utils/smoothScroll.js';
 
   const gtm = useGtm();
-  const route = useRoute();
+  const scroller = ref<NodeJS.Timeout|false>(false);
 
   onUpdated(() => {
-    scrollTo('.post-listing');
+    if (scroller.value) {
+      clearTimeout(scroller.value);
+    }
+
+    scroller.value = setTimeout(() => {
+      scrollTo('.post-listing');
+      scroller.value = false;
+    }, 650);
   });
 
   defineProps<{
     posts?: Array<PostLineItem>;
-    postsTitle?: string|(() => string);
+    category?: string;
     onTagClick?: (id: string) => void;
-    onClearClick?: () => void;
     loading?: boolean;
   }>();
 </script>

@@ -108,7 +108,21 @@
 </style>
 
 <script setup lang="ts">
+  import scrollTo from '~/utils/smoothScroll.js';
+
   const gtm = useGtm();
+  const scroller = ref<NodeJS.Timeout|false>(false);
+
+  onUpdated(() => {
+    if (scroller.value) {
+      clearTimeout(scroller.value);
+    }
+
+    scroller.value = setTimeout(() => {
+      scrollTo('.project-listing');
+      scroller.value = false;
+    }, 650);
+  });
 
   defineProps<{
     projects?: Array<ProjectLineItem>;

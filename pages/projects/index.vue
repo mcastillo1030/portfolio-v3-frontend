@@ -42,6 +42,9 @@
     if (!q) {
       return;
     }
+
+    resultsLoading.value = true;
+
     const { data: d, pending: p } = await useSanityQuery<Array<ProjectLineItem>>(q);
 
     projects.value = d.value;
@@ -50,6 +53,10 @@
     if (reverseOrdering)  {
       projects.value = projects.value.reverse();
     }
+
+    setTimeout(() => {
+      resultsLoading.value = false;
+    }, 500);
   };
 
   const fetchAndUpdate = async (dir: string) => {
