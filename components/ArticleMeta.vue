@@ -160,6 +160,19 @@
       border-bottom: .0625rem solid var(--c-accent-2);
       column-gap: 2rem;
       cursor: pointer;
+      transition:
+        color .2s ease-out,
+        border-color .2s ease-out,;
+
+      &:hover {
+        color: var(--c-accent-1);
+        border-color: var(--c-accent-1);
+      }
+
+      &:focus {
+        outline: 0.125rem dashed var(--c-action);
+        outline-offset: .125rem;
+      }
     }
 
     &__toggle-icon {
@@ -181,7 +194,7 @@
 
     &__toc-list {
       margin: 0;
-      padding: 0;
+      padding: 0 0 0 .75rem;
       list-style: none;
 
       & > & {

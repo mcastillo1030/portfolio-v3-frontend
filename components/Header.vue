@@ -184,7 +184,7 @@
     }
 
     &__item-link {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       column-gap: 1rem;
       transition: color .2s ease-out;

@@ -67,7 +67,7 @@
     }
 
     &__link {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       column-gap: 1.125rem;
       text-decoration-color: var(--c-foreground);

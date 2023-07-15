@@ -72,6 +72,11 @@
       background: transparent;
     }
 
+    &:focus {
+      outline: 0.125rem dashed var(--c-action);
+      outline-offset: .25rem;
+    }
+
     &__icon {
       width: 1.125rem;
       height: 1.125rem;

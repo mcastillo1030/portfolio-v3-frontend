@@ -104,8 +104,15 @@
     }
 
     &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       position: relative;
       background: var(--c-background);
+    }
+
+    &__item:nth-child(even) &__content {
+      align-items: flex-end;
     }
 
     &__project-title {
@@ -176,6 +183,10 @@
           justify-self: flex-start;
           text-align: left;
         }
+      }
+
+      &__item:nth-child(even) &__content {
+        align-items: flex-start;
       }
 
       &__item:nth-child(even) &__image::before {

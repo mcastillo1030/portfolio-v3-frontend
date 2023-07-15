@@ -54,6 +54,9 @@
     }
 
     &__project {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       max-width: 35.375rem;
       margin: 0;
     }
@@ -76,7 +79,7 @@
     }
 
     &__link {
-      display: block;
+      // display: block;
       margin-bottom: 1.5rem;
       text-transform: lowercase;
       color: var(--c-accent-2);
@@ -86,6 +89,7 @@
   @media screen and (min-width: c.$b-medium) {
     .project-listing {
       &__project:nth-child(even) {
+        align-items: flex-end;
         margin-left: auto;
         text-align: right;
       }

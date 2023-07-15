@@ -168,7 +168,6 @@
   };
 
   const setCategory = (category: string) => {
-    // currentCatId.value = id;
     currentCat.value = category;
     page.value = 1;
     updatePage();
@@ -176,12 +175,6 @@
 
   const clearCategory = () => {
     setCategory('All');
-  };
-
-  const getTitleWithCategory = () => {
-    // const cat = cagegories.find((c) => c.title.toLowerCase().includes(currentCat.value));
-    const title = currentCat.value !== 'All' ? `Rants about "${currentCat.value}"` : 'All Rants';
-    return title;
   };
 
   // Init
