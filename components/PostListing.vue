@@ -1,7 +1,13 @@
 <template>
   <section class="post-listing">
     <div class="container post-listing__container">
-      <h2 v-if="route.query.category && postsTitle" class="post-listing__category-title">{{ typeof postsTitle === 'string' ?  postsTitle : postsTitle() }}</h2>
+      <header v-if="route.query.category && postsTitle" class="post-listing__header">
+        <h2 class="post-listing__category-title">{{ typeof postsTitle === 'string' ?  postsTitle : postsTitle() }}</h2>
+        <NuxtLink to="/rants" class="post-listing__category-btn">
+          <IconsMenuClose class="post-listing__clear-icon" />
+          <span class="post-listing__clear-text tooltip">Clear</span>
+        </NuxtLink>
+      </header>
       <CliSpinner v-if="loading" class="post-listing__spinner" />
       <div v-else class="post-listing__wrap">
         <ul class="post-listing__posts" v-if="posts">
@@ -54,6 +60,58 @@
 <style lang="scss">
   .post-listing {
     margin-top: clamp(4rem, 0.739rem + 13.913vw, 15rem);
+
+    &__header {
+      display: flex;
+      gap: clamp(1.5rem, 2vw, 3rem);
+      align-items: flex-start;
+      margin: 1.875rem 0 clamp(1.625rem, 1.361rem + 1.127vw, 2.375rem)
+    }
+
+    &__category-title {
+      margin: 0;
+    }
+
+    &__category-btn {
+      --hit-area: .5rem;
+      flex-shrink: 0;
+      position: relative;
+      width: 3rem;
+      padding: var(--hit-area);
+      color: var(--c-accent-2);
+      cursor: pointer;
+    }
+
+    &__clear-text {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      background: var(--c-accent-2);
+      opacity: 0;
+      transform: translate(calc(var(--hit-area) * -.5), -100%);
+      transition:
+        opacity 0.2s ease-out,
+        transform 0.3s ease-out;
+
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: var(--hit-area);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: .5rem .5rem 0 .5rem;
+        border-color: var(--c-accent-2) transparent transparent transparent;
+        transform: translate(calc(var(--hit-area) * -.5), .5rem);
+      }
+    }
+
+    &__category-btn:hover &__clear-text {
+      opacity: 1;
+      transform: translate(calc(var(--hit-area) * -.5), calc((100% + .5rem) * -1));
+    }
 
     &__posts {
       padding: 0;
@@ -121,12 +179,35 @@
       color: var(--c-accent-2);
       text-decoration-style: dashed;
     }
+  }
 
-    @media screen and (min-width: c.$b-small) {
-      .post-listing {
-        &__categories-title {
-          width: auto;
+  @media screen and (min-width: c.$b-small) {
+    .post-listing {
+      &__categories-title {
+        width: auto;
+      }
+    }
+  }
+
+  @media screen and (min-width: c.$b-medium) {
+    .post-listing {
+      &__clear-text {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -100%);
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          right: auto;
+          transform: translate(-50%, .5rem);
         }
+      }
+
+      &__category-btn:hover &__clear-text {
+        transform: translate(-50%, calc((100% + .5rem) * -1));
       }
     }
   }
@@ -146,6 +227,7 @@
     posts?: Array<PostLineItem>;
     postsTitle?: string|(() => string);
     onTagClick?: (id: string) => void;
+    onClearClick?: () => void;
     loading?: boolean;
   }>();
 </script>

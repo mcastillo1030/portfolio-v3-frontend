@@ -3,6 +3,7 @@
     <MarkHero :title="pageTitle" />
     <PostListing
       :posts="posts"
+      :on-clear-click="clearCategory"
       :on-tag-click="setCategory"
       :posts-title="getTitleWithCategory"
       :loading="resultsLoading"
@@ -99,6 +100,10 @@
     posts.value = d.value.currentPosts;
 
     [...posts.value].forEach(post => {
+      if (!post.categories) {
+        return;
+      }
+
       post.categories.forEach(cat => {
         if (!cagegories.find(c => c._id === cat._id)) {
           cagegories.push(cat);
@@ -164,16 +169,15 @@
   };
 
   const setCategory = (category: string) => {
-    // currentCatId.value = id;
     currentCat.value = category;
     page.value = 1;
     updatePage();
   };
 
-  const getTitleWithCategory = () => {
-    // const cat = cagegories.find((c) => c.title.toLowerCase().includes(currentCat.value));
-    const title = currentCat.value !== 'All' ? `Rants about "${currentCat.value}"` : 'All Rants';
-    return title;
+  const clearCategory = () => {
+    currentCat.value = 'All';
+    page.value = 1;
+    updatePage();
   };
 
   // Init
