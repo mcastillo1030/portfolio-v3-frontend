@@ -168,12 +168,20 @@
   };
 
   const setCategory = (category: string) => {
+    if (category === currentCat.value) {
+      return;
+    }
+
     currentCat.value = category;
     page.value = 1;
     updatePage();
   };
 
   const clearCategory = () => {
+    if (currentCat.value === 'All') {
+      return;
+    }
+
     setCategory('All');
   };
 
@@ -223,6 +231,10 @@
     twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
+  });
+
+  onMounted(() => {
+    setCategory(route.query.category as string || 'All');
   });
 
   onBeforeRouteUpdate((to) => {
