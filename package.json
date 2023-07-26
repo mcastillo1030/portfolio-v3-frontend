@@ -13,6 +13,7 @@
     "@types/node": "^18",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "nuxt": "^3.5.1",
+    "nuxt-simple-sitemap": "^3.0.13",
     "sass": "^1.62.1"
   },
   "dependencies": {

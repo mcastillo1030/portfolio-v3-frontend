@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/sanity',
     '@zadigetvoltaire/nuxt-gtm',
+    'nuxt-simple-sitemap',
   ],
   nitro: {
     prerender: {
