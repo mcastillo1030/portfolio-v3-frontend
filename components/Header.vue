@@ -1,5 +1,5 @@
 <template>
-  <header class="header" ref="header">
+  <header class="header header--loading" data-menu-open="false" ref="header">
     <div class="container header__container">
       <div class="header__inner">
         <NuxtLink to="/" class="header__logo-link" :class="loading ? 'header__logo-link--loading' : ''">
@@ -92,6 +92,10 @@
     top: 0;
     z-index: 100;
     background: var(--c-header-bg);
+
+    &--loading {
+      opacity: 0;
+    }
 
     &__inner {
       position: relative;
@@ -501,7 +505,7 @@
       document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
     });
 
-    document.addEventListener('menu-opened', () => {
+    document.addEventListener('menu:opened', () => {
       if (!menuQuery.matches) {
         return;
       }
@@ -511,7 +515,7 @@
       menu?.focus();
     });
 
-    document.addEventListener('menu-closed', () => {
+    document.addEventListener('menu:closed', () => {
       if (!menuQuery.matches) {
         return;
       }
@@ -528,7 +532,6 @@
       }
 
       if (e.key === 'Escape' && menuState.value === 'open') {
-        // toggleMenu('closed');
         menuState.value = 'closed';
       }
 
@@ -538,8 +541,6 @@
       if (!header.value?.contains(target as Node) || menuState.value === 'closed') {
         return;
       }
-
-      // const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
 
       // keyboard trap
       const focusableElements = Array.from(header.value?.querySelectorAll('.header__item-link, .header__util-item--menu button') || []);
@@ -606,10 +607,12 @@
             ease: 'power2.inOut',
           },
           onComplete: () => {
-            document.dispatchEvent(new Event('menu-opened'));
+            document.dispatchEvent(new Event('menu:opened'));
+            header.value?.setAttribute('data-menu-open', 'true');
           },
           onReverseComplete: () => {
-            document.dispatchEvent(new Event('menu-closed'));
+            document.dispatchEvent(new Event('menu:closed'));
+            header.value?.setAttribute('data-menu-open', 'false');
           },
         })
         .to(menu, {
@@ -619,6 +622,31 @@
           opacity: 0,
         });
     }, header.value);
+
+    document.addEventListener('hero:complete', () => {
+      if (!header.value) {
+        return;
+      }
+
+      gsap.to(header.value, {
+        opacity: 1,
+        onComplete: () => {
+          if (!header.value) {
+            return;
+          }
+          header.value.classList.remove('header--loading');
+        }
+      })
+    });
+
+    document.addEventListener('click', ({target}) => {
+      if (header.value?.contains(target as Node) || header.value?.getAttribute('data-menu-open') === 'false') {
+        return;
+      }
+
+      // close the menu
+      menuState.value = 'closed';
+    });
 
     document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
   });

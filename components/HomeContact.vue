@@ -1,5 +1,5 @@
 <template>
-  <section class="home-contact">
+  <section class="home-contact" ref="contact">
     <div class="container home-contact__container">
       <h2 v-if="title" class="home-contact__title">{{ title }}</h2>
       <div class="home-contact__columns">
@@ -132,6 +132,39 @@
 </style>
 
 <script setup lang="ts">
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  const contact = ref<HTMLElement>();
+  let ctx: gsap.Context;
+
+  onMounted(() => {
+    ctx = gsap.context((self) => {
+      if (!self.selector) {
+        return;
+      }
+
+      const container = self.selector('.home-contact__container');
+      gsap.from(container, {
+        opacity: 0,
+        yPercent: 10,
+        scrollTrigger: {
+          trigger: contact.value,
+          start: 'top bottom-=15%',
+          end: '+=100px',
+          scrub: true,
+          toggleActions: 'play none none reverse',
+        }
+      })
+    }, contact.value);
+  });
+
+  onUnmounted(() => {
+    ctx.revert();
+  });
+
+
   defineProps<{
     title?: string;
     subtitle?: string;

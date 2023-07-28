@@ -1,5 +1,5 @@
 <template>
-  <section class="home-projects">
+  <section class="home-projects" ref="hpProjects">
     <div class="container home-projects__container">
       <header class="home-projects__header">
         <h2 v-if="title" class="home-projects__title">{{ title }}</h2>
@@ -202,6 +202,38 @@
 </style>
 
 <script setup lang="ts">
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  const hpProjects = ref<HTMLElement>();
+  let ctx: gsap.Context;
+
+  onMounted(() => {
+    ctx = gsap.context((self) => {
+      if (!self.selector) {
+        return;
+      }
+
+      const container = self.selector('.home-projects__container');
+      gsap.from(container, {
+        opacity: 0,
+        yPercent: 10,
+        scrollTrigger: {
+          trigger: hpProjects.value,
+          start: 'top bottom-=15%',
+          end: '+=100px',
+          scrub: true,
+          toggleActions: 'play none none reverse',
+        }
+      })
+    }, hpProjects.value);
+  });
+
+  onUnmounted(() => {
+    ctx.revert();
+  });
+
   defineProps<{
     title?: string;
     projects?: Array<ProjectLineItem>;

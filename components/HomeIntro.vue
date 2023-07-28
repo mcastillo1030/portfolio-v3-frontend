@@ -1,5 +1,5 @@
 <template>
-  <section class="home-intro">
+  <section class="home-intro" ref="intro">
     <div class="container home-intro__container">
       <div class="home-intro__wrap">
         <h2 class="sr-only home-intro__title">{{ title }}</h2>
@@ -144,6 +144,43 @@
           border-top-right-radius: .5rem;
           border-top: .125rem dotted var(--c-accent-3);
           border-right: .125rem dotted var(--c-accent-3);
+          animation-play-state: paused;
+        }
+      }
+
+      .scrolled-in &__image-column::before {
+        animation: tablet-path-fwd 2s ease-in-out 1;
+        animation-play-state: running;
+        animation-fill-mode: forwards;
+      }
+
+      .scrolled-back &__image-column::before {
+        animation: tablet-path-bwd 2s ease-in-out 1;
+        animation-play-state: running;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes tablet-path-fwd {
+        0% {
+          clip-path: polygon(0 0, 0 .125rem, 0 .125rem, 0 .125rem, 0 0, 0 0);
+        }
+        50% {
+          clip-path: polygon(0 0, 0 .125rem, calc(100% - .125rem) .125rem, calc(100% - .125rem) .125rem, 100% 0, 100% 0);
+        }
+        100% {
+          clip-path: polygon(0 0, 0 .125rem, calc(100% - .125rem) .125rem, calc(100% - .125rem) 100%, 100% 100%, 100% 0);
+        }
+      }
+
+      @keyframes tablet-path-bwd {
+        0% {
+          clip-path: polygon(0 0, 0 .125rem, calc(100% - .125rem) .125rem, calc(100% - .125rem) 100%, 100% 100%, 100% 0);
+        }
+        50% {
+          clip-path: polygon(0 0, 0 .125rem, calc(100% - .125rem) .125rem, calc(100% - .125rem) .125rem, 100% 0, 100% 0);
+        }
+        100% {
+          clip-path: polygon(0 0, 0 .125rem, 0 .125rem, 0 .125rem, 0 0, 0 0);
         }
       }
 
@@ -163,12 +200,6 @@
       .light-mode &__text-inner {
         background: #ededed;
       }
-
-      // @media (prefers-color-scheme: light) {
-      //   &__text-inner {
-      //     background: #ededed;
-      //   }
-      // }
     }
   }
 
@@ -179,7 +210,6 @@
         display: grid;
         grid-template-columns: 2fr 3fr;
         align-items: center;
-        // gap: clamp(5.375rem, 6.97916667vw, 8.34rem);
         gap: clamp(6.033rem, 8.537vw, 8.75rem);
         max-width: 71.625rem;
         margin: 0 auto;
@@ -198,6 +228,33 @@
           border-top: .125rem dotted var(--c-accent-3);
           border-right: 0;
           transform: translate(-50%, 0);
+          transform-origin: left center;
+        }
+      }
+
+      .scrolled-in &__image-column::before {
+        animation: desktop-path-fwd 2s ease-in-out 1 forwards;
+      }
+
+      .scrolled-back &__image-column::before {
+        animation: desktop-path-bwd 2s ease-in-out 1 forwards;
+      }
+
+      @keyframes desktop-path-fwd {
+        from {
+          transform: translate(-50%, 0) scaleX(0);
+        }
+        to {
+          transform: translate(-50%, 0) scaleX(1);
+        }
+      }
+
+      @keyframes desktop-path-bwd {
+        from {
+          transform: translate(-50%, 0) scaleX(1);
+        }
+        to {
+          transform: translate(-50%, 0) scaleX(0);
         }
       }
 
@@ -209,7 +266,52 @@
 </style>
 
 <script setup lang="ts">
-import { PortableTextBlock } from '@portabletext/types';
+  import { PortableTextBlock } from '@portabletext/types';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  const intro = ref<HTMLElement>();
+  let ctx: gsap.Context;
+
+  onMounted(() => {
+    ctx = gsap.context((self) => {
+      if (!self.selector) {
+        return;
+      }
+
+      const container = self.selector('.home-intro__container');
+      const image = self.selector('.home-intro__image-wrap');
+      const text = self.selector('.home-intro__text-inner');
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: container[0],
+          start: 'top bottom-=15%',
+          end: '+=1px',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            container[0].classList.remove('scrolled-back');
+            container[0].classList.add('scrolled-in');
+          },
+          onLeaveBack: () => {
+            container[0].classList.remove('scrolled-in');
+            container[0].classList.add('scrolled-back');
+          },
+        }
+      }).from(image, {
+        opacity: 0,
+        yPercent: 15,
+      })
+      .from(text, {
+        opacity: 0,
+        yPercent: 15,
+      });
+    }, intro.value);
+  });
+
+  onUnmounted(() => {
+    ctx.revert();
+  });
 
   defineProps<{
     title?: string;

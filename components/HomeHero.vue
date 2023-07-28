@@ -1,6 +1,6 @@
 <template>
   <section class="home-hero" ref="hero">
-    <div class="container home-hero__container">
+    <div class="container home-hero__container home-hero__container--loading">
       <IconsHeroWatermark classes="home-hero__watermark" />
       <div class="home-hero__wrap">
         <ul class="home-hero__icons" v-if="icons">
@@ -23,6 +23,10 @@
     &__container {
       position: relative;
       height: 100%;
+
+      &--loading {
+        opacity: 0;
+      }
     }
 
     &__watermark {
@@ -146,11 +150,31 @@
       }
 
       const icons  = self.selector('.home-hero__icon-item');
-      const heroTl = gsap.timeline({
-        repeat: -1,
-      });
+      const container = self.selector('.home-hero__container');
+      const mark = self.selector('.home-hero__watermark');
+      const wrap = self.selector('.home-hero__wrap');
+      const iconsTl = gsap.timeline({repeat: -1});
+      const heroTl = gsap.timeline();
 
-      heroTl.addLabel('start');
+      heroTl
+        .addLabel('start')
+        .to(container, {
+          delay: .3,
+          opacity: 1,
+          onComplete: () => {
+            container[0].classList.remove('home-hero__container--loading');
+          }
+        })
+        .from(mark, {
+          opacity: 0,
+          yPercent: 10,
+        })
+        .from(wrap, {
+          opacity: 0,
+          onComplete: () => {
+            document.dispatchEvent(new Event('hero:complete'));
+          }
+        });
 
       [...icons].forEach((icon, i) => {
         const next = icon.nextElementSibling || icons[0];
@@ -181,7 +205,7 @@
             wrap.classList.remove('typing');
           }
         })
-        .add(gsap.set(wrap, {'--cursor-position': '100%'}), '+=1')
+        .add(gsap.set(wrap, {'--cursor-position': '105%'}), '+=1')
         .to(next, {
           opacity: 1,
           onStart: () => {
@@ -193,9 +217,10 @@
           }
         });
 
-        heroTl.add(iconTl);
+        iconsTl.add(iconTl);
       });
 
+      heroTl.add(iconsTl);
       skillsTl.value = heroTl;
     }, hero.value);
 

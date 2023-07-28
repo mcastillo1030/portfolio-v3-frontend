@@ -26,6 +26,7 @@
     &__icon {
       width: 2rem;
       height: 2rem;
+      pointer-events: none;
     }
   }
 </style>
