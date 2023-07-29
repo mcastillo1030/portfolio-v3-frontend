@@ -6,14 +6,17 @@
         <ul v-if="projects" class="project-listing__projects">
           <li class="project-listing__project" v-for="project in projects">
             <h2 class="project-listing__title delta">{{ project.title }}</h2>
-            <OutlineImage
-              v-if="project.mainImage"
-              class="project-listing__image reverse"
-              :asset-id="project.mainImage.assetId"
-              :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
-              :width="525"
-              :height="353"
-            />
+            <div class="project-listing__image-wrap">
+              <IconsNavItem type="code" classes="project-listing__image-icon" />
+              <OutlineImage
+                v-if="project.mainImage"
+                class="project-listing__image reverse"
+                :asset-id="project.mainImage.assetId"
+                :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+                :width="525"
+                :height="438"
+              />
+            </div>
             <p class="project-listing__excerpt">{{ project.excerpt }}</p>
             <NuxtLink
               :to="`/projects/${project.slug.current}`"
@@ -66,12 +69,67 @@
       color: var(--c-accent-2);
     }
 
-    &__image {
+    &__image-wrap {
+      // (d)dark-mode / (l)light-mode (t)ransparent & (a)ccent
+      --c-dt: rgba(128, 164, 194, .5);
+      --c-lt: rgba(144, 167, 178, .5);
+      position: relative;
       margin-bottom: 2.25rem;
 
-      &::before {
-        border-color: var(--c-accent-2);
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: .5rem;
+        transform-origin: top left;
       }
+
+      &::before {
+        z-index: 1;
+        background: var(--c-dt);
+        clip-path: polygon(0 0, 0 71%, 71% 0);
+        transition: clip-path .2s ease-in-out;
+      }
+
+      &::after {
+        z-index: 2;
+        background: var(--c-selection);
+        clip-path: polygon(0 0, 0 40%, 40% 0);
+        transition: clip-path .3s ease-in-out;
+      }
+
+      &:hover::before {
+        clip-path: polygon(0 0, 0 40%, 40% 0);
+      }
+
+      &:hover::after {
+        clip-path: polygon(0 0, 0 20%, 20% 0);
+      }
+    }
+
+    &__image-icon {
+      position: absolute;
+      top: clamp(0.75rem, 4%, 3.25rem);
+      left: clamp(0.75rem, 4%, 3.25rem);
+      z-index: 3;
+      width: clamp(1.125rem, 7%, 2.5rem);
+      width: auto;
+      aspect-ratio: 1 / 1;
+      color: var(--c-foreground);
+      transform-origin: top left;
+      transition: transform .3s ease-in-out;
+    }
+
+    &__image-wrap:hover &__image-icon {
+      transform: scale(.6);
+    }
+
+    &__image::before {
+      border-color: var(--c-accent-2);
     }
 
     &__excerpt {
