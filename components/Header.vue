@@ -1,5 +1,5 @@
 <template>
-  <header class="header header--loading" data-menu-open="false" ref="header">
+  <header class="header" :class="route.path === '/' ? 'header--loading' : ''" data-menu-open="false" ref="header">
     <div class="container header__container">
       <div class="header__inner">
         <NuxtLink to="/" class="header__logo-link" :class="loading ? 'header__logo-link--loading' : ''">
@@ -454,6 +454,7 @@
   const loading = useAppLoading();
   const menuState = useMenuState();
   const gtm = useGtm();
+  const route = useRoute();
 
   // API setup
   const query = groq`*[_type == 'nav'][0]{
