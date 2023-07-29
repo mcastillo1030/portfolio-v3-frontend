@@ -355,7 +355,7 @@
         background: none;
       }
 
-      &__container {
+      .container {
         height: 100%;
         padding: 3.5rem 2rem;
       }
