@@ -119,7 +119,7 @@
       width: clamp(1.125rem, 7%, 2.5rem);
       width: auto;
       aspect-ratio: 1 / 1;
-      color: var(--c-foreground);
+      color: var(--c-background);
       transform-origin: top left;
       transition: transform .3s ease-in-out;
     }
