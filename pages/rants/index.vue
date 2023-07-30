@@ -18,9 +18,8 @@
 </template>
 
 <script setup lang="ts">
-  const { baseUrl } = useRuntimeConfig();
   const { $urlFor } = useNuxtApp();
-  const { siteTitle } = useAppConfig();
+  const { siteTitle, baseUrl } = useAppConfig();
   const route = useRoute();
 
   // SEO

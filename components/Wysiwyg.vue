@@ -11,11 +11,13 @@
   const serializers:Serializers = {
     types: {
       image: resolveComponent('ImageBlock'),
+      link: resolveComponent('ExternalLink'),
       code: resolveComponent('HighlightCodeBlock'),
     },
     marks: {
       internalLink: resolveComponent('InternalLink'),
-      inlineCode: resolveComponent('InlineCode')
+      inlineCode: resolveComponent('InlineCode'),
+      link: resolveComponent('ExternalLink'),
     },
     styles: {
       h2: resolveComponent('InlineHeadingWithId'),

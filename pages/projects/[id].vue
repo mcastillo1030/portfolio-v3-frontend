@@ -12,8 +12,7 @@
 
 <script setup lang="ts">
   const route = useRoute();
-  const { baseUrl } = useRuntimeConfig();
-  const { siteTitle } = useAppConfig();
+  const { siteTitle, baseUrl } = useAppConfig();
   const { $urlFor } = useNuxtApp();
 
   const slug = route.params.id;

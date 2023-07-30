@@ -15,8 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  const { baseUrl } = useRuntimeConfig();
-  const { siteTitle } = useAppConfig();
+  const { siteTitle, baseUrl} = useAppConfig();
   const { $urlFor } = useNuxtApp();
   const route = useRoute();
 

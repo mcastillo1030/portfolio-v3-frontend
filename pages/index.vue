@@ -24,9 +24,8 @@
 </template>
 
 <script setup lang="ts">
-  const { baseUrl } = useRuntimeConfig();
   const { $urlFor } = useNuxtApp();
-  const { siteTitle } = useAppConfig();
+  const { siteTitle, baseUrl } = useAppConfig();
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,

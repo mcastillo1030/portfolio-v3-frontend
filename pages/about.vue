@@ -11,8 +11,7 @@
 
 <script setup lang="ts">
   const { $urlFor } = useNuxtApp();
-  const { siteTitle } = useAppConfig();
-  const { baseUrl } = useRuntimeConfig();
+  const { siteTitle, baseUrl } = useAppConfig();
   const route = useRoute();
   const query = groq`*[_type == "page" && slug.current == "${route.name}"][0]{
     title, introHeading, introText,
