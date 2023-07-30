@@ -25,7 +25,9 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    baseUrl: 'https://marloncastillo.dev',
+    public: {
+      baseUrl: 'https://marloncastillo.dev',
+    }
   },
   sanity: {
     projectId: 'hcfjxht8',

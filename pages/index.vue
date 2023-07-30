@@ -25,7 +25,9 @@
 
 <script setup lang="ts">
   const { $urlFor } = useNuxtApp();
-  const { siteTitle, baseUrl } = useAppConfig();
+  const { siteTitle } = useAppConfig();
+  const config = useRuntimeConfig();
+  const { baseUrl } = config.public;
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,

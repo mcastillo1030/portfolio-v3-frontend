@@ -5,7 +5,8 @@
 </template>
 
 <script setup lang="ts">
-  const { baseUrl } = useAppConfig();
+  const runtimeConfig = useRuntimeConfig();
+  const { baseUrl } = runtimeConfig.public;
 
   defineProps<{
     href?: string;
