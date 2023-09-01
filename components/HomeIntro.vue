@@ -306,6 +306,10 @@
         opacity: 0,
         yPercent: 15,
       });
+
+      return () => {
+        gsap.set([container, image, text], { clearProps: 'all' });
+      };
     }, intro.value);
   });
 

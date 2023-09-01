@@ -89,7 +89,9 @@
       border-radius: .5rem;
       list-style: none;
       transform: translateY(-1rem);
-      filter: drop-shadow(0 0 .0625rem var(--c-foreground));
+      // filter: drop-shadow(0 0 .0625rem var(--c-foreground));
+      outline: 0.0625rem dotted  var(--c-foreground);
+      outline-offset: 0.0625rem;
       transition:
         opacity .2s ease-out,
         visibility .2s ease-out,

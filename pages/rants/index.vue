@@ -75,7 +75,7 @@
 
     setTimeout(() => {
       resultsLoading.value = false;
-    }, 500);
+    }, 1000);
   };
 
   const updatePage = async () => {

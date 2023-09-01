@@ -8,9 +8,9 @@
           <span class="post-listing__clear-text tooltip">Clear</span>
         </NuxtLink>
       </header>
-      <CliSpinner v-if="loading" class="post-listing__spinner" />
-      <div v-else class="post-listing__wrap">
-        <ul class="post-listing__posts" v-if="posts">
+      <div class="post-listing__wrap">
+        <CliSpinner class="post-listing__spinner" :class="loading ? 'visible' : ''" />
+        <ul class="post-listing__posts" :class="loading ? 'hidden' : ''" v-if="posts">
           <li class="post-listing__post" v-for="post in posts">
             <div class="post-listing__inner">
               <h3 v-if="category" class="post-listing__title gamma">
@@ -113,10 +113,34 @@
       transform: translate(calc(var(--hit-area) * -.5), calc((100% + .5rem) * -1));
     }
 
+    &__wrap {
+      position: relative;
+    }
+
+    &__spinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+
+      &.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
     &__posts {
       padding: 0;
       margin: 0;
       list-style: none;
+
+      &.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
 
     &__post {
@@ -214,21 +238,21 @@
 </style>
 
 <script setup lang="ts">
-  import scrollTo from '~/utils/smoothScroll.js';
+  // import scrollTo from '~/utils/smoothScroll.js';
 
   const gtm = useGtm();
-  const scroller = ref<NodeJS.Timeout|false>(false);
+  // const scroller = ref<NodeJS.Timeout|false>(false);
 
-  onUpdated(() => {
-    if (scroller.value) {
-      clearTimeout(scroller.value);
-    }
+  // onUpdated(() => {
+  //   if (scroller.value) {
+  //     clearTimeout(scroller.value);
+  //   }
 
-    scroller.value = setTimeout(() => {
-      scrollTo('.post-listing');
-      scroller.value = false;
-    }, 650);
-  });
+  //   scroller.value = setTimeout(() => {
+  //     scrollTo('.post-listing');
+  //     scroller.value = false;
+  //   }, 650);
+  // });
 
   defineProps<{
     posts?: Array<PostLineItem>;
