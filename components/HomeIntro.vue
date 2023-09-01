@@ -64,9 +64,8 @@
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
       padding: 0;
-      margin: 2rem 0 1.5625rem -1rem;
+      margin: 2rem 0 1.5625rem;
       gap: 1.125rem;
       list-style: none;
 
