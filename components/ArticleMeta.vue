@@ -76,8 +76,21 @@
       position: relative;
 
       &:hover {
-        cursor: help;
+        // cursor: help;
+        cursor: url('/img/cursors/help-dark.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/help-dark.png') 1x,
+            url('/img/cursors/help-dark@2x.png') 2x
+          ) 0 0, auto;
       }
+    }
+
+    .light-mode & &__technology:hover {
+      cursor: url('/img/cursors/help-light.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/help-light.png') 1x,
+          url('/img/cursors/help-light@2x.png') 2x
+        ) 0 0, auto;
     }
 
     &__icon {
@@ -248,7 +261,6 @@
   import { PortableTextBlock } from '@portabletext/types';
   import gsap from 'gsap';
   import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { e } from 'ofetch/dist/error-04138797';
 
   gsap.registerPlugin(ScrollToPlugin);
 

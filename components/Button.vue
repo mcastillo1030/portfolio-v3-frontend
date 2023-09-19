@@ -31,7 +31,12 @@
     text-decoration: none;
     text-transform: lowercase;
     line-height: 1;
-    cursor: pointer;
+    // cursor: pointer;
+    cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
+    cursor: -webkit-image-set(
+        url('/img/cursors/pointer-dark.png') 1x,
+        url('/img/cursors/pointer-dark@2x.png') 2x
+      ) 0 0, auto;
     box-shadow: 0 0 0 2px var(--border-color);
     transition:
       color .2s ease-out,
@@ -86,6 +91,14 @@
 
     &.flip &__icon--arrow {
       transform: rotate(180deg);
+    }
+
+    .light-mode & {
+      cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/pointer-light.png') 1x,
+          url('/img/cursors/pointer-light@2x.png') 2x
+        ) 0 0, auto;
     }
   }
 </style>

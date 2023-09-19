@@ -1,6 +1,7 @@
 <template>
   <div class="outline-image">
-    <figure v-if="caption" class="outline-image__figure">
+    <OutlineImageWrap :is-link="!!link" :href="link">
+      <figure v-if="caption" class="outline-image__figure">
       <img
         :src="buildSrc(assetId, width, height)"
         :alt="alt"
@@ -12,18 +13,19 @@
         class="outline-image__image"
       >
       <figcaption class="outline-image__caption" v-text="caption"></figcaption>
-    </figure>
-    <img
-      v-else
-      :src="buildSrc(assetId, width, height)"
-      :alt="alt"
-      :width="width"
-      :height="height"
-      :sizes="buildSizes(assetId, sizes)"
-      :srcset="buildSrcset(assetId, sizes, width, height)"
-      loading="lazy"
-      class="outline-image__image"
-    >
+      </figure>
+      <img
+        v-else
+        :src="buildSrc(assetId, width, height)"
+        :alt="alt"
+        :width="width"
+        :height="height"
+        :sizes="buildSizes(assetId, sizes)"
+        :srcset="buildSrcset(assetId, sizes, width, height)"
+        loading="lazy"
+        class="outline-image__image"
+      >
+    </OutlineImageWrap>
   </div>
 </template>
 
@@ -50,6 +52,22 @@
 
     &.accent::before {
       border-color: var(--c-accent-1);
+    }
+
+    &.overlay {
+      cursor: url('/img/cursors/load-dark.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/load-dark.png') 1x,
+          url('/img/cursors/load-dark@2x.png') 2x
+        ) 0 0, auto;
+    }
+
+    .light-mode &.overlay {
+      cursor: url('/img/cursors/load-light.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/load-light.png') 1x,
+          url('/img/cursors/load-light@2x.png') 2x
+        ) 0 0, auto;
     }
 
     &.overlay::after {
@@ -175,6 +193,7 @@
 
   defineProps<{
     assetId: string;
+    link?: string;
     alt?: string;
     width?: number;
     height?: number;

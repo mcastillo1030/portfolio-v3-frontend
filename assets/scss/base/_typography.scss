@@ -24,6 +24,19 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   transition: background-color .2s ease-out;
+  cursor: url('/img/cursors/auto-dark.png') 0 0, auto;
+  cursor: -webkit-image-set(
+      url('/img/cursors/auto-dark.png') 1x,
+      url('/img/cursors/auto-dark@2x.png') 2x
+    ) 0 0, auto;
+}
+
+body.light-mode {
+  cursor: url('/img/cursors/auto-light.png') 0 0, auto;
+  cursor: -webkit-image-set(
+      url('/img/cursors/auto-light.png') 1x,
+      url('/img/cursors/auto-light@2x.png') 2x
+    ) 0 0, auto;
 }
 
 p,
@@ -148,6 +161,11 @@ a {
   color: var(--c-action);
   text-underline-offset: .375em;
   text-decoration-thickness: 1px;
+  cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
+  cursor: -webkit-image-set(
+      url('/img/cursors/pointer-dark.png') 1x,
+      url('/img/cursors/pointer-dark@2x.png') 2x
+    ) 0 0, auto;
 
   &:hover {
     text-decoration: none;
@@ -157,6 +175,14 @@ a {
     outline: .125rem dashed var(--c-action);
     outline-offset: .125rem;
   }
+}
+
+.light-mode a {
+  cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
+  cursor: -webkit-image-set(
+      url('/img/cursors/pointer-light.png') 1x,
+      url('/img/cursors/pointer-light@2x.png') 2x
+    ) 0 0, auto;
 }
 
 address {

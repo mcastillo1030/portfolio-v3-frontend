@@ -10,6 +10,7 @@
           <OutlineImage
             v-if="project.mainImage"
             class="home-projects__image accent"
+            :link="`/projects/${project.slug.current}`"
             :asset-id="project.mainImage.assetId"
             :class="index % 2 === 0 ? 'reverse' : ''"
             :alt="project.mainImage.alt ? project.mainImage.alt : project.title"

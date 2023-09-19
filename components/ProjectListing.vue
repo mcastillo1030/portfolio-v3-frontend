@@ -5,12 +5,20 @@
       <div v-else class="project-listing__wrap">
         <ul v-if="projects" class="project-listing__projects">
           <li class="project-listing__project" v-for="project in projects">
-            <h2 class="project-listing__title delta">{{ project.title }}</h2>
+            <h2 class="project-listing__title delta">
+              <NuxtLink
+                :to="`/projects/${project.slug.current}`"
+                class="project-listing__title-link"
+                @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })">
+                {{ project.title }}
+              </NuxtLink>
+            </h2>
             <div class="project-listing__image-wrap">
               <IconsNavItem type="code" classes="project-listing__image-icon" />
               <OutlineImage
                 v-if="project.mainImage"
                 class="project-listing__image reverse"
+                :link="`/projects/${project.slug.current}`"
                 :asset-id="project.mainImage.assetId"
                 :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
                 :width="525"
@@ -66,7 +74,35 @@
 
     &__title {
       margin: 0 0 clamp(1rem, 2.561vw, 2.625rem);
+    }
+
+    &__title-link {
       color: var(--c-accent-2);
+      text-decoration: none;
+      cursor: url('/img/cursors/pointer-dark-reversed.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/pointer-dark-reversed.png') 1x,
+          url('/img/cursors/pointer-dark-reversed@2x.png') 2x
+        ) 0 0, auto;
+      transition: color .2s ease-out;
+
+      &:hover {
+        color: var(--c-foreground);
+        text-decoration: 1px underline var(--c-foreground);
+        cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-dark.png') 1x,
+            url('/img/cursors/pointer-dark@2x.png') 2x
+          ) 0 0, auto;
+      }
+    }
+
+    .light-mode & &__title-link {
+      cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/pointer-light.png') 1x,
+          url('/img/cursors/pointer-light@2x.png') 2x
+        ) 0 0, auto;
     }
 
     &__image-wrap {
