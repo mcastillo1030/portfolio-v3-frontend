@@ -54,22 +54,6 @@
       border-color: var(--c-accent-1);
     }
 
-    &.overlay {
-      cursor: url('/img/cursors/load-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/load-dark.png') 1x,
-          url('/img/cursors/load-dark@2x.png') 2x
-        ) 0 0, auto;
-    }
-
-    .light-mode &.overlay {
-      cursor: url('/img/cursors/load-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/load-light.png') 1x,
-          url('/img/cursors/load-light@2x.png') 2x
-        ) 0 0, auto;
-    }
-
     &.overlay::after {
       content: '';
       position: absolute;

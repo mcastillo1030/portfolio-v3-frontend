@@ -6,7 +6,7 @@
         <div class="home-intro__image-column">
           <OutlineImage
             v-if="image"
-            class="home-intro__image-wrap overlay"
+            class="home-intro__image-wrap overlay cursor-load"
             :asset-id="image.assetId"
             :alt="image.alt ? image.alt : 'Home Image'"
             :width="500"

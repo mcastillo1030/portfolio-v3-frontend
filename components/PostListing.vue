@@ -3,7 +3,7 @@
     <div class="container post-listing__container">
       <header v-if="category && category !== 'All'" class="post-listing__header">
         <h2  class="post-listing__category-title">Rants about "{{ category }}"</h2>
-        <NuxtLink to="/rants" class="post-listing__category-btn">
+        <NuxtLink to="/rants" class="post-listing__category-btn cursor-pointer cursor-pointer--contrast">
           <IconsMenuClose class="post-listing__clear-icon" />
           <span class="post-listing__clear-text tooltip">Clear</span>
         </NuxtLink>
@@ -35,7 +35,7 @@
                     <li class="post-listing__tag" v-for="category in post.categories">
                       <NuxtLink
                         :to="`/rants?category=${category.title}`"
-                        class="post-listing__tag-link"
+                        class="post-listing__tag-link cursor-pointer cursor-pointer--contrast"
                         @click="() => {
                           onTagClick && onTagClick(category.title);
                           gtm?.trackEvent({ action: 'click', event: 'post-listing-tag', value: category.title });
@@ -230,40 +230,8 @@
         }
       }
 
-      &__category-btn {
-        cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-contrast-dark.png') 1x,
-            url('/img/cursors/pointer-contrast-dark@2x.png') 2x
-          ) 0 0, auto;
-      }
-
-      .light-mode & &__category-btn {
-        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-contrast-light.png') 1x,
-            url('/img/cursors/pointer-contrast-light@2x.png') 2x
-          ) 0 0, auto;
-      }
-
       &__category-btn:hover &__clear-text {
         transform: translate(-50%, calc((100% + .5rem) * -1));
-      }
-
-      &__tag-link {
-        cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-contrast-dark.png') 1x,
-            url('/img/cursors/pointer-contrast-dark@2x.png') 2x
-          ) 0 0, auto;
-      }
-
-      .light-mode & &__tag-link {
-        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-contrast-light.png') 1x,
-            url('/img/cursors/pointer-contrast-light@2x.png') 2x
-          ) 0 0, auto;
       }
     }
   }

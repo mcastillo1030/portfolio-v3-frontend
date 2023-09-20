@@ -24,19 +24,6 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   transition: background-color .2s ease-out;
-  cursor: url('/img/cursors/auto-dark.png') 0 0, auto;
-  cursor: -webkit-image-set(
-      url('/img/cursors/auto-dark.png') 1x,
-      url('/img/cursors/auto-dark@2x.png') 2x
-    ) 0 0, auto;
-}
-
-body.light-mode {
-  cursor: url('/img/cursors/auto-light.png') 0 0, auto;
-  cursor: -webkit-image-set(
-      url('/img/cursors/auto-light.png') 1x,
-      url('/img/cursors/auto-light@2x.png') 2x
-    ) 0 0, auto;
 }
 
 p,

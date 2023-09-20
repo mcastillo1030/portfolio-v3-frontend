@@ -2,7 +2,7 @@
   <div class="contrast-toggle" :class="toggleOpen ? 'open' : ''" ref="toggleComp">
     <button
       type="button"
-      class="btn contrast-toggle__trigger"
+      class="btn contrast-toggle__trigger cursor-pointer"
       @click="toggleOpen = !toggleOpen"
     >
       <span class="contrast-toggle__trigger-label sr-only">Toggle light mode</span>
@@ -14,7 +14,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--dark"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--dark cursor-pointer"
           :class="colorMode === 'dark' ? 'active' : ''"
           @click="setColorMode('dark')"
         >
@@ -25,7 +25,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--light"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--light cursor-pointer"
           :class="colorMode === 'light' ? 'active' : ''"
           @click="setColorMode('light')"
         >
@@ -36,7 +36,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--auto"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--auto cursor-pointer"
           :class="colorMode === 'system' ? 'active' : ''"
           @click="setColorMode('system')"
         >
@@ -63,11 +63,6 @@
       justify-content: center;
       color: var(--c-action);
       // cursor: pointer;
-      cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-dark.png') 1x,
-          url('/img/cursors/pointer-dark@2x.png') 2x
-        ) 0 0, auto;
       transition: color .2s ease-out;
 
       &:hover {
@@ -78,16 +73,6 @@
         outline: .125rem dashed var(--c-action);
         outline-offset: .125rem;
       }
-    }
-
-    .light-mode & &__trigger {
-      cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-light.png') 1x,
-          url('/img/cursors/pointer-light@2x.png') 2x
-        ) 0 0, auto;
-
-
     }
 
     &__options {
@@ -146,11 +131,6 @@
       background: none;
       border: none;
       // cursor: pointer;
-      cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-dark.png') 1x,
-          url('/img/cursors/pointer-dark@2x.png') 2x
-        ) 0 0, auto;
       appearance: none;
       transition: color .2s ease-out;
 
@@ -166,14 +146,6 @@
         outline: .125rem solid var(--c-accent-2);
         outline-offset: .125rem;
       }
-    }
-
-    .light-mode & &__option-btn {
-      cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-light.png') 1x,
-          url('/img/cursors/pointer-light@2x.png') 2x
-        ) 0 0, auto;
     }
 
     &__option-label {

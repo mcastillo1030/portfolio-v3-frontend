@@ -1,7 +1,7 @@
 <template>
   <div class="highlight-code-block" v-if="code" ref="codeBlock">
     <span class="highlight-code-block__label">{{ filename ||language }}</span>
-    <button type="button" class="highlight-code-block__button" @click="copyToClipboard">
+    <button type="button" class="highlight-code-block__button cursor-pointer" @click="copyToClipboard">
       <span v-if="!copied" class="highlight-code-block__copy-action">
         <IconsCopy class="highlight-code-block__icon highlight-code-block__icon--copy" />
         <span class="highlight-code-block__button-label sr-only">Copy</span>
@@ -48,22 +48,9 @@
       border: none;
       border-radius: .5rem;
       // cursor: pointer;
-      cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-dark.png') 1x,
-          url('/img/cursors/pointer-dark@2x.png') 2x
-        ) 0 0, auto;
       transition:
         background-color .2s ease-out,
         opacity 0.2s ease-in-out;
-
-      .light-mode & {
-        cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-light.png') 1x,
-            url('/img/cursors/pointer-light@2x.png') 2x
-          ) 0 0, auto;
-      }
 
       &:focus,
       &:hover {

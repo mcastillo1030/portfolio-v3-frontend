@@ -52,6 +52,9 @@
     htmlAttrs: {
       lang: 'en',
     },
+    bodyAttrs: {
+      class: 'cursor-default',
+    },
     link: [
       computed(() => {
         return {

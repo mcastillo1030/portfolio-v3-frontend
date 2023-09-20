@@ -8,7 +8,7 @@
             <h2 class="project-listing__title delta">
               <NuxtLink
                 :to="`/projects/${project.slug.current}`"
-                class="project-listing__title-link"
+                class="project-listing__title-link cursor-pointer cursor-pointer--reversed"
                 @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })">
                 {{ project.title }}
               </NuxtLink>
@@ -79,11 +79,6 @@
     &__title-link {
       color: var(--c-accent-2);
       text-decoration: none;
-      cursor: url('/img/cursors/pointer-dark-reversed.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-dark-reversed.png') 1x,
-          url('/img/cursors/pointer-dark-reversed@2x.png') 2x
-        ) 0 0, auto;
       transition: color .2s ease-out;
 
       &:hover {

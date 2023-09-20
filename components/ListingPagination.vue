@@ -13,7 +13,7 @@
           <Button
             :disabled="loading"
             :pagination="true"
-            class="listing-pagination__btn reversed flip"
+            class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed flip"
           >Recent</Button>
         </li>
         <li
@@ -27,7 +27,7 @@
           <Button
             :disabled="loading"
             :pagination="true"
-            class="listing-pagination__btn reversed"
+            class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed"
           >Older</Button>
         </li>
       </ul>
@@ -59,22 +59,6 @@
       &--next {
         margin-left: auto;
       }
-    }
-
-    &__btn {
-      cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-contrast-dark.png') 1x,
-          url('/img/cursors/pointer-contrast-dark@2x.png') 2x
-        ) 0 0, auto;
-    }
-
-    .light-mode & &__btn {
-      cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-contrast-light.png') 1x,
-          url('/img/cursors/pointer-contrast-light@2x.png') 2x
-        ) 0 0, auto;
     }
   }
 </style>

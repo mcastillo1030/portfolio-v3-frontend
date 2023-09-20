@@ -251,11 +251,6 @@
 
       &__link {
         position: relative;
-        // cursor: url('/img/cursors/pointer-dark-reversed.png') 0 0, auto;
-        // cursor: -webkit-image-set(
-        //     url('/img/cursors/pointer-dark-reversed.png') 1x,
-        //     url('/img/cursors/pointer-dark-reversed@2x.png') 2x
-        //   ) 0 0, auto;
         transition: color .2s ease-out;
 
         &:hover {

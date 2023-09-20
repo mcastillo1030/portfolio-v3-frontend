@@ -3,7 +3,7 @@
     <div class="article-meta__stack" v-if="technologies">
       <h2 class="article-meta__stack-title zeta">Stack</h2>
       <ul class="article-meta__technologies">
-        <li class="article-meta__technology" v-for="technology in technologies">
+        <li class="article-meta__technology cursor-help" v-for="technology in technologies">
           <IconsTaxonomy :type="technology.icon" class="article-meta__icon" />
           <span class="article-meta__technology-text tooltip">{{ technology.title }}</span>
         </li>
@@ -15,7 +15,7 @@
         <li class="article-meta__tag" v-for="category in categories">
           <NuxtLink
             :to="`/rants?category=${category.title}`"
-            class="article-meta__tag-link"
+            class="article-meta__tag-link cursor-pointer cursor-pointer--contrast"
           >{{ category.title }}</NuxtLink>
         </li>
       </ul>
@@ -74,23 +74,6 @@
 
     &__technology {
       position: relative;
-
-      &:hover {
-        // cursor: help;
-        cursor: url('/img/cursors/help-dark.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/help-dark.png') 1x,
-            url('/img/cursors/help-dark@2x.png') 2x
-          ) 0 0, auto;
-      }
-    }
-
-    .light-mode & &__technology:hover {
-      cursor: url('/img/cursors/help-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/help-light.png') 1x,
-          url('/img/cursors/help-light@2x.png') 2x
-        ) 0 0, auto;
     }
 
     &__icon {
@@ -147,19 +130,6 @@
       font-size: .875rem;
       text-decoration-style: dashed;
       text-transform: lowercase;
-      cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-contrast-dark.png') 1x,
-          url('/img/cursors/pointer-contrast-dark@2x.png') 2x
-        ) 0 0, auto;
-
-      .light-mode & {
-        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-contrast-light.png') 1x,
-            url('/img/cursors/pointer-contrast-light@2x.png') 2x
-          ) 0 0, auto;
-      }
     }
 
     &__toc-nav {
