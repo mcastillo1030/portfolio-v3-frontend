@@ -147,6 +147,19 @@
       font-size: .875rem;
       text-decoration-style: dashed;
       text-transform: lowercase;
+      cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/pointer-contrast-dark.png') 1x,
+          url('/img/cursors/pointer-contrast-dark@2x.png') 2x
+        ) 0 0, auto;
+
+      .light-mode & {
+        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-contrast-light.png') 1x,
+            url('/img/cursors/pointer-contrast-light@2x.png') 2x
+          ) 0 0, auto;
+      }
     }
 
     &__toc-nav {

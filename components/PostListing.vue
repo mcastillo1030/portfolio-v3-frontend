@@ -230,29 +230,47 @@
         }
       }
 
+      &__category-btn {
+        cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-contrast-dark.png') 1x,
+            url('/img/cursors/pointer-contrast-dark@2x.png') 2x
+          ) 0 0, auto;
+      }
+
+      .light-mode & &__category-btn {
+        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-contrast-light.png') 1x,
+            url('/img/cursors/pointer-contrast-light@2x.png') 2x
+          ) 0 0, auto;
+      }
+
       &__category-btn:hover &__clear-text {
         transform: translate(-50%, calc((100% + .5rem) * -1));
+      }
+
+      &__tag-link {
+        cursor: url('/img/cursors/pointer-contrast-dark.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-contrast-dark.png') 1x,
+            url('/img/cursors/pointer-contrast-dark@2x.png') 2x
+          ) 0 0, auto;
+      }
+
+      .light-mode & &__tag-link {
+        cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-contrast-light.png') 1x,
+            url('/img/cursors/pointer-contrast-light@2x.png') 2x
+          ) 0 0, auto;
       }
     }
   }
 </style>
 
 <script setup lang="ts">
-  // import scrollTo from '~/utils/smoothScroll.js';
-
   const gtm = useGtm();
-  // const scroller = ref<NodeJS.Timeout|false>(false);
-
-  // onUpdated(() => {
-  //   if (scroller.value) {
-  //     clearTimeout(scroller.value);
-  //   }
-
-  //   scroller.value = setTimeout(() => {
-  //     scrollTo('.post-listing');
-  //     scroller.value = false;
-  //   }, 650);
-  // });
 
   defineProps<{
     posts?: Array<PostLineItem>;

@@ -47,10 +47,23 @@
       background: transparent;
       border: none;
       border-radius: .5rem;
-      cursor: pointer;
+      // cursor: pointer;
+      cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
+      cursor: -webkit-image-set(
+          url('/img/cursors/pointer-dark.png') 1x,
+          url('/img/cursors/pointer-dark@2x.png') 2x
+        ) 0 0, auto;
       transition:
         background-color .2s ease-out,
         opacity 0.2s ease-in-out;
+
+      .light-mode & {
+        cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
+        cursor: -webkit-image-set(
+            url('/img/cursors/pointer-light.png') 1x,
+            url('/img/cursors/pointer-light@2x.png') 2x
+          ) 0 0, auto;
+      }
 
       &:focus,
       &:hover {
@@ -92,6 +105,7 @@
         padding-top: 2rem;
         tab-size: 2;
         width: 100%;
+        font-family: var(--t-font);
       }
     }
   }
@@ -132,7 +146,7 @@
     copied.value = true;
     setTimeout(() => {
       copied.value = false;
-    }, 2000);
+    }, 1500);
   };
 
   const getHighlightedCode = (code: string, lang: string = 'javascript') => {
