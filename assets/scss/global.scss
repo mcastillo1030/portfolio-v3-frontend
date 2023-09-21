@@ -37,11 +37,11 @@
   }
 
   &-help {
-    cursor: url('/img/cursors/help-dark.png') 0 0, help;
+    cursor: url('/img/cursors/help-dark.png') 16 16, help;
     cursor: -webkit-image-set(
         url('/img/cursors/help-dark.png') 1x,
         url('/img/cursors/help-dark@2x.png') 2x
-      ) 0 0, help;
+      ) 16 16, help;
   }
 
   &-pointer {
@@ -93,51 +93,51 @@
   --c-header-bg: rgb(251, 251, 251, .7);
 
   &.cursor-default {
-    cursor: url('/img/cursors/auto-light.png') 0 0, auto;
+    cursor: url('/img/cursors/auto-light.png'), auto;
     cursor: -webkit-image-set(
         url('/img/cursors/auto-light.png') 1x,
         url('/img/cursors/auto-light@2x.png') 2x
-      ) 0 0, auto;
+      ), auto;
   }
 
   .cursor-help {
-    cursor: url('/img/cursors/help-light.png') 0 0, info;
+    cursor: url('/img/cursors/help-light.png') 16 16, info;
     cursor: -webkit-image-set(
         url('/img/cursors/help-light.png') 1x,
         url('/img/cursors/help-light@2x.png') 2x
-      ) 0 0, info;
+      ) 16 16, info;
   }
 
   .cursor-pointer {
-    cursor: url('/img/cursors/pointer-light.png') 0 0, pointer;
+    cursor: url('/img/cursors/pointer-light.png'), pointer;
     cursor: -webkit-image-set(
         url('/img/cursors/pointer-light.png') 1x,
         url('/img/cursors/pointer-light@2x.png') 2x
-      ) 0 0, pointer;
+      ), pointer;
   }
 
   .cursor-pointer--contrast {
-    cursor: url('/img/cursors/pointer-contrast-light.png') 0 0, pointer;
+    cursor: url('/img/cursors/pointer-contrast-light.png'), pointer;
     cursor: -webkit-image-set(
         url('/img/cursors/pointer-contrast-light.png') 1x,
         url('/img/cursors/pointer-contrast-light@2x.png') 2x
-      ) 0 0, pointer;
+      ), pointer;
   }
 
   .cursor-pointer--reversed {
-    cursor: url('/img/cursors/pointer-light-reversed.png') 0 0, pointer;
+    cursor: url('/img/cursors/pointer-light-reversed.png'), pointer;
     cursor: -webkit-image-set(
         url('/img/cursors/pointer-light-reversed.png') 1x,
         url('/img/cursors/pointer-light-reversed@2x.png') 2x
-      ) 0 0, pointer;
+      ), pointer;
   }
 
   .cursor-load {
-    cursor: url('/img/cursors/load-light.png') 0 0, wait;
+    cursor: url('/img/cursors/load-light.png'), wait;
     cursor: -webkit-image-set(
         url('/img/cursors/load-light.png') 1x,
         url('/img/cursors/load-light@2x.png') 2x
-      ) 0 0, wait;
+      ), wait;
   }
 }
 

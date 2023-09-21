@@ -51,6 +51,31 @@ h6,
 }
 
 p,
+figcaption,
+blockquote,
+address,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  cursor: url('/img/cursors/text-dark.png') 16 16, text;
+  cursor: -webkit-image-set(
+      url('/img/cursors/text-dark.png') 1x,
+      url('/img/cursors/text-dark@2x.png') 2x
+    ) 16 16, text;
+
+  .light-mode & {
+    cursor: url('/img/cursors/text-light.png') 16 16, text;
+    cursor: -webkit-image-set(
+        url('/img/cursors/text-light.png') 1x,
+        url('/img/cursors/text-light@2x.png') 2x
+      ) 16 16, text;
+  }
+}
+
+p,
 ul,
 ol,
 dl,
