@@ -32,7 +32,8 @@
       transition: opacity .2s ease-in-out;
     }
 
-    &:hover &__label {
+    &:hover &__label,
+    &:focus-within &__label {
       opacity: 0;
     }
 
@@ -68,7 +69,8 @@
       }
     }
 
-    &:hover &__button {
+    &:hover &__button,
+    &:focus-within &__button {
       opacity: 1;
     }
 
@@ -122,18 +124,21 @@
 
   const copyToClipboard = (e: MouseEvent) => {
     e.preventDefault();
+    const target = e.target as HTMLElement;
     const block = codeBlock.value?.querySelector('.highlight-code-block__code');
 
-    if (!block) {
+    if (!block || !target) {
       return;
     }
 
+    const button = target.closest('button');
     const text = block.textContent;
     navigator.clipboard.writeText(text || '');
     copied.value = true;
     setTimeout(() => {
       copied.value = false;
-    }, 1500);
+      button?.blur();
+    }, 1000);
   };
 
   const getHighlightedCode = (code: string, lang: string = 'javascript') => {
