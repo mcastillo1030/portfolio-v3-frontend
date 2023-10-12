@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     transpile: ['gsap'],
   },
   css: ['@/assets/scss/global.scss'],
+  devtools: {
+    enabled: false,
+  },
   gtm: {
     id: 'GTM-5L4X6GD',
     defer: true,
@@ -23,6 +26,11 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
     }
+  },
+  routeRules: {
+    '/index': {
+      swr: 3600,
+    },
   },
   runtimeConfig: {
     public: {
@@ -45,8 +53,5 @@ export default defineNuxtConfig({
         }
       }
     }
-  },
-  devtools: {
-    enabled: false,
   },
 })
