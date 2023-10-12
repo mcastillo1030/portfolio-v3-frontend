@@ -31,6 +31,21 @@ export default defineNuxtConfig({
     '/index': {
       swr: 3600,
     },
+    '/about': {
+      swr: 3600,
+    },
+    '/rants': {
+      swr: 3600,
+    },
+    '/rants/:id': {
+      swr: 3600,
+    },
+    '/projects': {
+      swr: 3600,
+    },
+    '/projects/:id': {
+      swr: 3600,
+    },
   },
   runtimeConfig: {
     public: {
