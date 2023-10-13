@@ -23,5 +23,8 @@
     "@sanity/image-url": "^1.0.2",
     "gsap": "npm:@gsap/shockingly@^3.11.5",
     "highlight.js": "^11.8.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
