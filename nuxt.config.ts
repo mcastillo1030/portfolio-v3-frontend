@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import localStorageDriver from "unstorage/drivers/localstorage";
+
 export default defineNuxtConfig({
   app: {
     pageTransition: {
@@ -25,6 +27,11 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
+    },
+    storage: {
+      cache: {
+        driver: localStorageDriver({ base: 'mcdev:'}),
+      },
     }
   },
   routeRules: {
