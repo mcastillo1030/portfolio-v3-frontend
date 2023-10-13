@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import localStorageDriver from "unstorage/drivers/localstorage";
+// import localStorageDriver from 'unstorage/drivers/localstorage';
 
 export default defineNuxtConfig({
   app: {
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
   css: ['@/assets/scss/global.scss'],
   devtools: {
-    enabled: false,
+    enabled: true,
   },
   gtm: {
     id: 'GTM-5L4X6GD',
@@ -28,37 +28,9 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
     },
-    storage: {
-      cache: {
-        driver: localStorageDriver({ base: 'mcdev:'}),
-      },
-    }
   },
   routeRules: {
-    '/index': {
-      swr: 3600,
-    },
-    '/about': {
-      swr: 3600,
-    },
-    '/rants': {
-      swr: 3600,
-    },
-    '/rants/:id': {
-      swr: 3600,
-    },
-    '/projects': {
-      swr: 3600,
-    },
-    '/projects/:id': {
-      swr: 3600,
-    },
-    '/img/**': {
-      swr: 3600,
-    },
-    '/_nuxt/**': {
-      swr: 3600,
-    }
+    '/img/**': { headers: { 'cache-control': `public,max-age=${365 * 24 * 60 * 60},s-maxage=${365 * 24 * 60 * 60}` } },
   },
   runtimeConfig: {
     public: {
