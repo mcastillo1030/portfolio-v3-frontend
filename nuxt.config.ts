@@ -46,6 +46,12 @@ export default defineNuxtConfig({
     '/projects/:id': {
       swr: 3600,
     },
+    '/img/**': {
+      swr: 3600,
+    },
+    '/_nuxt/**': {
+      swr: 3600,
+    }
   },
   runtimeConfig: {
     public: {
