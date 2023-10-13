@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
   css: ['@/assets/scss/global.scss'],
   devtools: {
-    enabled: true,
+    enabled: false,
   },
   gtm: {
     id: 'GTM-5L4X6GD',
