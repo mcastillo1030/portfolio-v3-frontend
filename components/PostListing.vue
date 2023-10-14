@@ -17,14 +17,14 @@
                 <LazyNuxtLink
                   :to="`/rants/${post.slug.current}`"
                   class="post-listing__link"
-                  @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
+                  @click="gtag('event', 'click', { target: post.title});"
                 >{{ post.title }}</LazyNuxtLink>
               </h3>
               <h2 v-else class="post-listing__title gamma">
                 <LazyNuxtLink
                   :to="`/rants/${post.slug.current}`"
                   class="post-listing__link"
-                  @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
+                  @click="gtag('event', 'click', { target: post.title});"
                 >{{ post.title }}</LazyNuxtLink>
               </h2>
               <div class="post-listing__meta">
@@ -38,7 +38,7 @@
                         class="post-listing__tag-link cursor-pointer cursor-pointer--contrast"
                         @click="() => {
                           onTagClick && onTagClick(category.title);
-                          gtm?.trackEvent({ action: 'click', event: 'post-listing-tag', value: category.title });
+                          gtag('event', 'click',{ 'value': category.title });
                         }"
                       >{{ category.title }}</NuxtLink>
                     </li>
@@ -238,9 +238,10 @@
 </style>
 
 <script setup lang="ts">
-  import { useGtm, dateFormatter } from '#imports';
+  import { dateFormatter } from '#imports';
 
-  const gtm = useGtm();
+  // const gtm = useGtm();
+  const { gtag } = useGtag();
 
   defineProps<{
     posts?: Array<PostLineItem>;

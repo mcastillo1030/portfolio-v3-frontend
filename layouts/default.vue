@@ -8,7 +8,8 @@
 
 <script lang="ts" setup>
   const colorMode = useColorMode();
-  const gtm = useGtm();
+  // const gtm = useGtm();
+  const { gtag } = useGtag();
   const route = useRoute();
 
   const parseColorMode = () => {
@@ -115,6 +116,6 @@
     const wantsMode = hasColorMode ? String(localStorage.getItem('color-mode')) : systemMode;
 
     changeColorMode(wantsMode);
-    gtm?.trackView(route.name as string, route.path);
+    gtag('event', 'screen_view', { 'name': route.name as string, 'path': route.path});
   });
 </script>

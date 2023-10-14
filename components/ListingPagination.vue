@@ -7,7 +7,8 @@
           v-if="currentPage > 1"
           @click="(evt) => {
             paginatePrev(evt);
-            gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage - 1});
+            // gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage - 1});
+            gtag('event', 'click', {'value': route.path, target: 'listing-pagination<'});
           }"
         >
           <LazyButton
@@ -21,7 +22,8 @@
           v-if="currentPage < totalPages"
           @click="(evt) => {
             paginateNext(evt);
-            gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage + 1});
+            // gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage + 1});
+            gtag('event', 'click',{'value': route.path, target: 'listing-pagination>'});
           }"
         >
           <LazyButton
@@ -64,9 +66,10 @@
 </style>
 
 <script setup lang="ts">
-import { useGtm, useRoute } from '#imports';
+  import { useRoute } from '#imports';
 
-  const gtm = useGtm();
+  // const gtm = useGtm();
+  const { gtag } = useGtag();
   const route = useRoute();
 
   defineProps<{

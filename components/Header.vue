@@ -26,7 +26,7 @@
                     :href="src"
                     target="_blank"
                     class="header__link"
-                    @click="gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' })"
+                    @click="gtag('event', 'click', {'value': 'resume', 'target': 'header-button'})"
                   >
                     <IconsNavItem :type="item.icon" classes="header__link-icon" />
                     <span class="header__link-text tooltip">{{ item.title }}</span>
@@ -67,7 +67,8 @@
                   class="header__item-link"
                   @click="() => {
                     menuState = 'closed';
-                    gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' });
+                    // gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' });
+                    gtag('event', 'click', {'value': 'resume', target: 'header-button'});
                   }"
                 >
                   <IconsNavItem :type="item.icon" classes="header__item-icon" />
@@ -454,7 +455,7 @@
     onUnmounted,
     ref,
     useAppLoading,
-    useGtm,
+    useGtag,
     useMenuState,
     useRoute,
     useSanityQuery,
@@ -465,7 +466,8 @@
   // State setup
   const loading = useAppLoading();
   const menuState = useMenuState();
-  const gtm = useGtm();
+  // const gtm = useGtm();
+  const { gtag } = useGtag();
   const route = useRoute();
 
   // API setup

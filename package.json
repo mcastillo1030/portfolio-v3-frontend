@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "nuxt": "^3.7.4",
+    "nuxt-gtag": "^1.1.1",
     "nuxt-simple-sitemap": "^3.0.13",
     "sass": "^1.62.1"
   },

@@ -15,13 +15,13 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
-  gtm: {
+  gtag: {
     id: 'GTM-5L4X6GD',
-    defer: true,
+    // defer: true,
   },
   modules: [
+    'nuxt-gtag',
     '@nuxtjs/sanity',
-    '@zadigetvoltaire/nuxt-gtm',
     'nuxt-simple-sitemap',
   ],
   nitro: {

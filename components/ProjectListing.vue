@@ -9,7 +9,7 @@
               <LazyNuxtLink
                 :to="`/projects/${project.slug.current}`"
                 class="project-listing__title-link cursor-pointer cursor-pointer--reversed"
-                @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })">
+                @click="gtag('event', 'click', { 'value': project.title })">
                 {{ project.title }}
               </LazyNuxtLink>
             </h2>
@@ -29,7 +29,7 @@
             <NuxtLink
               :to="`/projects/${project.slug.current}`"
               class="project-listing__link"
-              @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })"
+              @click="gtag('event', 'click', { 'value': project.title })"
             >Read about this project</NuxtLink>
             <LazyButton
               v-if="project.link"
@@ -37,7 +37,7 @@
               :href="project.link"
               external
               class="project-listing__button"
-              @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-button', value: project.title, target: project.link })"
+              @click="gtag('event', 'click', { 'value': project.title, 'target': project.link })"
             >View Project Site</LazyButton>
           </li>
         </ul>
@@ -202,13 +202,13 @@
 
 <script setup lang="ts">
   import {
-    useGtm,
     ref,
     onUpdated,
     smoothScroll as scrollTo
   } from '#imports';
 
-  const gtm = useGtm();
+  // const gtm = useGtm();
+  const { gtag } = useGtag();
   const scroller = ref<NodeJS.Timeout|false>(false);
 
   onUpdated(() => {
