@@ -4,7 +4,7 @@
       <div class="home-intro__wrap">
         <h2 class="sr-only home-intro__title">{{ title }}</h2>
         <div class="home-intro__image-column">
-          <OutlineImage
+          <LazyOutlineImage
             v-if="image"
             class="home-intro__image-wrap overlay cursor-load"
             :asset-id="image.assetId"
@@ -20,10 +20,10 @@
                 :href="link.url"
                 class="home-intro__contact-link"
               >
-                <IconsNavItem :type="link.icon" class="home-intro__contact-icon" />
+                <LazyIconsNavItem :type="link.icon" class="home-intro__contact-icon" />
                 <span class="home-intro__contact-text tooltip">{{ link.title }}</span>
               </a>
-              <SanityFile
+              <LazySanityFile
                 v-else
                 :asset-id="link.attachment?.asset._ref || 'null'"
                 download="marlon-castillo-resume.pdf"
@@ -34,7 +34,7 @@
                     <span class="home-intro__contact-text tooltip">{{ link.title }}</span>
                   </a>
                 </template>
-              </SanityFile>
+              </LazySanityFile>
             </li>
           </ul>
         </div>
@@ -266,6 +266,7 @@
 </style>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted, ref } from '#imports';
   import { PortableTextBlock } from '@portabletext/types';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';

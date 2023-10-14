@@ -1,7 +1,7 @@
 <template>
-  <NuxtLink v-if="href" :to="href" class="internal-link">
+  <LazyNuxtLink v-if="href" :to="href" class="internal-link">
     <slot />
-  </NuxtLink>
+  </LazyNuxtLink>
 </template>
 
 <script setup lang="ts">

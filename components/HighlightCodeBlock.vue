@@ -3,11 +3,11 @@
     <span class="highlight-code-block__label">{{ filename ||language }}</span>
     <button type="button" class="highlight-code-block__button cursor-pointer" @click="copyToClipboard">
       <span v-if="!copied" class="highlight-code-block__copy-action">
-        <IconsCopy class="highlight-code-block__icon highlight-code-block__icon--copy" />
+        <LazyIconsCopy class="highlight-code-block__icon highlight-code-block__icon--copy" />
         <span class="highlight-code-block__button-label sr-only">Copy</span>
       </span>
       <span v-else class="highlight-code-block__button-success">
-        <IconsCheck class="highlight-code-block__icon highlight-code-block__icon--success" />
+        <LazyIconsCheck class="highlight-code-block__icon highlight-code-block__icon--success" />
         <span class="highlight-code-block__button-label sr-only">Copied</span>
       </span>
     </button>
@@ -101,6 +101,7 @@
 </style>
 
 <script setup lang="ts">
+  import { ref } from '#imports';
   import hljs from 'highlight.js/lib/core';
   import javascript from 'highlight.js/lib/languages/javascript';
   import xml from 'highlight.js/lib/languages/xml';

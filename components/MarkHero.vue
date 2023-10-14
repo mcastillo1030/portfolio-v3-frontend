@@ -3,7 +3,7 @@
     <div class="container mark-hero__container">
       <div class="mark-hero__wrap">
         <IconsTerminalMark class="mark-hero__mark" />
-        <OutlineTitle v-if="title" :is-h1="true" :text="`${title}_`" class="mark-hero__title" />
+        <LazyOutlineTitle v-if="title" :is-h1="true" :text="`${title}_`" class="mark-hero__title" />
       </div>
     </div>
   </section>
@@ -33,8 +33,6 @@
 </style>
 
 <script lang="ts" setup>
-import { clamp } from 'gsap';
-
   defineProps<{
     title?: string
   }>();

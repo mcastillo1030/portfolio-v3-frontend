@@ -3,7 +3,7 @@
     <div class="article-content__container container">
       <div class="article-content__wrap">
         <div class="article-content__head">
-          <OutlineImage
+          <LazyOutlineImage
             v-if="image"
             class="article-content__image reverse"
             :asset-id="image.assetId"
@@ -12,15 +12,15 @@
             :height="600"
             :sizes="true"
           />
-          <Button
+          <LazyButton
             v-if="link"
             element="a"
             external
             :href="link"
             class="article-content__button"
-          >View Project</Button>
+          >View Project</LazyButton>
         </div>
-        <ArticleMeta
+        <LazyArticleMeta
           v-if="body || technologies"
           class="article-content__meta"
           :technologies="technologies"
@@ -28,7 +28,7 @@
           :content="body"
         />
         <div class="article-content__content" v-if="body">
-          <Wysiwyg class="v-article-content__wysiwyg" :body="body" />
+          <LazyWysiwyg class="v-article-content__wysiwyg" :body="body" />
         </div>
       </div>
     </div>

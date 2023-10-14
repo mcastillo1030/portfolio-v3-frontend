@@ -5,7 +5,7 @@
     :target="external ? '_blank' : '_self'"
     :class="`button cursor-pointer ${external ? 'button--external' : ''} ${classes}`"
   >
-    <IconsExternalLink v-if="external" classes="button__icon" />
+    <LazyIconsExternalLink v-if="external" classes="button__icon" />
     <slot />
   </a>
   <button
@@ -14,7 +14,7 @@
     :class="`button cursor-pointer ${external ? 'button--external' : (pagination ? 'button--pagination' : '')} ${classes}`"
     :disabled="disabled"
   >
-    <IconsArrow v-if="pagination" class="button__icon button__icon--arrow" />
+    <LazyIconsArrow v-if="pagination" class="button__icon button__icon--arrow" />
     <slot />
   </button>
 </template>
@@ -90,6 +90,8 @@
 </style>
 
 <script lang="ts">
+  import type { PropType } from 'nuxt/dist/app/compat/capi';
+
   type Buttontype = 'button' | 'submit' | 'reset';
 
   const props = {

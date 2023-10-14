@@ -1,5 +1,5 @@
-import { PortableTextBlock } from "@portabletext/types";
-
+import type { PortableTextBlock } from "@portabletext/types";
+import type { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
 export {};
 
 declare global {
@@ -158,4 +158,10 @@ declare global {
     currentPosts: Array<PostLineItem>;
     totalPosts: number;
   };
+
+  type ImgHelper = (id: string|undefined) => ImageUrlBuilder;
+
+  type ImgHelperPlugin = { $urlFor: ImgHelper };
+
+  type BaseUrl = { baseUrl: string };
 }

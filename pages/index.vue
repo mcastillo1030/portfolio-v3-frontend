@@ -24,10 +24,14 @@
 </template>
 
 <script setup lang="ts">
-  const { $urlFor } = useNuxtApp();
+  import type { NuxtApp } from 'nuxt/app';
+  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import { groq, useSeoMeta, useSanityQuery } from '#imports';
+
+  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
   const { siteTitle } = useAppConfig();
   const config = useRuntimeConfig();
-  const { baseUrl } = config.public;
+  const { baseUrl } = config.public as BaseUrl;
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,

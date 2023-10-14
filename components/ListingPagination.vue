@@ -10,11 +10,11 @@
             gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage - 1});
           }"
         >
-          <Button
+          <LazyButton
             :disabled="loading"
             :pagination="true"
             class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed flip"
-          >Recent</Button>
+          >Recent</LazyButton>
         </li>
         <li
           class="listing-pagination__button listing-pagination__button--next"
@@ -24,11 +24,11 @@
             gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage + 1});
           }"
         >
-          <Button
+          <LazyButton
             :disabled="loading"
             :pagination="true"
             class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed"
-          >Older</Button>
+          >Older</LazyButton>
         </li>
       </ul>
     </div>
@@ -64,6 +64,8 @@
 </style>
 
 <script setup lang="ts">
+import { useGtm, useRoute } from '#imports';
+
   const gtm = useGtm();
   const route = useRoute();
 

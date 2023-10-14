@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PortableTextMarkDefinition } from '@portabletext/types';
+  import type { PortableTextMarkDefinition } from '@portabletext/types';
 
   defineProps<{
     style: string;

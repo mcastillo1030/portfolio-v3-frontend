@@ -5,8 +5,10 @@
 </template>
 
 <script setup lang="ts">
+  import { useRuntimeConfig } from 'nuxt/app';
+
   const runtimeConfig = useRuntimeConfig();
-  const { baseUrl } = runtimeConfig.public;
+  const { baseUrl } = runtimeConfig.public as { baseUrl: string };
 
   defineProps<{
     href?: string;

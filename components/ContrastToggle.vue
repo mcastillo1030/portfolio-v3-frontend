@@ -190,6 +190,8 @@
 </style>
 
 <script lang="ts" setup>
+  import { onMounted, ref, useColorMode } from '#imports';
+
   const colorMode = useColorMode();
   const toggleComp = ref<HTMLElement>();
   const toggleOpen = ref<boolean>(false);

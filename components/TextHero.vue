@@ -6,7 +6,7 @@
       <div class="text-hero__meta" v-if="author || publishedAt">
         <p class="text-hero__date" v-if="publishedAt">Published {{ dateFormatter(publishedAt) }}</p>
         <div class="text-hero__author">
-          <SanityImage
+          <LazySanityImage
             v-if="author"
             :asset-id="author.image.assetId"
             :w="80"
@@ -21,7 +21,7 @@
                 height="80"
               />
             </template>
-          </SanityImage>
+          </LazySanityImage>
           <p class="text-hero__author-name" v-if="author">by {{ author.name }}</p>
         </div>
       </div>
@@ -69,6 +69,8 @@
 </style>
 
 <script setup lang="ts">
+  import { dateFormatter } from '#imports';
+
   defineProps<{
     title?: string;
     subtitle: string;

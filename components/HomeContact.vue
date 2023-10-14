@@ -13,10 +13,10 @@
                 target="_blank"
                 class="home-contact__link"
               >
-                <IconsNavItem :type="item.icon" classes="home-contact__icon" />
+                <LazyIconsNavItem :type="item.icon" classes="home-contact__icon" />
                 <span class="home-contact__text">{{ item.title }}</span>
               </a>
-              <SanityFile
+              <LazySanityFile
                 v-else
                 :asset-id="item.attachment?.asset._ref || 'null'"
                 download="marlon-castillo-resume.pdf"
@@ -27,7 +27,7 @@
                     <span class="home-contact__text">{{ item.title }}</span>
                   </a>
                 </template>
-              </SanityFile>
+              </LazySanityFile>
             </li>
           </ul>
         </div>
@@ -132,6 +132,7 @@
 </style>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted, ref } from '#imports';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

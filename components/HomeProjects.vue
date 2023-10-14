@@ -7,7 +7,7 @@
       </header>
       <ul class="home-projects__list" v-if="projects">
         <li class="home-projects__item" v-for="(project, index) in projects">
-          <OutlineImage
+          <LazyOutlineImage
             v-if="project.mainImage"
             class="home-projects__image accent"
             :link="`/projects/${project.slug.current}`"
@@ -22,7 +22,7 @@
             <h3 class="home-projects__project-title epsilon">{{ project.title }}</h3>
             <p class="home-projects__project-excerpt">{{ project.excerpt }}</p>
             <NuxtLink :to="`/projects/${project.slug.current}`" class="home-projects__project-link">Read about this project</NuxtLink>
-            <Button v-if="project.link" element="a" :href="project.link" external class="home-projects__button">View Project Site</Button>
+            <LazyButton v-if="project.link" element="a" :href="project.link" external class="home-projects__button">View Project Site</LazyButton>
           </div>
         </li>
       </ul>
@@ -203,6 +203,7 @@
 </style>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted, ref } from '#imports';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

@@ -13,10 +13,10 @@
                 class="footer__link"
                 :href="item.url"
               >
-                <IconsNavItem :type="item.icon" classes="footer__icon" />
+                <LazyIconsNavItem :type="item.icon" classes="footer__icon" />
                 <span class="footer__link-label tooltip">{{ item.title }}</span>
               </a>
-              <SanityFile
+              <LazySanityFile
                 v-else
                 :asset-id="item.attachment?.asset._ref || 'null'"
                 download="marlon-castillo-resume.pdf"
@@ -30,7 +30,7 @@
                     <span class="footer__link-label tooltip">{{ item.title }}</span>
                   </a>
                 </template>
-              </SanityFile>
+              </LazySanityFile>
             </li>
           </ul>
         </nav>
@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+  import { useSanityQuery, groq } from '#imports';
+
   const query = groq`*[_type == 'contactLink' && inFooter == true]{
     linkType, title, icon, url, attachment
   }`;

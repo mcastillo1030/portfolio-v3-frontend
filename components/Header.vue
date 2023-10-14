@@ -9,15 +9,15 @@
         <nav class="header__nav" aria-label="Main Menu">
           <ul v-if="data !== null" class="header__list">
             <li v-for="item in data.links" class="header__item">
-              <NuxtLink
+              <LazyNuxtLink
                 v-if="item.type === 'link'"
                 class="header__link"
                 :to="`/${item.link.slug.current}`"
               >
                 <IconsNavItem :type="item.icon" classes="header__link-icon" />
                 <span class="header__link-text tooltip">{{ item.title }}</span>
-              </NuxtLink>
-              <SanityFile
+              </LazyNuxtLink>
+              <LazySanityFile
                 v-else
                 :asset-id="item.attachment?.asset._ref || 'null'"
                 download="marlon-castillo-resume.pdf"
@@ -32,7 +32,7 @@
                     <span class="header__link-text tooltip">{{ item.title }}</span>
                   </a>
                 </template>
-              </SanityFile>
+              </LazySanityFile>
             </li>
           </ul>
         </nav>
@@ -448,6 +448,18 @@
 </style>
 
 <script setup lang="ts">
+  import {
+    groq,
+    onMounted,
+    onUnmounted,
+    ref,
+    useAppLoading,
+    useGtm,
+    useMenuState,
+    useRoute,
+    useSanityQuery,
+    watch
+  } from '#imports';
   import { gsap } from 'gsap';
 
   // State setup
@@ -492,7 +504,7 @@
     }
   };
 
-  watch(menuState, (newVal) => toggleMenu(newVal));
+  watch(menuState, (newVal: string) => toggleMenu(newVal));
 
   onMounted(() => {
     const getScrollProgress = () => {

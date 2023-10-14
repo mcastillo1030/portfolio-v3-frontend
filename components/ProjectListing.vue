@@ -1,17 +1,17 @@
 <template>
   <section class="project-listing">
     <div class="container project-listing__container">
-      <CliSpinner v-if="loading" class="project-listing__spinner" />
+      <LazyCliSpinner v-if="loading" class="project-listing__spinner" />
       <div v-else class="project-listing__wrap">
         <ul v-if="projects" class="project-listing__projects">
           <li class="project-listing__project" v-for="project in projects">
             <h2 class="project-listing__title delta">
-              <NuxtLink
+              <LazyNuxtLink
                 :to="`/projects/${project.slug.current}`"
                 class="project-listing__title-link cursor-pointer cursor-pointer--reversed"
                 @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })">
                 {{ project.title }}
-              </NuxtLink>
+              </LazyNuxtLink>
             </h2>
             <div class="project-listing__image-wrap">
               <IconsNavItem type="code" classes="project-listing__image-icon" />
@@ -31,14 +31,14 @@
               class="project-listing__link"
               @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-link', value: project.title })"
             >Read about this project</NuxtLink>
-            <Button
+            <LazyButton
               v-if="project.link"
               element="a"
               :href="project.link"
               external
               class="project-listing__button"
               @click="gtm?.trackEvent({ action: 'click', event: 'project-listing-button', value: project.title, target: project.link })"
-            >View Project Site</Button>
+            >View Project Site</LazyButton>
           </li>
         </ul>
         <div class="project-listing__no-results" v-else>
@@ -201,7 +201,12 @@
 </style>
 
 <script setup lang="ts">
-  import scrollTo from '~/utils/smoothScroll.js';
+  import {
+    useGtm,
+    ref,
+    onUpdated,
+    smoothScroll as scrollTo
+  } from '#imports';
 
   const gtm = useGtm();
   const scroller = ref<NodeJS.Timeout|false>(false);

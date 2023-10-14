@@ -16,10 +16,20 @@
 </template>
 
 <script setup lang="ts">
-  const { $urlFor } = useNuxtApp();
+  import type { NuxtApp } from 'nuxt/app';
+  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import {
+    groq,
+    useSeoMeta,
+    useSanityQuery,
+    useRoute,
+    ref,
+  } from '#imports';
+
+  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
   const { siteTitle } = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
-  const { baseUrl } = runtimeConfig.public;
+  const { baseUrl } = runtimeConfig.public as BaseUrl;
   const route = useRoute();
 
   // SEO

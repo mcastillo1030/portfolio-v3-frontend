@@ -5,8 +5,8 @@
     @click="toggleMenu"
   >
     <span class="menu-toggle__label sr-only">Toggle menu</span>
-    <IconsMenuOpen v-if="menuState === 'closed'" classes="menu-toggle__icon" />
-    <IconsMenuClose v-else classes="menu-toggle__icon" />
+    <LazyIconsMenuOpen v-if="menuState === 'closed'" classes="menu-toggle__icon" />
+    <LazyIconsMenuClose v-else classes="menu-toggle__icon" />
   </button>
 </template>
 
@@ -32,6 +32,8 @@
 </style>
 
 <script lang="ts" setup>
+  import { useMenuState } from '#imports';
+
   const menuState = useMenuState();
   const toggleMenu = () => {
     menuState.value = menuState.value === 'closed' ? 'open' : 'closed';

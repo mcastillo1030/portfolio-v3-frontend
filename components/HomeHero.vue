@@ -5,7 +5,7 @@
       <div class="home-hero__wrap">
         <ul class="home-hero__icons" v-if="icons">
           <li class="home-hero__icon-item" :class="index === 0 ? 'active' : ''" v-for="(item, index) in icons">
-            <IconsTaxonomy :type="item" class="home-hero__icon" />
+            <LazyIconsTaxonomy :type="item" class="home-hero__icon" />
           </li>
         </ul>
         <p class="home-hero__subtitle">{{ subtitle }}</p>
@@ -135,6 +135,7 @@
 
 <script setup lang="ts">
   import { gsap } from 'gsap';
+  import { onMounted, onUnmounted, ref } from '#imports';
 
   // gsap setup
   const hero     = ref<HTMLElement>();

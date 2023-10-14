@@ -11,11 +11,20 @@
 </template>
 
 <script setup lang="ts">
+  import type { NuxtApp } from 'nuxt/app';
+  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import {
+    groq,
+    useSeoMeta,
+    useSanityQuery,
+    useRoute,
+  } from '#imports';
+
   const route = useRoute();
   const { siteTitle } = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
-  const { baseUrl } = runtimeConfig.public;
-  const { $urlFor } = useNuxtApp();
+  const { baseUrl } = runtimeConfig.public as BaseUrl;
+  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
 
   const slug = route.params.id;
   const query = groq`*[_type == 'project' && slug.current == "${slug}"][0]{

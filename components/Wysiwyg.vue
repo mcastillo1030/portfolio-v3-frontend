@@ -7,6 +7,7 @@
 <script setup lang="ts">
   import type { Serializers } from '@nuxtjs/sanity/dist/runtime/components/sanity-content';
   import type { PortableTextBlock } from '@portabletext/types';
+  import { resolveComponent } from '#imports';
 
   const serializers:Serializers = {
     types: {

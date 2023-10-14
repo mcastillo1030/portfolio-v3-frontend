@@ -15,10 +15,19 @@
 </template>
 
 <script setup lang="ts">
+  import type { NuxtApp } from 'nuxt/app';
+  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import {
+    groq,
+    useSeoMeta,
+    useSanityQuery,
+    useRoute,
+  } from '#imports';
+
   const { siteTitle} = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
   const { baseUrl } = runtimeConfig.public;
-  const { $urlFor } = useNuxtApp();
+  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
   const route = useRoute();
 
   const slug = route.params.id;

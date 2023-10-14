@@ -3,11 +3,7 @@
     <div class="container">
       <div class="text-card__wrap">
         <h2 class="text-card__title">{{ title }}</h2>
-        <!-- <div class="text-card__text">{{ text }}</div> -->
-        <!-- <div class="text-card__text wysiwyg">
-          <SanityContent :blocks="text" />
-        </div> -->
-        <Wysiwyg class="text-card__text" :body="text" v-if="text" />
+        <LazyWysiwyg class="text-card__text" :body="text" v-if="text" />
       </div>
     </div>
   </section>
@@ -56,8 +52,7 @@
 </style>
 
 <script setup lang="ts">
-import type { PortableTextBlock } from '@portabletext/types';
-import Wysiwyg from './Wysiwyg.vue';
+  import type { PortableTextBlock } from '@portabletext/types';
 
   defineProps<{
     title?: string;

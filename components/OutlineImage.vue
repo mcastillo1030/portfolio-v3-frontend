@@ -2,17 +2,17 @@
   <div class="outline-image">
     <OutlineImageWrap :is-link="!!link" :href="link">
       <figure v-if="caption" class="outline-image__figure">
-      <img
-        :src="buildSrc(assetId, width, height)"
-        :alt="alt"
-        :width="width"
-        :height="height"
-        :sizes="buildSizes(assetId, sizes)"
-        :srcset="buildSrcset(assetId, sizes, width, height)"
-        loading="lazy"
-        class="outline-image__image"
-      >
-      <figcaption class="outline-image__caption" v-text="caption"></figcaption>
+        <img
+          :src="buildSrc(assetId, width, height)"
+          :alt="alt"
+          :width="width"
+          :height="height"
+          :sizes="buildSizes(assetId, sizes)"
+          :srcset="buildSrcset(assetId, sizes, width, height)"
+          loading="lazy"
+          class="outline-image__image"
+        >
+        <figcaption class="outline-image__caption" v-text="caption"></figcaption>
       </figure>
       <img
         v-else
@@ -113,8 +113,11 @@
 </style>
 
 <script setup lang="ts">
-  const { $urlFor } = useNuxtApp();
-  const { imageSizes } = useAppConfig();
+  import type { NuxtApp } from 'nuxt/app';
+  import { useAppConfig, useNuxtApp } from 'nuxt/app';
+
+  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
+  const { imageSizes } = useAppConfig() as { imageSizes: number[] };
 
   const buildSrc = (id: string, width: number|undefined, height: number|undefined) => {
     return width && height ? $urlFor(id).size(width, height).dpr(2).url() : $urlFor(id).auto('format').dpr(2).url()

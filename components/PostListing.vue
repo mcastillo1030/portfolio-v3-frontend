@@ -3,10 +3,10 @@
     <div class="container post-listing__container">
       <header v-if="category && category !== 'All'" class="post-listing__header">
         <h2  class="post-listing__category-title">Rants about "{{ category }}"</h2>
-        <NuxtLink to="/rants" class="post-listing__category-btn cursor-pointer cursor-pointer--contrast">
+        <LazyNuxtLink to="/rants" class="post-listing__category-btn cursor-pointer cursor-pointer--contrast">
           <IconsMenuClose class="post-listing__clear-icon" />
           <span class="post-listing__clear-text tooltip">Clear</span>
-        </NuxtLink>
+        </LazyNuxtLink>
       </header>
       <div class="post-listing__wrap">
         <CliSpinner class="post-listing__spinner" :class="loading ? 'visible' : ''" />
@@ -14,18 +14,18 @@
           <li class="post-listing__post" v-for="post in posts">
             <div class="post-listing__inner">
               <h3 v-if="category" class="post-listing__title gamma">
-                <NuxtLink
+                <LazyNuxtLink
                   :to="`/rants/${post.slug.current}`"
                   class="post-listing__link"
                   @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
-                >{{ post.title }}</NuxtLink>
+                >{{ post.title }}</LazyNuxtLink>
               </h3>
               <h2 v-else class="post-listing__title gamma">
-                <NuxtLink
+                <LazyNuxtLink
                   :to="`/rants/${post.slug.current}`"
                   class="post-listing__link"
                   @click="gtm?.trackEvent({action: 'click', event: 'post-listing-link', target: post.title});"
-                >{{ post.title }}</NuxtLink>
+                >{{ post.title }}</LazyNuxtLink>
               </h2>
               <div class="post-listing__meta">
                 <p class="post-listing__date">Posted {{ dateFormatter(post.publishedAt) }}</p>
@@ -238,6 +238,8 @@
 </style>
 
 <script setup lang="ts">
+  import { useGtm, dateFormatter } from '#imports';
+
   const gtm = useGtm();
 
   defineProps<{

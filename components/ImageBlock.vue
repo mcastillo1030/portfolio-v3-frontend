@@ -1,5 +1,5 @@
 <template>
-  <OutlineImage
+  <LazyOutlineImage
     v-if="asset._ref"
     class="project-content__image reverse"
     :asset-id="asset._ref"
