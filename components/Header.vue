@@ -20,11 +20,11 @@
               <LazySanityFile
                 v-else
                 :asset-id="item.attachment?.asset._ref || 'null'"
-                download="marlon-castillo-resume.pdf"
               >
                 <template #default="{src}">
                   <a
                     :href="src"
+                    target="_blank"
                     class="header__link"
                     @click="gtm?.trackEvent({ action: 'click', event: 'header-button', value: 'resume', target: 'document' })"
                   >

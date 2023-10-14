@@ -66,7 +66,7 @@
 
     const { data: d, pending: p } = await useSanityQuery<Array<PostLineItem>>(q, {}, {server: false});
 
-    posts.value = d.value;
+    posts.value = d.value as Array<PostLineItem>;
     resultsLoading.value = p.value;
 
     [...posts.value].forEach(post => {
@@ -109,7 +109,7 @@
 
     const { data: d } = await useSanityQuery<PostsPageResponse>(q);
 
-    posts.value = d.value.currentPosts;
+    posts.value = d.value.currentPosts as Array<PostLineItem>;
 
     [...posts.value].forEach(post => {
       if (!post.categories) {
@@ -213,7 +213,7 @@
 
   resultsLoading.value = pending.value;
   pageTitle.value = data.value.page.title;
-  posts.value = data.value.currentPosts
+  posts.value = data.value.currentPosts as Array<PostLineItem>;
   totalPosts = data.value.totalPosts;
   totalPages = Math.ceil(totalPosts / pageSize);
 

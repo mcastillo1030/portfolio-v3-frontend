@@ -155,12 +155,14 @@
       const mark = self.selector('.home-hero__watermark');
       const wrap = self.selector('.home-hero__wrap');
       const iconsTl = gsap.timeline({repeat: -1});
-      const heroTl = gsap.timeline();
+      const heroTl = gsap.timeline({
+        paused: true,
+      });
 
       heroTl
         .addLabel('start')
         .to(container, {
-          delay: .3,
+          // delay: .3,
           opacity: 1,
           onComplete: () => {
             container[0].classList.remove('home-hero__container--loading');
@@ -235,6 +237,10 @@
       } else {
         skillsTl.value?.play('start');
       }
+    });
+
+    document.addEventListener('spinner:complete', () => {
+      skillsTl.value?.play('start');
     });
   });
 

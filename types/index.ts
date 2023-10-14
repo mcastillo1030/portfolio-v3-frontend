@@ -43,11 +43,13 @@ declare global {
     publishedAt: string;
   }
 
+  type PostCategory = {_id: string, title: string};
+
   type PostLineItem = SanityDocument & {
     title: string;
     slug: Slug;
     publishedAt: string;
-    categories: Array<{_id: string, title: string}>;
+    categories: Array<PostCategory>;
     excerpt: string|null;
   }
 

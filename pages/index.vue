@@ -20,18 +20,20 @@
       :subtitle="data.contactSubhead"
       :items="data.contactItems"
     />
+    <HomeLoading :visibilityString="visibility" />
   </main>
 </template>
 
 <script setup lang="ts">
   import type { NuxtApp } from 'nuxt/app';
   import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
-  import { groq, useSeoMeta, useSanityQuery } from '#imports';
+  import { groq, useSeoMeta, useSanityQuery, definePageMeta } from '#imports';
 
   const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
   const { siteTitle } = useAppConfig();
   const config = useRuntimeConfig();
   const { baseUrl } = config.public as BaseUrl;
+  const visibility = useLoadingVisibility();
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,
@@ -70,6 +72,23 @@
     seoTitle, seoDescription, seoImage,
   }`;
   const { data } = await useSanityQuery<SanityPage>(query);
+
+  definePageMeta({
+    middleware: [
+      (to, from) => {
+        if (from.path === to.path) {
+          return;
+        }
+
+        if ( to.path === '/' ) {
+          const loadingVisibility = useLoadingVisibility();
+          loadingVisibility.value = 'hidden';
+        }
+
+        return;
+      }
+    ]
+  });
 
   useSeoMeta({
     title: data.value.seoTitle + ' | ' + siteTitle,
