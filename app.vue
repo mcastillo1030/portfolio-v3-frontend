@@ -1,8 +1,6 @@
 <template>
   <NuxtLayout>
-    <NuxtPage :transition="{
-      onBeforeLeave: closeMenu,
-    }" />
+    <NuxtPage :transition="{ onBeforeLeave: closeMenu }" />
   </NuxtLayout>
 </template>
 
