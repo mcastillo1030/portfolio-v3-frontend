@@ -3,7 +3,8 @@
     <div class="container home-loading__container">
       <h2 class="home-loading__title">
         <CliSpinner aria-hidden="true" />
-        <div class="home-loading__text">{{phrase}}</div>
+        <!-- <div class="home-loading__text">{{phrase}}</div> -->
+        <div class="home-loading__text" v-for="phrase in phrases">{{phrase}}</div>
       </h2>
     </div>
   </div>
@@ -26,19 +27,49 @@
       flex-direction: column;
       align-items: flex-start;
     }
+
+    &__text {
+      display: none;
+
+      &.active {
+        display: block;
+      }
+    }
   }
 </style>
 
 <script setup lang="ts">
-  import { onMounted, ref, useLoadingPhrase } from '#imports';
+  import { onMounted, ref } from '#imports';
   import { gsap } from 'gsap';
 
-  const phrase = useLoadingPhrase();
+  // const phrase = useLoadingPhrase();
+  const phrases = [
+    'Please hold while I finish my coffee...',
+    'Loading the loading screen...',
+    'Generating witty dialog...',
+    'Keep calm and wait...',
+    'Fixing the flux capacitor...',
+    'Wait, do you smell something burning?',
+    'Whatever you do, don\'t look behind you...',
+    'Feel free to spin in circles until I\'m done...',
+    'Updating to Windows Vista...',
+    'You seem like a nice person...',
+    'You are number 2843684714 in the queue...',
+    'TODO: Insert elevator music...',
+  ];
   const loading = ref<HTMLElement>();
   let ctx: gsap.Context;
 
   onMounted(() => {
     const event = new CustomEvent('spinner:complete');
+    const idx = Math.floor(Math.random() * phrases.length);
+    const texts = loading.value?.querySelectorAll('.home-loading__text') || [];
+    // unhide a random phrase
+    [...texts].forEach((text, i) => {
+      if (i === idx) {
+        text.classList.add('active');
+      }
+    });
 
     ctx = gsap.context((self) => {
       if (!self.selector) {
