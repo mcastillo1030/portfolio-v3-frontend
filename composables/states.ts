@@ -11,6 +11,8 @@ export const useColorMode = () => useState<string>('colorMode', () => {
 
 export const useMenuState = () => useState<string>('menuState', () => 'closed');
 
+export const useMenuAccordionState = () => useState<string>('menuAnimationState', () => 'closed');
+
 export const usePagesConsumed = () => useState<number>('pagesConsumed', () => 0);
 
 export const useAppLoading = () => useState<boolean>('appLoading', () => false);

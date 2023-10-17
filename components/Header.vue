@@ -459,13 +459,15 @@
     useMenuState,
     useRoute,
     useSanityQuery,
-    watch
+    watch,
+    useMenuAccordionState
   } from '#imports';
   import { gsap } from 'gsap';
 
   // State setup
   const loading = useAppLoading();
   const menuState = useMenuState();
+  const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
@@ -621,13 +623,23 @@
             duration: 0.5,
             ease: 'power2.inOut',
           },
+          onStart: () => {
+            // if reversed, do nothing
+            if (tl.value?.reversed()) {
+              return;
+            }
+
+            accordionState.value = 'open';
+          },
           onComplete: () => {
             document.dispatchEvent(new Event('menu:opened'));
             header.value?.setAttribute('data-menu-open', 'true');
+
           },
           onReverseComplete: () => {
             document.dispatchEvent(new Event('menu:closed'));
             header.value?.setAttribute('data-menu-open', 'false');
+            accordionState.value = 'closed';
           },
         })
         .to(menu, {

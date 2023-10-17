@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
   const colorMode = useColorMode();
-  const menuState = useMenuState();
+  const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
@@ -105,7 +105,7 @@
       computed(() => {
         let content = parseColorMode() === 'light' ? '#fbfbfb' : '#011627';
 
-        if (menuState.value === 'open') {
+        if (accordionState.value === 'open') {
           content = parseColorMode() === 'light' ? '#e0e0e0' : '#1d3b53';
         }
 
