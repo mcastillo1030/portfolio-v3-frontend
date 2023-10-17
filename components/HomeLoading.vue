@@ -3,7 +3,6 @@
     <div class="container home-loading__container">
       <h2 class="home-loading__title">
         <CliSpinner aria-hidden="true" />
-        <!-- <div class="home-loading__text">{{phrase}}</div> -->
         <div class="home-loading__text" v-for="phrase in phrases">{{phrase}}</div>
       </h2>
     </div>

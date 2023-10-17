@@ -25,14 +25,17 @@
       animation-delay: 0s;
 
       &:nth-child(2) {
+        opacity: 0;
         animation-delay: 0.25s;
       }
 
       &:nth-child(3) {
+        opacity: 0;
         animation-delay: .5s;
       }
 
       &:nth-child(4) {
+        opacity: 0;
         animation-delay: .75s;
       }
     }
