@@ -3,7 +3,9 @@
     <div class="container home-loading__container">
       <h2 class="home-loading__title">
         <CliSpinner aria-hidden="true" />
-        <div class="home-loading__text" v-for="phrase in phrases">{{phrase}}</div>
+        <div class="home-loading__text-grid">
+          <div class="home-loading__text" inert visibility="hidden" aria-hidden="true" v-for="phrase in phrases">{{phrase}}</div>
+        </div>
       </h2>
     </div>
   </div>
@@ -27,11 +29,21 @@
       align-items: flex-start;
     }
 
+    &__text-grid {
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 100%;
+    }
+
     &__text {
-      display: none;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      opacity: 0;
+      z-index: -1;
 
       &.active {
-        display: block;
+        opacity: 1;
+        z-index: 1;
       }
     }
   }
@@ -67,6 +79,9 @@
     [...texts].forEach((text, i) => {
       if (i === idx) {
         text.classList.add('active');
+        text.removeAttribute('inert');
+        text.removeAttribute('visibility');
+        text.setAttribute('aria-hidden', 'false');
       }
     });
 
