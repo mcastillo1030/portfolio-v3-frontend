@@ -10,14 +10,14 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "@types/node": "^18",
+    "@types/node": "^20.8.7",
     "nuxt": "^3.7.4",
     "nuxt-gtag": "^1.1.1",
     "nuxt-simple-sitemap": "^3.0.13",
-    "sass": "^1.62.1"
+    "sass": "^1.69.4"
   },
   "dependencies": {
-    "@nuxt/devtools": "^0.6.0",
+    "@nuxt/devtools": "^1.0.0",
     "@nuxtjs/sanity": "^1.7.2",
     "@sanity/client": "^6.1.2",
     "@sanity/image-url": "^1.0.2",
@@ -25,6 +25,6 @@
     "highlight.js": "^11.8.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }
