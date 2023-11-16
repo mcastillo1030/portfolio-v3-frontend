@@ -1,15 +1,20 @@
-import type { PortableTextBlock } from "@portabletext/types";
-import type { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
+import type { PortableTextBlock } from '@portabletext/types';
 export {};
 
 declare global {
   interface SanityField {
-    _ref?: string;
-    _type?: string;
+    _ref: string;
+    _type: string;
   }
 
   interface Slug extends SanityField {
     current: string;
+  }
+
+  interface Element {
+    removeEventListener(type: 'click', listener: (event: MouseEvent) => any, options?: boolean | EventListenerOptions): void;
+    addEventListener(type: 'keyup', listener: (event: KeyboardEvent) => any, options?: boolean | EventListenerOptions): void;
+    removeEventListener(type: 'keyup', listener: (event: KeyboardEvent) => any, options?: boolean | EventListenerOptions): void;
   }
 
   interface SanityDocument extends SanityField {
@@ -161,9 +166,20 @@ declare global {
     totalPosts: number;
   };
 
-  type ImgHelper = (id: string|undefined) => ImageUrlBuilder;
-
-  type ImgHelperPlugin = { $urlFor: ImgHelper };
+  // type ImgHelper = (id: string|undefined) => ImageUrlBuilder;
 
   type BaseUrl = { baseUrl: string };
+}
+
+declare module 'nuxt/schema' {
+  interface AppConfig {
+    siteTitle: string;
+    imageSizes: number[];
+    ogWidth: number;
+    ogHeight: number;
+    pageSizes: {
+      projects: number;
+      rants: number;
+    };
+  }
 }

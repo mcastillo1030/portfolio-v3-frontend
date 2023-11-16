@@ -192,7 +192,7 @@
 </style>
 
 <script lang="ts" setup>
-  import { onMounted, ref, useColorMode } from '#imports';
+  import { onMounted, onUnmounted, ref, useColorMode } from '#imports';
 
   const colorMode = useColorMode();
   const toggleComp = ref<HTMLElement>();
@@ -204,29 +204,39 @@
     toggleOpen.value = false;
   }
 
-  onMounted(() => {
-    document.addEventListener('click', (evt) => {
-      const { target } = evt;
+  const handleContrastClick = (evt: MouseEvent) => {
+    const { target } = evt;
 
-      if (toggleComp.value?.contains(target as Node)) {
-        return;
-      }
+    if (toggleComp.value?.contains(target as Node)) {
+      return;
+    }
 
+    toggleOpen.value = false;
+  };
+
+  const handleContrastFocus = (evt: FocusEvent) => {
+    const { target } = evt;
+
+    if (!toggleComp.value?.contains(target as Node) && toggleOpen.value) {
       toggleOpen.value = false;
-    });
+    }
+  };
 
-    document.addEventListener('focusin', (evt) => {
-      const { target } = evt;
+  const handleContrastKeyup = (evt: KeyboardEvent) => {
+    if (evt.key === 'Escape') {
+      toggleOpen.value = false;
+    }
+  };
 
-      if (!toggleComp.value?.contains(target as Node) && toggleOpen.value) {
-        toggleOpen.value = false;
-      }
-    });
+  onMounted(() => {
+    document.addEventListener('click', handleContrastClick);
+    document.addEventListener('focusin', handleContrastFocus);
+    document.addEventListener('keyup', handleContrastKeyup);
+  });
 
-    document.addEventListener('keyup', (evt) => {
-      if (evt.key === 'Escape') {
-        toggleOpen.value = false;
-      }
-    });
+  onUnmounted(() => {
+    document.removeEventListener('click', handleContrastClick);
+    document.removeEventListener('focusin', handleContrastFocus);
+    document.removeEventListener('keyup', handleContrastKeyup);
   });
 </script>

@@ -111,13 +111,8 @@
       bottom: 100%;
       left: 50%;
       z-index: 2;
-      // padding: .5rem .75rem;
       color: var(--c-background);
-      // font-size: .875rem;
-      // line-height: 0.86;
-      // text-transform: lowercase;
       opacity: 0;
-      // border-radius: .5rem;
       background: var(--c-accent-2);
       transform: translate(-50%, -.5rem);
       transition:

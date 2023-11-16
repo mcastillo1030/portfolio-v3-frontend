@@ -12,16 +12,16 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.7",
-    "nuxt": "^3.7.4",
+    "nuxt": "^3.8.0",
     "nuxt-gtag": "^1.1.1",
     "nuxt-simple-sitemap": "^3.0.13",
     "sass": "^1.69.4"
   },
   "dependencies": {
     "@nuxt/devtools": "^1.0.0",
+    "@nuxt/image": "^1.0.0",
     "@nuxtjs/sanity": "^1.7.2",
     "@sanity/client": "^6.1.2",
-    "@sanity/image-url": "^1.0.2",
     "gsap": "npm:@gsap/shockingly@^3.11.5",
     "highlight.js": "^11.8.0"
   },

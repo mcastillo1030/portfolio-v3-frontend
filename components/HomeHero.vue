@@ -140,11 +140,25 @@
   // gsap setup
   const hero     = ref<HTMLElement>();
   const skillsTl = ref<GSAPTimeline>();
+
+  // variables
   let ctx: gsap.Context;
+  let motionQuery: MediaQueryList;
+
+  // Events setup
+  const handleMotionChange = (e: MediaQueryListEvent) => {
+    if (e.matches) {
+      skillsTl.value?.pause('start');
+    } else {
+      skillsTl.value?.play('start');
+    }
+  };
+  const handleSpinnerComplete = () => {
+    skillsTl.value?.play('start');
+  };
 
   onMounted(() => {
-    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
+    motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     ctx = gsap.context((self) => {
       if (!self.selector) {
         return;
@@ -231,21 +245,15 @@
       skillsTl.value?.pause();
     }
 
-    motionQuery.addEventListener('change', (e) => {
-      if (e.matches) {
-        skillsTl.value?.pause('start');
-      } else {
-        skillsTl.value?.play('start');
-      }
-    });
+    motionQuery?.addEventListener('change', handleMotionChange);
 
-    document.addEventListener('spinner:complete', () => {
-      skillsTl.value?.play('start');
-    });
+    document.addEventListener('spinner:complete', handleSpinnerComplete);
   });
 
   onUnmounted(() => {
     ctx.revert();
+    motionQuery?.removeEventListener('change', handleMotionChange);
+    document.removeEventListener('spinner:complete', handleSpinnerComplete);
   });
 
   defineProps<{

@@ -10,12 +10,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { NuxtApp } from 'nuxt/app';
-  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
-  import { groq, useSeoMeta, useSanityQuery, useRoute } from '#imports';
+  import { useAppConfig, useRuntimeConfig } from 'nuxt/app';
+  import { groq, useSeoMeta, useSanityQuery, useRoute, useImage } from '#imports';
 
-  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
-  const { siteTitle } = useAppConfig();
+  const img = useImage();
+  const { siteTitle, ogWidth: width, ogHeight: height } = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
   const { baseUrl } = runtimeConfig.public as BaseUrl;
   const route = useRoute();
@@ -35,8 +34,8 @@
     twitterDescription: data.value.seoDescription,
     ogDescription: data.value.seoDescription,
     ogUrl: baseUrl + route.path,
-    ogImage: data.value.seoImage ? $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
-    twitterImage: data.value.seoImage ? $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
+    ogImage: data.value.seoImage ? img(data.value.seoImage.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
+    twitterImage: data.value.seoImage ? img(data.value.seoImage.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
   });
 </script>

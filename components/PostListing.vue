@@ -238,7 +238,7 @@
 </style>
 
 <script setup lang="ts">
-  import { dateFormatter } from '#imports';
+  import { dateFormatter, useGtag } from '#imports';
 
   // const gtm = useGtm();
   const { gtag } = useGtag();

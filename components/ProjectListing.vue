@@ -204,10 +204,10 @@
   import {
     ref,
     onUpdated,
+    useGtag,
     smoothScroll as scrollTo
   } from '#imports';
 
-  // const gtm = useGtm();
   const { gtag } = useGtag();
   const scroller = ref<NodeJS.Timeout|false>(false);
 
@@ -223,7 +223,7 @@
   });
 
   defineProps<{
-    projects?: Array<ProjectLineItem>;
+    projects?: ProjectLineItem[];
     loading?: boolean;
   }>();
 </script>

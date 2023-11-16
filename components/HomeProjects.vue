@@ -1,34 +1,36 @@
 <template>
   <section class="home-projects" ref="hpProjects">
     <div class="container home-projects__container">
-      <header class="home-projects__header">
-        <h2 v-if="title" class="home-projects__title">{{ title }}</h2>
-        <NuxtLink to="/projects" class="home-projects__listing-link">View More</NuxtLink>
-      </header>
-      <ul class="home-projects__list" v-if="projects">
-        <li class="home-projects__item" v-for="(project, index) in projects">
-          <LazyOutlineImage
-            v-if="project.mainImage"
-            class="home-projects__image accent"
-            :link="`/projects/${project.slug.current}`"
-            :asset-id="project.mainImage.assetId"
-            :class="index % 2 === 0 ? 'reverse' : ''"
-            :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
-            :width="380"
-            :height="380"
-            :sizes="true"
-          />
-          <div class="home-projects__content">
-            <h3 class="home-projects__project-title epsilon">{{ project.title }}</h3>
-            <p class="home-projects__project-excerpt">{{ project.excerpt }}</p>
-            <NuxtLink :to="`/projects/${project.slug.current}`" class="home-projects__project-link">Read about this project</NuxtLink>
-            <LazyButton v-if="project.link" element="a" :href="project.link" external class="home-projects__button">View Project Site</LazyButton>
-          </div>
-        </li>
-      </ul>
-      <div class="home-projects__none" v-else>
-        <h3 class="home-projects__none-title delta">Nothing to see here...yet</h3>
-        <p class="home-projects__none-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+      <div class="home-projects__wrap">
+        <header class="home-projects__header">
+          <h2 v-if="title" class="home-projects__title">{{ title }}</h2>
+          <NuxtLink to="/projects" class="home-projects__listing-link">View More</NuxtLink>
+        </header>
+        <ul class="home-projects__list" v-if="projects">
+          <li class="home-projects__item" v-for="(project, index) in projects">
+            <LazyOutlineImage
+              v-if="project.mainImage"
+              class="home-projects__image accent"
+              :link="`/projects/${project.slug.current}`"
+              :asset-id="project.mainImage.assetId"
+              :class="index % 2 === 0 ? 'reverse' : ''"
+              :alt="project.mainImage.alt ? project.mainImage.alt : project.title"
+              :width="380"
+              :height="380"
+              :sizes="true"
+            />
+            <div class="home-projects__content">
+              <h3 class="home-projects__project-title epsilon">{{ project.title }}</h3>
+              <p class="home-projects__project-excerpt">{{ project.excerpt }}</p>
+              <NuxtLink :to="`/projects/${project.slug.current}`" class="home-projects__project-link">Read about this project</NuxtLink>
+              <LazyButton v-if="project.link" element="a" :href="project.link" external class="home-projects__button">View Project Site</LazyButton>
+            </div>
+          </li>
+        </ul>
+        <div class="home-projects__none" v-else>
+          <h3 class="home-projects__none-title delta">Nothing to see here...yet</h3>
+          <p class="home-projects__none-sub">Still working on getting you &#x2728;fresh&#x2728; content.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -218,14 +220,14 @@
       }
 
       const container = self.selector('.home-projects__container');
-      gsap.from(container, {
+      const content = self.selector('.home-projects__wrap');
+      gsap.from(content, {
         opacity: 0,
         yPercent: 10,
         scrollTrigger: {
-          trigger: hpProjects.value,
+          trigger: container[0],
           start: 'top bottom-=15%',
-          end: '+=100px',
-          scrub: true,
+          end: '+=1px',
           toggleActions: 'play none none reverse',
         }
       })

@@ -86,11 +86,10 @@
   import type { PortableTextBlock } from '@portabletext/types';
 
   defineProps<{
-    // project?: SanityProject;
     image?: CustomSanityImage;
-    body?: Array<PortableTextBlock>;
+    body?: PortableTextBlock[];
     link?: string;
-    technologies?: Array<ProjectTechnology>;
+    technologies?: ProjectTechnology[];
     categories?: Array<{_id: string, title: string}>;
   }>();
 </script>

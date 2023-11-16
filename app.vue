@@ -20,6 +20,7 @@
 </style>
 
 <script setup lang="ts">
+  import { useMenuState } from '#imports';
   const menuState = useMenuState();
 
   const closeMenu = () => {

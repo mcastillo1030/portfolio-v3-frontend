@@ -20,20 +20,27 @@
       :subtitle="data.contactSubhead"
       :items="data.contactItems"
     />
-    <HomeLoading :visibilityString="visibility" />
+    <HomeLoading :visibilityString="loadingVisibility" />
   </main>
 </template>
 
 <script setup lang="ts">
-  import type { NuxtApp } from 'nuxt/app';
-  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
-  import { groq, useSeoMeta, useSanityQuery, definePageMeta } from '#imports';
+  import { useAppConfig, useRuntimeConfig } from 'nuxt/app';
+  import {
+    groq,
+    useSeoMeta,
+    useSanityQuery,
+    definePageMeta,
+    useLoadingVisibility,
+useImage,
+  } from '#imports';
+  import type { RouteLocationNormalized } from '#vue-router';
 
-  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
-  const { siteTitle } = useAppConfig();
+  const img = useImage();
+  const { siteTitle, ogWidth: width, ogHeight: height } = useAppConfig();
   const config = useRuntimeConfig();
   const { baseUrl } = config.public as BaseUrl;
-  const visibility = useLoadingVisibility();
+  const loadingVisibility = useLoadingVisibility();
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,
@@ -75,7 +82,7 @@
 
   definePageMeta({
     middleware: [
-      (to, from) => {
+      (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
         if (from.path === to.path) {
           return;
         }
@@ -98,8 +105,8 @@
     twitterDescription: data.value.seoDescription,
     ogUrl: baseUrl,
     ogDescription: data.value.seoDescription,
-    ogImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
-    twitterImage: $urlFor(data.value.seoImage.asset._ref).size(1200, 628).url(),
+    ogImage: img(data.value.seoImage.asset._ref, {width, height}),
+    twitterImage: img(data.value.seoImage.asset._ref, {width, height}),
     twitterCard: 'summary_large_image',
   });
 </script>

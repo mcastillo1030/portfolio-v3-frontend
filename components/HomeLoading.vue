@@ -16,7 +16,13 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
+    height: 100vh;
+    background: var(--c-background);
     transform: translate(-50%, -50%);
 
     &.hidden {
@@ -50,10 +56,9 @@
 </style>
 
 <script setup lang="ts">
-  import { onMounted, ref } from '#imports';
+  import { onMounted, onUnmounted, ref } from '#imports';
   import { gsap } from 'gsap';
 
-  // const phrase = useLoadingPhrase();
   const phrases = [
     'Please hold while I finish my coffee...',
     'Loading the loading screen...',

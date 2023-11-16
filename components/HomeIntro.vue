@@ -267,7 +267,7 @@
 
 <script setup lang="ts">
   import { onMounted, onUnmounted, ref } from '#imports';
-  import { PortableTextBlock } from '@portabletext/types';
+  import type { PortableTextBlock } from '@portabletext/types';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

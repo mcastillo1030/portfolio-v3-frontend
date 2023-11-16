@@ -19,9 +19,16 @@ export default defineNuxtConfig({
     id: 'GTM-5L4X6GD',
     // defer: true,
   },
+  image: {
+    provider: 'sanity',
+    sanity: {
+      projectId: 'hcfjxht8',
+    },
+  },
   modules: [
     'nuxt-gtag',
     '@nuxtjs/sanity',
+    '@nuxt/image',
     'nuxt-simple-sitemap',
   ],
   nitro: {

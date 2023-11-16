@@ -5,7 +5,7 @@
         <h2 class="list-card__title">{{ title }}</h2>
         <ul class="list-card__list" v-if="items">
           <li class="list-card__item" v-for="item in items">
-            <IconsEducation :type="item.type" class="list-card__icon" />
+            <LazyIconsEducation :type="item.type" class="list-card__icon" />
             <span class="list-card__item-content">
               <span class="list-card__item-title">{{ item.title }}</span>
               <span class="list-card__item-specialty zeta">{{ item.specialization }}</span>

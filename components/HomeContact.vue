@@ -1,37 +1,39 @@
 <template>
   <section class="home-contact" ref="contact">
     <div class="container home-contact__container">
-      <h2 v-if="title" class="home-contact__title">{{ title }}</h2>
-      <div class="home-contact__columns">
-        <div class="home-contact__list-wrap">
-          <h3 v-if="subtitle" class="home-contact__subtitle">{{ subtitle }}</h3>
-          <ul class="home-contact__list" v-if="items">
-            <li class="home-contact__item" v-for="item in items">
-              <a
-                v-if="item.linkType === 'url'"
-                :href="item.url"
-                target="_blank"
-                class="home-contact__link"
-              >
-                <LazyIconsNavItem :type="item.icon" classes="home-contact__icon" />
-                <span class="home-contact__text">{{ item.title }}</span>
-              </a>
-              <LazySanityFile
-                v-else
-                :asset-id="item.attachment?.asset._ref || 'null'"
-                download="marlon-castillo-resume.pdf"
-              >
-                <template #default="{src}">
-                  <a :href="src" class="home-contact__link">
-                    <IconsNavItem :type="item.icon" classes="home-contact__icon" />
-                    <span class="home-contact__text">{{ item.title }}</span>
-                  </a>
-                </template>
-              </LazySanityFile>
-            </li>
-          </ul>
+      <div class="home-contact__wrap">
+        <h2 v-if="title" class="home-contact__title">{{ title }}</h2>
+        <div class="home-contact__columns">
+          <div class="home-contact__list-wrap">
+            <h3 v-if="subtitle" class="home-contact__subtitle">{{ subtitle }}</h3>
+            <ul class="home-contact__list" v-if="items">
+              <li class="home-contact__item" v-for="item in items">
+                <a
+                  v-if="item.linkType === 'url'"
+                  :href="item.url"
+                  target="_blank"
+                  class="home-contact__link"
+                >
+                  <LazyIconsNavItem :type="item.icon" classes="home-contact__icon" />
+                  <span class="home-contact__text">{{ item.title }}</span>
+                </a>
+                <LazySanityFile
+                  v-else
+                  :asset-id="item.attachment?.asset._ref || 'null'"
+                  download="marlon-castillo-resume.pdf"
+                >
+                  <template #default="{src}">
+                    <a :href="src" class="home-contact__link">
+                      <IconsNavItem :type="item.icon" classes="home-contact__icon" />
+                      <span class="home-contact__text">{{ item.title }}</span>
+                    </a>
+                  </template>
+                </LazySanityFile>
+              </li>
+            </ul>
+          </div>
+          <IconsContactGraphic class="home-contact__graphic" />
         </div>
-        <IconsContactGraphic class="home-contact__graphic" />
       </div>
     </div>
   </section>
@@ -147,14 +149,14 @@
       }
 
       const container = self.selector('.home-contact__container');
-      gsap.from(container, {
+      const content = self.selector('.home-contact__wrap');
+      gsap.from(content, {
         opacity: 0,
         yPercent: 10,
         scrollTrigger: {
-          trigger: contact.value,
+          trigger: container[0],
           start: 'top bottom-=15%',
-          end: '+=100px',
-          scrub: true,
+          end: '+=1px',
           toggleActions: 'play none none reverse',
         }
       })

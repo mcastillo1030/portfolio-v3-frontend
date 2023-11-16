@@ -1,4 +1,5 @@
-import { RouteMiddleware, defineNuxtRouteMiddleware } from 'nuxt/app';
+import type { RouteMiddleware } from 'nuxt/app';
+import { defineNuxtRouteMiddleware } from 'nuxt/app';
 
 const preventCatNavigation: RouteMiddleware = (to, from) => {
   const isCategoryDirect =

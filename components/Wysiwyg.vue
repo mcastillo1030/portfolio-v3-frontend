@@ -9,7 +9,7 @@
   import type { PortableTextBlock } from '@portabletext/types';
   import { resolveComponent } from '#imports';
 
-  const serializers:Serializers = {
+  const serializers: Serializers = {
     types: {
       image: resolveComponent('ImageBlock'),
       link: resolveComponent('ExternalLink'),

@@ -6,22 +6,14 @@
       <div class="text-hero__meta" v-if="author || publishedAt">
         <p class="text-hero__date" v-if="publishedAt">Published {{ dateFormatter(publishedAt) }}</p>
         <div class="text-hero__author">
-          <LazySanityImage
+          <LazyNuxtImg
             v-if="author"
-            :asset-id="author.image.assetId"
-            :w="80"
-            :h="80"
-          >
-            <template #default="{src}">
-              <img
-                :src="src"
-                :alt="author.image.alt ? author.image.alt : author.name + 'Avatar'"
-                class="text-hero__author-image"
-                width="80"
-                height="80"
-              />
-            </template>
-          </LazySanityImage>
+            :src="author.image.assetId"
+            :width="80"
+            :height="80"
+            :alt="author.image.alt ? author.image.alt : author.name + 'Avatar'"
+            class="text-hero__author-image"
+          />
           <p class="text-hero__author-name" v-if="author">by {{ author.name }}</p>
         </div>
       </div>

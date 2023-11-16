@@ -7,7 +7,6 @@
           v-if="currentPage > 1"
           @click="(evt) => {
             paginatePrev(evt);
-            // gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage - 1});
             gtag('event', 'click', {'value': route.path, target: 'listing-pagination<'});
           }"
         >
@@ -22,7 +21,6 @@
           v-if="currentPage < totalPages"
           @click="(evt) => {
             paginateNext(evt);
-            // gtm?.trackEvent({ action: 'click', event: 'listing-pagination', value: route.path, target: currentPage + 1});
             gtag('event', 'click',{'value': route.path, target: 'listing-pagination>'});
           }"
         >
@@ -66,9 +64,8 @@
 </style>
 
 <script setup lang="ts">
-  import { useRoute } from '#imports';
+  import { useRoute, useGtag } from '#imports';
 
-  // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
 

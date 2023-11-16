@@ -241,9 +241,10 @@
 
 
 <script setup lang="ts">
-  import { PortableTextBlock } from '@portabletext/types';
-  import gsap from 'gsap';
+  import { ref, onMounted, onUnmounted, watch } from '#imports';
+  import type { PortableTextBlock } from '@portabletext/types';
   import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+  import gsap from 'gsap';
 
   gsap.registerPlugin(ScrollToPlugin);
 
@@ -254,7 +255,7 @@
   let ctx: gsap.Context;
   // let isAnimating: boolean = false;
 
-  const getBuiltTree = (content: Array<PortableTextBlock>) => {
+  const getBuiltTree = (content: PortableTextBlock[]) => {
     const validHeadings = ['h2', 'h3', 'h4'];
     const headings = content.filter((block) => {
       if (!block.style) {
@@ -382,6 +383,21 @@
     tl.value.play();
   };
 
+  const linkClickHandler = (e: MouseEvent) => {
+    e.preventDefault();
+
+    const href = (e.target as HTMLAnchorElement).getAttribute('href');
+    const target = document.querySelector(href as string);
+    gsap.to(window, {
+      duration: .5,
+      scrollTo: {
+        y: target as HTMLElement,
+        offsetY: 100,
+      },
+      ease: 'power2.out',
+    });
+  };
+
   onMounted(() => {
     ctx = gsap.context((self) => {
       if (!self.selector) {
@@ -395,26 +411,24 @@
         tl.value = buildTimeline(menu[0], items, open.value);
 
         [...links].forEach((link) => {
-          link.addEventListener('click', (e: MouseEvent) => {
-            e.preventDefault();
-
-            const href = (e.target as HTMLAnchorElement).getAttribute('href');
-            const target = document.querySelector(href as string);
-            gsap.to(window, {
-              duration: .5,
-              scrollTo: {
-                y: target as HTMLElement,
-                offsetY: 100,
-              },
-              ease: 'power2.out',
-            });
-          });
+          link.addEventListener('click', linkClickHandler);
         });
     }, meta.value);
   });
 
   onUnmounted(() => {
     ctx.revert();
+    const links = meta.value?.querySelectorAll('.article-meta__toc-link');
+
+    if (links?.length) {
+      [...links].forEach((link) => {
+        if (!link) {
+          return;
+        }
+
+        (link as Element).removeEventListener('click', linkClickHandler);
+      });
+    }
   });
 
   watch(open, (val) => {
@@ -427,8 +441,8 @@
   });
 
   defineProps<{
-    technologies?: Array<ProjectTechnology>,
+    technologies?: ProjectTechnology[],
     categories?: Array<{_id: string, title: string}>,
-    content?: Array<PortableTextBlock>,
+    content?: PortableTextBlock[],
   }>();
 </script>

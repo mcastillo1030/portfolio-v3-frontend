@@ -16,18 +16,18 @@
 </template>
 
 <script setup lang="ts">
-  import type { NuxtApp } from 'nuxt/app';
-  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import { useAppConfig, useRuntimeConfig } from 'nuxt/app';
   import {
     groq,
     useSeoMeta,
     useSanityQuery,
     useRoute,
     ref,
+useImage,
   } from '#imports';
 
-  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
-  const { siteTitle } = useAppConfig();
+  const img = useImage();
+  const { siteTitle, ogWidth: width, ogHeight: height } = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
   const { baseUrl } = runtimeConfig.public as BaseUrl;
   const route = useRoute();
@@ -44,7 +44,7 @@
   const page = ref<number>(1);
 
   // Vars
-  const pageSize = 4;
+  const { pageSizes } = useAppConfig();
   let totalPages = 1;
   let totalProjects: number;
 
@@ -56,13 +56,13 @@
 
     resultsLoading.value = true;
 
-    const { data: d, pending: p } = await useSanityQuery<Array<ProjectLineItem>>(q);
+    const { data: d, pending: p } = await useSanityQuery<ProjectLineItem[]>(q);
 
     projects.value = d.value;
     resultsLoading.value = p.value;
 
     if (reverseOrdering)  {
-      projects.value = projects.value.reverse();
+      projects.value = projects.value?.reverse() ?? [];
     }
 
     setTimeout(() => {
@@ -75,7 +75,6 @@
       return;
     }
 
-    // resultsLoading.value = true;
     const timestamp = dir === 'newer' ?
       projects.value[0].publishedAt :
       projects.value[projects.value.length - 1].publishedAt;
@@ -91,7 +90,7 @@
           publishedAt == "${timestamp}" &&
           _id ${dir === 'newer' ? '>' : '<'} "${id}"
         )
-      )]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'}) [0...${pageSize}]{
+      )]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'}) [0...${pageSizes.projects}]{
       _id,publishedAt, slug, title, link, excerpt, mainImage{
         alt,caption,'assetId': asset._ref,
       }}`;
@@ -103,8 +102,6 @@
     } else {
       page.value++;
     }
-
-    // resultsLoading.value = false;
   };
 
   const getOlderProjects = (e: MouseEvent) => {
@@ -118,7 +115,6 @@
   };
 
   // Init
-  // initPage();
   const query = groq`{
     'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
       title,seoTitle,seoDescription,seoImage
@@ -126,7 +122,7 @@
     'currentProjects': *[
       _type == 'project' &&
       !(_id in path("drafts.**"))
-      ]|order(publishedAt desc)[0...${pageSize}]{
+      ]|order(publishedAt desc)[0...${pageSizes.projects}]{
       _id,publishedAt,slug,title,link,excerpt,mainImage{
         alt,caption,
         'assetId': asset._ref,
@@ -140,7 +136,7 @@
   pageTitle.value = data.value.page.title;
   projects.value = data.value.currentProjects;
   totalProjects = data.value.totalProjects;
-  totalPages = Math.ceil(totalProjects / pageSize);
+  totalPages = Math.ceil(totalProjects / pageSizes.projects);
   seoTitle.value = data.value.page.seoTitle;
   seoDescription.value = data.value.page.seoDescription;
   seoImage.value = data.value.page.seoImage;
@@ -152,8 +148,8 @@
     description: seoDescription.value,
     ogDescription: seoDescription.value,
     twitterDescription: seoDescription.value,
-    ogImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
-    twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
+    ogImage: seoImage.value ? img(seoImage.value.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
+    twitterImage: seoImage.value ? img(seoImage.value.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
   });

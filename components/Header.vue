@@ -468,7 +468,6 @@
   const loading = useAppLoading();
   const menuState = useMenuState();
   const accordionState = useMenuAccordionState();
-  // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
 
@@ -490,6 +489,7 @@
   const header = ref<HTMLElement>();
   const tl = ref<GSAPTimeline>();
   let ctx: gsap.Context;
+  let menuQuery: MediaQueryList;
 
   /**
    * Toggle menu
@@ -508,108 +508,158 @@
     }
   };
 
+  /**
+   * Get scroll progress helper
+   */
+  const getScrollProgress = () => {
+    const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    return progress > 1 ? 1 : progress;
+  };
+
+  /**
+   * Handle window scroll
+   */
+  const windowScrollHandler = () => {
+    document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
+  };
+
+  /**
+   * Handle menu open event
+   */
+  const menuOpenHandler =  () => {
+    if (!menuQuery.matches) {
+      return;
+    }
+
+    const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
+    menu?.removeAttribute('inert');
+    menu?.focus();
+  };
+
+  /**
+   * Handle menu close event
+   */
+  const menuCloseHandler = () => {
+    if (!menuQuery.matches) {
+      return;
+    }
+
+    const trigger: HTMLButtonElement|null|undefined = header.value?.querySelector('.header__util-item--menu button');
+    const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
+    trigger?.focus();
+    menu?.setAttribute('inert', '');
+  };
+
+  /**
+   * Handle keydown event in the header
+   */
+  const headerKeydownHandler = (e: KeyboardEvent) => {
+    if (!menuQuery.matches) {
+      return;
+    }
+
+    if (e.key === 'Escape' && menuState.value === 'open') {
+      menuState.value = 'closed';
+    }
+
+
+    const {target} = e;
+
+    if (!header.value?.contains(target as Node) || menuState.value === 'closed') {
+      return;
+    }
+
+    // keyboard trap
+    const focusableElements = Array.from(header.value?.querySelectorAll('.header__item-link, .header__util-item--menu button') || []);
+
+    const focusNext = (idx: number) => {
+      let next = idx + 1;
+      if (next >= focusableElements.length) {
+        next = 0;
+      }
+
+      (focusableElements[next] as HTMLElement).focus();
+    };
+
+    const focusPrev = (idx: number) => {
+      let prev = idx - 1;
+      if (prev < 0) {
+        prev = focusableElements.length - 1;
+      }
+
+      (focusableElements[prev] as HTMLElement).focus();
+    };
+
+    switch (e.key) {
+      case 'Tab':
+        if (e.shiftKey) {
+          e.preventDefault();
+          focusPrev(focusableElements.indexOf(target as HTMLElement));
+        } else {
+          e.preventDefault();
+          focusNext(focusableElements.indexOf(target as HTMLElement));
+        }
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        focusNext(focusableElements.indexOf(target as HTMLElement));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        focusPrev(focusableElements.indexOf(target as HTMLElement));
+        break;
+      default:
+        break;
+    }
+  };
+
+  /**
+   * Handle MediaQueryList change
+   */
+  const queryChangeHandler = (e: MediaQueryListEvent) => {
+    if (!e.matches && menuState.value === 'open') {
+      menuState.value = 'closed';
+      header.value?.focus();
+    }
+  };
+
+  /**
+   * Handle hero complete event
+   */
+  const heroCompleteHandler = () => {
+    if (!header.value) {
+      return;
+    }
+
+    gsap.to(header.value, {
+      opacity: 1,
+      onComplete: () => {
+        if (!header.value) {
+          return;
+        }
+        header.value.classList.remove('header--loading');
+      }
+    })
+  };
+
+  /**
+   * Handle the click event in the menu
+   */
+  const menuClickHandler = ({target}: MouseEvent) => {
+    if (header.value?.contains(target as Node) || header.value?.getAttribute('data-menu-open') === 'false') {
+      return;
+    }
+
+    // close the menu
+    menuState.value = 'closed';
+  };
+
   watch(menuState, (newVal: string) => toggleMenu(newVal));
 
   onMounted(() => {
-    const getScrollProgress = () => {
-      const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      return progress > 1 ? 1 : progress;
-    }
+    menuQuery = window.matchMedia('(max-width: 768px)')
 
-    const menuQuery = window.matchMedia('(max-width: 768px)')
-
-    window.addEventListener('scroll', () => {
-      document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
-    });
-
-    document.addEventListener('menu:opened', () => {
-      if (!menuQuery.matches) {
-        return;
-      }
-
-      const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
-      menu?.removeAttribute('inert');
-      menu?.focus();
-    });
-
-    document.addEventListener('menu:closed', () => {
-      if (!menuQuery.matches) {
-        return;
-      }
-
-      const trigger: HTMLButtonElement|null|undefined = header.value?.querySelector('.header__util-item--menu button');
-      const menu: HTMLDivElement|null|undefined = header.value?.querySelector('.header__menu');
-      trigger?.focus();
-      menu?.setAttribute('inert', '');
-    });
-
-    header.value?.addEventListener('keydown', (e) => {
-      if (!menuQuery.matches) {
-        return;
-      }
-
-      if (e.key === 'Escape' && menuState.value === 'open') {
-        menuState.value = 'closed';
-      }
-
-
-      const {target} = e;
-
-      if (!header.value?.contains(target as Node) || menuState.value === 'closed') {
-        return;
-      }
-
-      // keyboard trap
-      const focusableElements = Array.from(header.value?.querySelectorAll('.header__item-link, .header__util-item--menu button') || []);
-
-      const focusNext = (idx: number) => {
-        let next = idx + 1;
-        if (next >= focusableElements.length) {
-          next = 0;
-        }
-
-        (focusableElements[next] as HTMLElement).focus();
-      };
-
-      const focusPrev = (idx: number) => {
-        let prev = idx - 1;
-        if (prev < 0) {
-          prev = focusableElements.length - 1;
-        }
-
-        (focusableElements[prev] as HTMLElement).focus();
-      };
-
-      switch (e.key) {
-        case 'Tab':
-          if (e.shiftKey) {
-            e.preventDefault();
-            focusPrev(focusableElements.indexOf(target as HTMLElement));
-          } else {
-            e.preventDefault();
-            focusNext(focusableElements.indexOf(target as HTMLElement));
-          }
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          focusNext(focusableElements.indexOf(target as HTMLElement));
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          focusPrev(focusableElements.indexOf(target as HTMLElement));
-          break;
-        default:
-          break;
-      }
-    });
-
-    menuQuery.addEventListener('change', (e) => {
-      if (!e.matches && menuState.value === 'open') {
-        menuState.value = 'closed';
-        header.value?.focus();
-      }
-    });
-
+    // GSAP
     ctx = gsap.context((self) => {
       if (!self.selector) {
         return;
@@ -650,35 +700,27 @@
         });
     }, header.value);
 
-    document.addEventListener('hero:complete', () => {
-      if (!header.value) {
-        return;
-      }
+    // Attach event listeners
+    window.addEventListener('scroll', windowScrollHandler);
+    document.addEventListener('menu:opened', menuOpenHandler);
+    document.addEventListener('menu:closed', menuCloseHandler);
+    document.addEventListener('hero:complete', heroCompleteHandler);
+    document.addEventListener('click', menuClickHandler);
+    menuQuery?.addEventListener('change', queryChangeHandler);
+    header.value?.addEventListener('keydown', headerKeydownHandler);
 
-      gsap.to(header.value, {
-        opacity: 1,
-        onComplete: () => {
-          if (!header.value) {
-            return;
-          }
-          header.value.classList.remove('header--loading');
-        }
-      })
-    });
-
-    document.addEventListener('click', ({target}) => {
-      if (header.value?.contains(target as Node) || header.value?.getAttribute('data-menu-open') === 'false') {
-        return;
-      }
-
-      // close the menu
-      menuState.value = 'closed';
-    });
-
+    // Initial scroll position
     document.documentElement.style.setProperty('--scroll-progress', `${getScrollProgress()}`);
   });
 
   onUnmounted(() => {
     ctx.revert();
+    window.removeEventListener('scroll', windowScrollHandler);
+    document.removeEventListener('menu:opened', menuOpenHandler);
+    document.removeEventListener('menu:closed', menuCloseHandler);
+    document.removeEventListener('hero:complete', heroCompleteHandler);
+    document.removeEventListener('click', menuClickHandler);
+    menuQuery?.removeEventListener('change', queryChangeHandler);
+    header.value?.removeEventListener('keydown', headerKeydownHandler);
   });
 </script>

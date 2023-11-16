@@ -18,8 +18,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { NuxtApp } from 'nuxt/app';
-  import { useAppConfig, useNuxtApp, useRuntimeConfig } from 'nuxt/app';
+  import { useAppConfig, useRuntimeConfig } from 'nuxt/app';
   import {
     groq,
     useSeoMeta,
@@ -27,11 +26,12 @@
     useRoute,
     ref,
     onMounted,
-    onBeforeRouteUpdate
+    onBeforeRouteUpdate,
+useImage
   } from '#imports';
 
-  const { $urlFor } = useNuxtApp() as NuxtApp & ImgHelperPlugin;
-  const { siteTitle } = useAppConfig();
+  const img = useImage();
+  const { siteTitle, ogWidth: width, ogHeight: height } = useAppConfig();
   const runtimeConfig = useRuntimeConfig();
   const { baseUrl } = runtimeConfig.public as BaseUrl;
   const route = useRoute();
@@ -43,14 +43,13 @@
 
   // Reactives
   const pageTitle = ref<string>();
-  const posts = ref<Array<PostLineItem>>();
+  const posts = ref<PostLineItem[]>();
   const currentCat = ref<string>(route.query.category as string || 'All');
-  // const currentCatId = ref<string>(route.query.category as string || '*');
   const resultsLoading = ref<boolean>(true);
   const page = ref<number>(1);
 
   // Vars
-  const pageSize = 5;
+  const { pageSizes } = useAppConfig();
   const cagegories = [
     { _id: '*', title: 'All' },
   ];
@@ -147,7 +146,7 @@
         (publishedAt == "${timestamp}" && _id ${dir === 'newer' ? '>' : '<'} "${id}")
       )
       ${printCategoryQueryFragment()}
-    ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...${pageSize}]{
+    ]|order(publishedAt ${dir === 'newer' ? 'asc' : 'desc'})[0...${pageSizes.rants}]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     }`;
 
@@ -203,7 +202,7 @@
     'page': *[_type == 'page' && slug.current == "${route.name}"][0]{
       title,seoTitle,seoDescription,seoImage,
     },
-    'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))${printCategoryQueryFragment()}]|order(publishedAt desc)[0...${pageSize}]{
+    'currentPosts': *[_type == 'post' && !(_id in path('drafts.**'))${printCategoryQueryFragment()}]|order(publishedAt desc)[0...${pageSizes.rants}]{
       _id, slug, title, publishedAt, categories[]->{_id, title}
     },
     'totalPosts': count(*[_type == 'post'] && !(_id in path('drafts.**'))),
@@ -215,7 +214,7 @@
   pageTitle.value = data.value.page.title;
   posts.value = data.value.currentPosts as Array<PostLineItem>;
   totalPosts = data.value.totalPosts;
-  totalPages = Math.ceil(totalPosts / pageSize);
+  totalPages = Math.ceil(totalPosts / pageSizes.rants);
 
   [...posts.value].forEach(post => {
     if (!post.categories) {
@@ -240,8 +239,8 @@
     description: seoDescription.value,
     ogDescription: seoDescription.value,
     twitterDescription: seoDescription.value,
-    ogImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
-    twitterImage: seoImage.value ? $urlFor(seoImage.value.asset._ref).size(1200, 628).url() : baseUrl + '/img/og-image.png',
+    ogImage: seoImage.value ? img(seoImage.value.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
+    twitterImage: seoImage.value ? img(seoImage.value.asset._ref, {width, height}) : baseUrl + '/img/og-image.png',
     twitterCard: 'summary_large_image',
     ogUrl: baseUrl + route.path,
   });

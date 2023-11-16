@@ -7,6 +7,16 @@
 </template>
 
 <script lang="ts" setup>
+  import {
+    useColorMode,
+    useMenuAccordionState,
+    useGtag,
+    useRoute,
+    watch,
+    useHead,
+    onMounted,
+    computed,
+  } from '#imports';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
@@ -57,44 +67,91 @@
     bodyAttrs: {
       class: 'cursor-default',
     },
-    link: [
-      computed(() => {
-        return {
-          rel: 'apple-touch-icon',
-          sizes: '180x180',
-          href: getFaviDir() + '/apple-touch-icon.png',
+    link: () => {
+      // computed(() => {
+      //   return {
+      //     rel: 'apple-touch-icon',
+      //     sizes: '180x180',
+      //     href: getFaviDir() + '/apple-touch-icon.png',
+      //   };
+      // }),
+      // computed(() => {
+      //   return {
+      //     rel: 'icon',
+      //     type: 'image/png',
+      //     sizes: '32x32',
+      //     href: getFaviDir() + '/favicon-32x32.png',
+      //   };
+      // }),
+      // computed(() => {
+      //   return {
+      //     rel: 'icon',
+      //     type: 'image/png',
+      //     sizes: '16x16',
+      //     href: getFaviDir() + '/favicon-16x16.png',
+      //   };
+      // }),
+      // computed(() => {
+      //   return {
+      //     rel: 'manifest',
+      //     href: getFaviDir() + '/site.webmanifest',
+      //   };
+      // }),
+      // computed(() => {
+      //   return {
+      //     rel: 'mask-icon',
+      //     href: getFaviDir() + '/safari-pinned-tab.svg',
+      //     color: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
+      //   };
+      // }),
+      const rels = [
+        'apple-touch-icon',
+        'favicon-32x32',
+        'favicon-16x16',
+        'manifest',
+        'mask-icon',
+      ];
+
+      return rels.map((r) => {
+        const rel = r.includes('favicon') ? 'icon' : r;
+        const hasSizes = r !== 'manifest' && r !== 'mask-icon';
+        let href = getFaviDir() + '/' + r + '.png';
+
+        if ('mask-icon' === r) {
+          href = `${getFaviDir()}/safari-pinned-tab.svg`;
+        } else if ('manifest' === r){
+          href = `${getFaviDir()}/site.webmanifest`;
+        }
+
+        const link = {
+          rel,
+          href,
         };
-      }),
-      computed(() => {
-        return {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '32x32',
-          href: getFaviDir() + '/favicon-32x32.png',
-        };
-      }),
-      computed(() => {
-        return {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '16x16',
-          href: getFaviDir() + '/favicon-16x16.png',
-        };
-      }),
-      computed(() => {
-        return {
-          rel: 'manifest',
-          href: getFaviDir() + '/site.webmanifest',
-        };
-      }),
-      computed(() => {
-        return {
-          rel: 'mask-icon',
-          href: getFaviDir() + '/safari-pinned-tab.svg',
-          color: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
-        };
-      }),
-    ],
+
+        if (hasSizes) {
+          Object.defineProperty(link, 'sizes', {
+            value: r === 'apple-touch-icon' ? '180x180' : r.slice(-5),
+            writable: false,
+          });
+        }
+
+        if (rel === 'icon') {
+          Object.defineProperty(link, 'type', {
+            value: 'image/png',
+            writable: false,
+          });
+        }
+
+        if (rel === 'mask-icon') {
+          Object.defineProperty(link, 'color', {
+            value: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
+            writable: false,
+          });
+        }
+
+        return link;
+      });
+    },
     meta: [
       computed(() => {
         return {
