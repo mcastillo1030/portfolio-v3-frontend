@@ -16,12 +16,14 @@
     useHead,
     onMounted,
     computed,
+    useLoadingVisibility,
   } from '#imports';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
+  const loadingVisibility = useLoadingVisibility();
 
   const parseColorMode = () => {
     return colorMode.value === 'light' ?
@@ -65,7 +67,7 @@
       lang: 'en',
     },
     bodyAttrs: {
-      class: 'cursor-default',
+      class: `cursor-default ${loadingVisibility.value === 'visible' ? 'no-scroll' : ''}`,
     },
     link: () => {
       // computed(() => {
@@ -181,5 +183,9 @@
 
     changeColorMode(wantsMode);
     gtag('event', 'screen_view', { 'name': route.name as string, 'path': route.path});
+
+    document.addEventListener('spinner:complete', () => {
+      document.querySelector('body')?.classList.remove('no-scroll');
+    });
   });
 </script>

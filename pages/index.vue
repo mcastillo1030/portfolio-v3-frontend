@@ -32,7 +32,7 @@
     useSanityQuery,
     definePageMeta,
     useLoadingVisibility,
-useImage,
+    useImage,
   } from '#imports';
   import type { RouteLocationNormalized } from '#vue-router';
 
