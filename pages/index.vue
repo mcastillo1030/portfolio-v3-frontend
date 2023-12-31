@@ -20,7 +20,7 @@
       :subtitle="data.contactSubhead"
       :items="data.contactItems"
     />
-    <HomeLoading :visibilityString="loadingVisibility" />
+    <HomeLoading />
   </main>
 </template>
 
@@ -32,7 +32,7 @@
     useSanityQuery,
     definePageMeta,
     useLoadingVisibility,
-useImage,
+    useImage,
   } from '#imports';
   import type { RouteLocationNormalized } from '#vue-router';
 

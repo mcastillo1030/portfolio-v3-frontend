@@ -267,6 +267,10 @@
   }
 }
 
+.loading {
+  overflow: hidden;
+}
+
 @media screen and (min-width: 1200px) {
   .container {
     --s-gutter-left: 10.5rem;

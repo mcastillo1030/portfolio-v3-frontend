@@ -56,7 +56,13 @@
 </style>
 
 <script setup lang="ts">
-  import { onMounted, onUnmounted, ref } from '#imports';
+  import {
+    onMounted,
+    onUnmounted,
+    ref,
+    useLoadingVisibility,
+    useHead,
+  } from '#imports';
   import { gsap } from 'gsap';
 
   const phrases = [
@@ -74,12 +80,14 @@
     'TODO: Insert elevator music...',
   ];
   const loading = ref<HTMLElement>();
+  const visibilityString = useLoadingVisibility();
   let ctx: gsap.Context;
 
   onMounted(() => {
     const event = new CustomEvent('spinner:complete');
     const idx = Math.floor(Math.random() * phrases.length);
     const texts = loading.value?.querySelectorAll('.home-loading__text') || [];
+
     // unhide a random phrase
     [...texts].forEach((text, i) => {
       if (i === idx) {
@@ -110,6 +118,7 @@
           gsap.set(wrap, {
             clearProps: 'all',
           });
+          visibilityString.value = 'hidden';
         },
       })
         .to(wrap, {
@@ -122,7 +131,12 @@
     ctx.revert();
   });
 
-  defineProps<{
-    visibilityString: string;
-  }>();
+  // add loading class to body
+  useHead({
+    bodyAttrs: {
+      class: computed(() => {
+        return visibilityString.value === 'visible' ? 'loading' : '';
+      }),
+    },
+  });
 </script>
