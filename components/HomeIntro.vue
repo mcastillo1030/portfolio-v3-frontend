@@ -66,7 +66,7 @@
       align-items: center;
       padding: 0;
       margin: 2rem 0 1.5625rem;
-      gap: 1.25rem;
+      gap: .75rem;
       list-style: none;
 
       &::before {
@@ -85,7 +85,7 @@
     }
 
     &__contact-link {
-      padding: .25rem;
+      padding: .75rem;
       transition: color .2s ease-out;
 
       &:hover {
