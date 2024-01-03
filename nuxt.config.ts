@@ -17,7 +17,6 @@ export default defineNuxtConfig({
   },
   gtag: {
     id: 'GTM-5L4X6GD',
-    // defer: true,
   },
   image: {
     provider: 'sanity',

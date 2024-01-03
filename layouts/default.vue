@@ -17,6 +17,7 @@
     onMounted,
     computed,
   } from '#imports';
+import { linkSync } from 'fs';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
@@ -111,46 +112,58 @@
         'manifest',
         'mask-icon',
       ];
-
-      return rels.map((r) => {
-        const rel = r.includes('favicon') ? 'icon' : r;
-        const hasSizes = r !== 'manifest' && r !== 'mask-icon';
-        let href = getFaviDir() + '/' + r + '.png';
-
-        if ('mask-icon' === r) {
-          href = `${getFaviDir()}/safari-pinned-tab.svg`;
-        } else if ('manifest' === r){
-          href = `${getFaviDir()}/site.webmanifest`;
+      const links = [
+        {
+          rel: 'preconnect',
+          href: 'https://www.google-analytics.com',
+        },
+        {
+          rel: 'preconnect',
+          href: 'https://www.googletagmanager.com',
         }
+      ];
 
-        const link = {
-          rel,
-          href,
-        };
+      return links.concat(
+        rels.map((r) => {
+          const rel = r.includes('favicon') ? 'icon' : r;
+          const hasSizes = r !== 'manifest' && r !== 'mask-icon';
+          let href = getFaviDir() + '/' + r + '.png';
 
-        if (hasSizes) {
-          Object.defineProperty(link, 'sizes', {
-            value: r === 'apple-touch-icon' ? '180x180' : r.slice(-5),
-            writable: false,
-          });
-        }
+          if ('mask-icon' === r) {
+            href = `${getFaviDir()}/safari-pinned-tab.svg`;
+          } else if ('manifest' === r){
+            href = `${getFaviDir()}/site.webmanifest`;
+          }
 
-        if (rel === 'icon') {
-          Object.defineProperty(link, 'type', {
-            value: 'image/png',
-            writable: false,
-          });
-        }
+          const link = {
+            rel,
+            href,
+          };
 
-        if (rel === 'mask-icon') {
-          Object.defineProperty(link, 'color', {
-            value: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
-            writable: false,
-          });
-        }
+          if (hasSizes) {
+            Object.defineProperty(link, 'sizes', {
+              value: r === 'apple-touch-icon' ? '180x180' : r.slice(-5),
+              writable: false,
+            });
+          }
 
-        return link;
-      });
+          if (rel === 'icon') {
+            Object.defineProperty(link, 'type', {
+              value: 'image/png',
+              writable: false,
+            });
+          }
+
+          if (rel === 'mask-icon') {
+            Object.defineProperty(link, 'color', {
+              value: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
+              writable: false,
+            });
+          }
+
+          return link;
+        })
+      );
     },
     meta: [
       computed(() => {
