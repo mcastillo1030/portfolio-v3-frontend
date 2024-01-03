@@ -111,7 +111,11 @@
       const wrap = self.selector('.home-loading__container')[0];
 
       gsap.timeline({
-        delay: .75,
+        delay: .5,
+        defaults: {
+          duration: .25,
+          ease: 'power2.inOut',
+        },
         onComplete: () => {
           document.dispatchEvent(event);
           loading.value?.classList.add('hidden');
