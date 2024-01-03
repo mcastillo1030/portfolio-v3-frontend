@@ -31,7 +31,6 @@
     useSeoMeta,
     useSanityQuery,
     definePageMeta,
-    useLoadingVisibility,
     useImage,
   } from '#imports';
   import type { RouteLocationNormalized } from '#vue-router';
@@ -40,7 +39,6 @@
   const { siteTitle, ogWidth: width, ogHeight: height } = useAppConfig();
   const config = useRuntimeConfig();
   const { baseUrl } = config.public as BaseUrl;
-  const loadingVisibility = useLoadingVisibility();
 
   const query = groq`*[_type == 'page' && slug.current == 'home'][0]{
     title,template,slug,

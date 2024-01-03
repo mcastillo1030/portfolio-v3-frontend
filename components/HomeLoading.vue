@@ -84,7 +84,7 @@
   let ctx: gsap.Context;
 
   onMounted(() => {
-    const event = new CustomEvent('spinner:complete');
+    const event = new CustomEvent('spinner:complete', { detail: { visibility: visibilityString.value } });
     const idx = Math.floor(Math.random() * phrases.length);
     const texts = loading.value?.querySelectorAll('.home-loading__text') || [];
 

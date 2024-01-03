@@ -153,8 +153,17 @@
       skillsTl.value?.play('start');
     }
   };
-  const handleSpinnerComplete = () => {
-    skillsTl.value?.play('start');
+  const handleSpinnerComplete = (e: CustomEvent) => {
+    const { detail } = e;
+    const { visibility } = detail;
+
+    if (visibility === 'hidden') {
+      skillsTl.value?.play('start', true);
+      return;
+    }
+
+    skillsTl.value?.play('end');
+    document.dispatchEvent(new Event('hero:complete'));
   };
 
   onMounted(() => {
@@ -237,7 +246,9 @@
         iconsTl.add(iconTl);
       });
 
-      heroTl.add(iconsTl);
+      heroTl
+        .addLabel('end')
+        .add(iconsTl);
       skillsTl.value = heroTl;
     }, hero.value);
 
@@ -247,13 +258,13 @@
 
     motionQuery?.addEventListener('change', handleMotionChange);
 
-    document.addEventListener('spinner:complete', handleSpinnerComplete);
+    document.addEventListener('spinner:complete', handleSpinnerComplete as EventListener);
   });
 
   onUnmounted(() => {
     ctx.revert();
     motionQuery?.removeEventListener('change', handleMotionChange);
-    document.removeEventListener('spinner:complete', handleSpinnerComplete);
+    document.removeEventListener('spinner:complete', handleSpinnerComplete as EventListener);
   });
 
   defineProps<{
