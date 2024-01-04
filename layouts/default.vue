@@ -17,7 +17,6 @@
     onMounted,
     computed,
   } from '#imports';
-import { linkSync } from 'fs';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
   // const gtm = useGtm();

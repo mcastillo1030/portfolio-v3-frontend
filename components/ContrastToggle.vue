@@ -5,12 +5,15 @@
       class="btn contrast-toggle__trigger cursor-pointer"
       @click="toggleOpen = !toggleOpen"
     >
-      <span class="contrast-toggle__trigger-label sr-only">Toggle light mode</span>
+      <span id="contrast-toggle__label" class="contrast-toggle__trigger-label sr-only">Toggle light mode</span>
       <IconsMoon class="contrast-toggle__trigger-icon" v-if="colorMode === 'dark'" />
       <IconsSun class="contrast-toggle__trigger-icon" v-else-if="colorMode === 'light'" />
       <IconsComputerMonitor class="contrast-toggle__trigger-icon" v-else />
     </button>
-    <ul class="contrast-toggle__options">
+    <ul class="contrast-toggle__options" aria-labelledby="contrast-toggle__label">
+      <li class="contrast-toggle__option contrast-toggle__option--title" aria-hidden="true">
+        <h3 class="contrast-toggle__list-title">Color Mode</h3>
+      </li>
       <li class="contrast-toggle__option">
         <button
           type="button"
@@ -121,6 +124,11 @@
 
     &__option {
       margin: 0;
+
+      &--title {
+        padding: .3rem .25rem;
+        background: var(--c-header-bg);
+      }
     }
 
     &__option-btn {
@@ -153,6 +161,12 @@
     &__option-label {
       margin-right: 1rem;
       text-transform: lowercase;
+    }
+
+    &__list-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 500;
     }
   }
 
