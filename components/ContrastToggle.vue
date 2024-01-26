@@ -126,7 +126,7 @@
       margin: 0;
 
       &--title {
-        padding: .3rem .25rem;
+        padding: .3rem .25rem .3rem .75rem;
         background: var(--c-header-bg);
       }
     }
