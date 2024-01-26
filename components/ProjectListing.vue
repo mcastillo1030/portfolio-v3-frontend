@@ -8,7 +8,7 @@
             <h2 class="project-listing__title delta">
               <LazyNuxtLink
                 :to="`/projects/${project.slug.current}`"
-                class="project-listing__title-link cursor-pointer cursor-pointer--reversed"
+                class="project-listing__title-link"
                 @click="gtag('event', 'click', { 'value': project.title })">
                 {{ project.title }}
               </LazyNuxtLink>
@@ -84,20 +84,7 @@
       &:hover {
         color: var(--c-foreground);
         text-decoration: 1px underline var(--c-foreground);
-        cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
-        cursor: -webkit-image-set(
-            url('/img/cursors/pointer-dark.png') 1x,
-            url('/img/cursors/pointer-dark@2x.png') 2x
-          ) 0 0, auto;
       }
-    }
-
-    .light-mode & &__title-link {
-      cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
-      cursor: -webkit-image-set(
-          url('/img/cursors/pointer-light.png') 1x,
-          url('/img/cursors/pointer-light@2x.png') 2x
-        ) 0 0, auto;
     }
 
     &__image-wrap {

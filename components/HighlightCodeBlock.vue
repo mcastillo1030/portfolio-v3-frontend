@@ -1,7 +1,7 @@
 <template>
   <div class="highlight-code-block" v-if="code" ref="codeBlock">
     <span class="highlight-code-block__label">{{ filename ||language }}</span>
-    <button type="button" class="highlight-code-block__button cursor-pointer" @click="copyToClipboard">
+    <button type="button" class="highlight-code-block__button" @click="copyToClipboard">
       <span v-if="!copied" class="highlight-code-block__copy-action">
         <LazyIconsCopy class="highlight-code-block__icon highlight-code-block__icon--copy" />
         <span class="highlight-code-block__button-label sr-only">Copy</span>
@@ -48,7 +48,7 @@
       background: transparent;
       border: none;
       border-radius: .5rem;
-      // cursor: pointer;
+      cursor: pointer;
       transition:
         background-color .2s ease-out,
         opacity 0.2s ease-in-out;

@@ -6,7 +6,7 @@
         <div class="home-intro__image-column">
           <LazyOutlineImage
             v-if="image"
-            class="home-intro__image-wrap overlay cursor-load"
+            class="home-intro__image-wrap overlay"
             :asset-id="image.assetId"
             :alt="image.alt ? image.alt : 'Home Image'"
             :width="500"

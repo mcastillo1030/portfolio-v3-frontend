@@ -1,5 +1,5 @@
 <template>
-  <LazyNuxtLink v-if="isLink" :to="href" class="oiwrap cursor-pointer cursor-pointer--reversed">
+  <LazyNuxtLink v-if="isLink" :to="href" class="oiwrap">
     <slot />
   </LazyNuxtLink>
   <div  v-else class="oiwrap">

@@ -2,6 +2,7 @@
   <div id="wrapper">
     <Header />
     <slot />
+    <Pointer />
     <Footer />
   </div>
 </template>
@@ -17,7 +18,6 @@
     onMounted,
     computed,
   } from '#imports';
-import { linkSync } from 'fs';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
   // const gtm = useGtm();
@@ -64,9 +64,6 @@ import { linkSync } from 'fs';
   useHead({
     htmlAttrs: {
       lang: 'en',
-    },
-    bodyAttrs: {
-      class: 'cursor-default',
     },
     link: () => {
       // computed(() => {

@@ -3,7 +3,7 @@
     v-if="element === 'a'"
     :href="href"
     :target="external ? '_blank' : '_self'"
-    :class="`button cursor-pointer ${external ? 'button--external' : ''} ${classes}`"
+    :class="`button ${external ? 'button--external' : ''} ${classes}`"
   >
     <LazyIconsExternalLink v-if="external" classes="button__icon" />
     <slot />
@@ -11,7 +11,7 @@
   <button
   v-else
     :type="type"
-    :class="`button cursor-pointer ${external ? 'button--external' : (pagination ? 'button--pagination' : '')} ${classes}`"
+    :class="`button ${external ? 'button--external' : (pagination ? 'button--pagination' : '')} ${classes}`"
     :disabled="disabled"
   >
     <LazyIconsArrow v-if="pagination" class="button__icon button__icon--arrow" />

@@ -13,7 +13,7 @@
           <LazyButton
             :disabled="loading"
             :pagination="true"
-            class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed flip"
+            class="listing-pagination__btn reversed flip"
           >Recent</LazyButton>
         </li>
         <li
@@ -27,7 +27,7 @@
           <LazyButton
             :disabled="loading"
             :pagination="true"
-            class="listing-pagination__btn cursor-pointer cursor-pointer--contrast reversed"
+            class="listing-pagination__btn reversed"
           >Older</LazyButton>
         </li>
       </ul>

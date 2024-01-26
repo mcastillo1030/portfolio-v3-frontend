@@ -2,7 +2,7 @@
   <div class="contrast-toggle" :class="toggleOpen ? 'open' : ''" ref="toggleComp">
     <button
       type="button"
-      class="btn contrast-toggle__trigger cursor-pointer"
+      class="btn contrast-toggle__trigger"
       @click="toggleOpen = !toggleOpen"
     >
       <span class="contrast-toggle__trigger-label sr-only">Toggle light mode</span>
@@ -14,7 +14,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--dark cursor-pointer"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--dark"
           :class="colorMode === 'dark' ? 'active' : ''"
           @click="setColorMode('dark')"
         >
@@ -25,7 +25,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--light cursor-pointer"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--light"
           :class="colorMode === 'light' ? 'active' : ''"
           @click="setColorMode('light')"
         >
@@ -36,7 +36,7 @@
       <li class="contrast-toggle__option">
         <button
           type="button"
-          class="contrast-toggle__option-btn contrast-toggle__option-btn--auto cursor-pointer"
+          class="contrast-toggle__option-btn contrast-toggle__option-btn--auto"
           :class="colorMode === 'system' ? 'active' : ''"
           @click="setColorMode('system')"
         >
@@ -62,7 +62,7 @@
       align-items: center;
       justify-content: center;
       color: var(--c-action);
-      // cursor: pointer;
+      cursor: pointer;
       transition: color .2s ease-out;
 
       &:hover {
@@ -132,7 +132,7 @@
       color: var(--c-action);
       background: none;
       border: none;
-      // cursor: pointer;
+      cursor: pointer;
       appearance: none;
       transition: color .2s ease-out;
 

@@ -51,31 +51,6 @@ h6,
 }
 
 p,
-figcaption,
-blockquote,
-address,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  cursor: url('/img/cursors/text-dark.png') 16 16, text;
-  cursor: -webkit-image-set(
-      url('/img/cursors/text-dark.png') 1x,
-      url('/img/cursors/text-dark@2x.png') 2x
-    ) 16 16, text;
-
-  .light-mode & {
-    cursor: url('/img/cursors/text-light.png') 16 16, text;
-    cursor: -webkit-image-set(
-        url('/img/cursors/text-light.png') 1x,
-        url('/img/cursors/text-light@2x.png') 2x
-      ) 16 16, text;
-  }
-}
-
-p,
 ul,
 ol,
 dl,
@@ -173,11 +148,6 @@ a {
   color: var(--c-action);
   text-underline-offset: .375em;
   text-decoration-thickness: 1px;
-  cursor: url('/img/cursors/pointer-dark.png') 0 0, auto;
-  cursor: -webkit-image-set(
-      url('/img/cursors/pointer-dark.png') 1x,
-      url('/img/cursors/pointer-dark@2x.png') 2x
-    ) 0 0, auto;
 
   &:hover {
     text-decoration: none;
@@ -187,14 +157,6 @@ a {
     outline: .125rem dashed var(--c-action);
     outline-offset: .125rem;
   }
-}
-
-.light-mode a {
-  cursor: url('/img/cursors/pointer-light.png') 0 0, auto;
-  cursor: -webkit-image-set(
-      url('/img/cursors/pointer-light.png') 1x,
-      url('/img/cursors/pointer-light@2x.png') 2x
-    ) 0 0, auto;
 }
 
 address {

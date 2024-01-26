@@ -3,7 +3,7 @@
     <div class="article-meta__stack" v-if="technologies">
       <h2 class="article-meta__stack-title zeta">Stack</h2>
       <ul class="article-meta__technologies">
-        <li class="article-meta__technology cursor-help" v-for="technology in technologies">
+        <li class="article-meta__technology" v-for="technology in technologies">
           <IconsTaxonomy :type="technology.icon" class="article-meta__icon" />
           <span class="article-meta__technology-text tooltip">{{ technology.title }}</span>
         </li>
@@ -15,7 +15,7 @@
         <li class="article-meta__tag" v-for="category in categories">
           <NuxtLink
             :to="`/rants?category=${category.title}`"
-            class="article-meta__tag-link cursor-pointer cursor-pointer--contrast"
+            class="article-meta__tag-link"
           >{{ category.title }}</NuxtLink>
         </li>
       </ul>

@@ -3,7 +3,7 @@
     <div class="container post-listing__container">
       <header v-if="category && category !== 'All'" class="post-listing__header">
         <h2  class="post-listing__category-title">Rants about "{{ category }}"</h2>
-        <LazyNuxtLink to="/rants" class="post-listing__category-btn cursor-pointer cursor-pointer--contrast">
+        <LazyNuxtLink to="/rants" class="post-listing__category-btn">
           <IconsMenuClose class="post-listing__clear-icon" />
           <span class="post-listing__clear-text tooltip">Clear</span>
         </LazyNuxtLink>
@@ -35,7 +35,7 @@
                     <li class="post-listing__tag" v-for="category in post.categories">
                       <NuxtLink
                         :to="`/rants?category=${category.title}`"
-                        class="post-listing__tag-link cursor-pointer cursor-pointer--contrast"
+                        class="post-listing__tag-link"
                         @click="() => {
                           onTagClick && onTagClick(category.title);
                           gtag('event', 'click',{ 'value': category.title });
