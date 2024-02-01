@@ -151,7 +151,6 @@
       &::before {
         content: '\FE61';
         display: block;
-        margin-top: 0.25rem;
         color: var(--c-accent-2);
         font-size: clamp(1.625rem, 1.339rem + 1.221vw, 2.438rem);
       }
@@ -162,11 +161,15 @@
     }
 
     &__title {
-      margin: 0 0 1rem;
+      margin: 0 0 .75rem;
     }
 
     &__meta {
       color: var(--c-selection);
+    }
+
+    &__date {
+      margin-block-end: .5rem;
     }
 
 
@@ -238,10 +241,29 @@
 </style>
 
 <script setup lang="ts">
-  import { dateFormatter, useGtag } from '#imports';
+  import {
+    dateFormatter,
+    useGtag,
+    broadcastPagination,
+    smoothScroll as scrollTo,
+  } from '#imports';
 
   // const gtm = useGtm();
   const { gtag } = useGtag();
+  const scroller = ref<NodeJS.Timeout|false>(false);
+
+  onUpdated(() => {
+    broadcastPagination();
+
+    if (scroller.value) {
+      clearTimeout(scroller.value);
+    }
+
+    scroller.value = setTimeout(() => {
+      scrollTo('.post-listing');
+      scroller.value = false;
+    }, 650);
+  });
 
   defineProps<{
     posts?: Array<PostLineItem>;

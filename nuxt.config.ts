@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-// import localStorageDriver from 'unstorage/drivers/localstorage';
 
 export default defineNuxtConfig({
   app: {
@@ -12,9 +11,6 @@ export default defineNuxtConfig({
     transpile: ['gsap'],
   },
   css: ['@/assets/scss/global.scss'],
-  devtools: {
-    enabled: false,
-  },
   gtag: {
     id: 'GTM-5L4X6GD',
   },
@@ -28,7 +24,7 @@ export default defineNuxtConfig({
     'nuxt-gtag',
     '@nuxtjs/sanity',
     '@nuxt/image',
-    'nuxt-simple-sitemap',
+    '@nuxtjs/sitemap',
   ],
   nitro: {
     prerender: {

@@ -11,10 +11,10 @@
     "build:digitalocean": "npm install --production=false && npm run build && npm ci"
   },
   "devDependencies": {
+    "@nuxtjs/sitemap": "^5.0.5",
     "@types/node": "^20.8.7",
-    "nuxt": "^3.8.0",
+    "nuxt": "^3.9.3",
     "nuxt-gtag": "^1.1.1",
-    "nuxt-simple-sitemap": "^3.0.13",
     "sass": "^1.69.4"
   },
   "dependencies": {
@@ -22,11 +22,11 @@
     "@nuxt/image": "^1.0.0",
     "@nuxtjs/sanity": "^1.7.2",
     "@sanity/client": "^6.1.2",
-    "gsap": "npm:@gsap/shockingly@^3.11.5",
+    "gsap": "npm:@gsap/shockingly@^3.12.5",
     "highlight.js": "^11.8.0",
-    "just-debounce": "^1.1.0"
+    "just-debounce-it": "^3.2.0"
   },
   "engines": {
-    "node": ">=20.8.1 <21"
+    "node": ">=20.8.1"
   }
 }

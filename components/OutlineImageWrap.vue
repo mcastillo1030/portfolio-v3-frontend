@@ -10,6 +10,7 @@
 <style lang="scss">
   .oiwrap {
     display: block;
+    aspect-ratio: var(--oi-width) / var(--oi-height);
 
     &:focus {
       outline: 0;

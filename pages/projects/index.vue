@@ -23,7 +23,7 @@
     useSanityQuery,
     useRoute,
     ref,
-useImage,
+    useImage,
   } from '#imports';
 
   const img = useImage();
@@ -58,7 +58,7 @@ useImage,
 
     const { data: d, pending: p } = await useSanityQuery<ProjectLineItem[]>(q);
 
-    projects.value = d.value;
+    projects.value = d.value || [];
     resultsLoading.value = p.value;
 
     if (reverseOrdering)  {
@@ -133,13 +133,13 @@ useImage,
   const { data, pending } = await useSanityQuery<ProjectsPageResponse>(query);
 
   resultsLoading.value = pending.value;
-  pageTitle.value = data.value.page.title;
-  projects.value = data.value.currentProjects;
-  totalProjects = data.value.totalProjects;
+  pageTitle.value = data.value?.page.title;
+  projects.value = data.value?.currentProjects;
+  totalProjects = data.value?.totalProjects || 0;
   totalPages = Math.ceil(totalProjects / pageSizes.projects);
-  seoTitle.value = data.value.page.seoTitle;
-  seoDescription.value = data.value.page.seoDescription;
-  seoImage.value = data.value.page.seoImage;
+  seoTitle.value = data.value?.page.seoTitle;
+  seoDescription.value = data.value?.page.seoDescription;
+  seoImage.value = data.value?.page.seoImage;
 
   useSeoMeta({
     title: seoTitle.value + ' | ' + siteTitle,

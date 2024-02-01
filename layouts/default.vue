@@ -2,8 +2,8 @@
   <div id="wrapper">
     <Header />
     <slot />
-    <Pointer />
     <Footer />
+    <Pointer />
   </div>
 </template>
 
@@ -20,7 +20,6 @@
   } from '#imports';
   const colorMode = useColorMode();
   const accordionState = useMenuAccordionState();
-  // const gtm = useGtm();
   const { gtag } = useGtag();
   const route = useRoute();
 
@@ -66,42 +65,6 @@
       lang: 'en',
     },
     link: () => {
-      // computed(() => {
-      //   return {
-      //     rel: 'apple-touch-icon',
-      //     sizes: '180x180',
-      //     href: getFaviDir() + '/apple-touch-icon.png',
-      //   };
-      // }),
-      // computed(() => {
-      //   return {
-      //     rel: 'icon',
-      //     type: 'image/png',
-      //     sizes: '32x32',
-      //     href: getFaviDir() + '/favicon-32x32.png',
-      //   };
-      // }),
-      // computed(() => {
-      //   return {
-      //     rel: 'icon',
-      //     type: 'image/png',
-      //     sizes: '16x16',
-      //     href: getFaviDir() + '/favicon-16x16.png',
-      //   };
-      // }),
-      // computed(() => {
-      //   return {
-      //     rel: 'manifest',
-      //     href: getFaviDir() + '/site.webmanifest',
-      //   };
-      // }),
-      // computed(() => {
-      //   return {
-      //     rel: 'mask-icon',
-      //     href: getFaviDir() + '/safari-pinned-tab.svg',
-      //     color: parseColorMode() === 'light' ? '#fbfbfb' : '#011627',
-      //   };
-      // }),
       const rels = [
         'apple-touch-icon',
         'favicon-32x32',

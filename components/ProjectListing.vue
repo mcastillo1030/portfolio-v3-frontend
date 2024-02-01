@@ -192,13 +192,15 @@
     ref,
     onUpdated,
     useGtag,
+    broadcastPagination,
     smoothScroll as scrollTo
   } from '#imports';
-
   const { gtag } = useGtag();
   const scroller = ref<NodeJS.Timeout|false>(false);
 
   onUpdated(() => {
+    broadcastPagination();
+
     if (scroller.value) {
       clearTimeout(scroller.value);
     }

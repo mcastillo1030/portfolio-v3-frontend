@@ -1,6 +1,6 @@
 <template>
   <div class="outline-image">
-    <OutlineImageWrap :is-link="!!link" :href="link">
+    <OutlineImageWrap :is-link="!!link" :href="link" :style="`--oi-width: ${width}px; --oi-height: ${height}px`">
       <figure v-if="caption" class="outline-image__figure">
         <NuxtImg
           :src="assetId"
@@ -95,7 +95,6 @@
       height: 100%;
       object-fit: cover;
       border-radius: .5rem;
-      // filter: grayscale(1);
     }
 
     .overlay &__image {

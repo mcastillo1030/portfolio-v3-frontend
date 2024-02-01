@@ -49,6 +49,11 @@
     background: var(--c-menu-bg);
     border-radius: .5rem;
 
+    &__technologies,
+    &__categories {
+      margin-block-end: 1.75rem;
+    }
+
     &__stack-title,
     &__categories-title {
       margin: 0 0 .25rem;
@@ -126,7 +131,7 @@
     }
 
     &__tag-link {
-      color: var(--c-accent-2);
+      color: var(--c-accent-1);
       font-size: .875rem;
       text-decoration-style: dashed;
       text-transform: lowercase;
@@ -138,7 +143,7 @@
     }
 
     &__toc-title {
-      margin-bottom: 0;
+      margin-block: 0;
       color: var(--c-accent-2);
     }
 

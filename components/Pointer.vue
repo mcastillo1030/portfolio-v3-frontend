@@ -89,23 +89,22 @@
     ref,
     onMounted,
     onUnmounted,
-    watch,
-    ElementPointers
+    watch
   } from '#imports';
-  import debounce from 'just-debounce';
+  import debounce from 'just-debounce-it';
   import { gsap } from 'gsap';
 
   const pointer = ref<HTMLElement>();
   const isMobile = ref<boolean>(true);
   const isInPage = ref<boolean>(false);
-  const elemPointersManager = ref<ElementPointers|null>(null);
   let ctx: gsap.Context;
 
   /* ---------- */
   // Watchers
   /* ---------- */
   watch(isInPage, (newVal) => {
-    pointer.value?.classList.toggle('visible', newVal)
+    pointer.value?.classList.toggle('visible', newVal);
+    pointer.value?.classList.remove('down');
   });
 
   watch(isMobile, (newVal) => {
@@ -170,8 +169,6 @@
   // Lifecycle
   /* ---------- */
   onMounted(() => {
-    elemPointersManager.value = new ElementPointers();
-
     ctx = gsap.context((self) => {
       if (!self.selector) {
         return;
@@ -186,7 +183,6 @@
     window.addEventListener('resize', debouncedCheckMobile);
     window.addEventListener('pointerdown', addDownClass);
     window.addEventListener('pointerup', removeDownClass);
-    elemPointersManager.value?.initListeners();
     document.addEventListener('pointermove', (e) => ctx.onMouseMove(e));
   });
 
@@ -197,6 +193,5 @@
     window.removeEventListener('resize', debouncedCheckMobile);
     window.removeEventListener('pointerdown', addDownClass);
     window.removeEventListener('pointerup', removeDownClass);
-    elemPointersManager.value?.destroyListeners();
   });
 </script>

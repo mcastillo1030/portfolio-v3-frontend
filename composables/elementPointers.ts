@@ -4,7 +4,7 @@ export class ElementPointers {
   pointer: HTMLElement;
 
   constructor() {
-    this.actionTags = 'a, button';
+    this.actionTags = 'a, button, .post-listing__category-btn';
     this.otherTags = '.outline-image';
     this.pointer = document.querySelector('#pointer') as HTMLElement;
   }
@@ -22,7 +22,6 @@ export class ElementPointers {
 
     [...elements].forEach((el) => {
       el.addEventListener('pointerenter', this.setActionCursorType);
-      // el.addEventListener('pointerenter', () => console.log('pointerenter'));
       el.addEventListener('pointerleave', this.resetCursorType);
     });
 
@@ -64,9 +63,6 @@ export class ElementPointers {
     if (!this.pointer) {
       return;
     }
-
-    console.log('---- initListeners ----');
-    console.log(this.pointer, this.actionTags, this.otherTags);
 
     this.initActionListeners();
     this.initOtherListners();

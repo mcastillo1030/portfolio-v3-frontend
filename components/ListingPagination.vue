@@ -8,6 +8,7 @@
           @click="(evt) => {
             paginatePrev(evt);
             gtag('event', 'click', {'value': route.path, target: 'listing-pagination<'});
+            // broadcastPagination();
           }"
         >
           <LazyButton
@@ -22,6 +23,7 @@
           @click="(evt) => {
             paginateNext(evt);
             gtag('event', 'click',{'value': route.path, target: 'listing-pagination>'});
+            // broadcastPagination();
           }"
         >
           <LazyButton
