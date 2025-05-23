@@ -1,24 +1,24 @@
 <template>
   <main class="c-main">
     <HomeHero
-      :title="data.heroHeading"
-      :subtitle="data.heroSubhead"
-      :icons="data.heroSkills"
+      :title="data?.heroHeading"
+      :subtitle="data?.heroSubhead"
+      :icons="data?.heroSkills"
     />
     <HomeIntro
-      :title="data.introHeading"
-      :image="data.introImage"
-      :links="data.introContact"
-      :text="data.introText"
+      :title="data?.introHeading"
+      :image="data?.introImage"
+      :links="data?.introContact"
+      :text="data?.introText"
     />
     <HomeProjects
-      :title="data.projectsHeading"
-      :projects="data.projectsFeatured || data.projectsFeaturedDefault"
+      :title="data?.projectsHeading"
+      :projects="data?.projectsFeatured || data?.projectsFeaturedDefault"
     />
     <HomeContact
-      :title="data.contactHeading"
-      :subtitle="data.contactSubhead"
-      :items="data.contactItems"
+      :title="data?.contactHeading"
+      :subtitle="data?.contactSubhead"
+      :items="data?.contactItems"
     />
     <HomeLoading />
   </main>
@@ -95,16 +95,19 @@
     ]
   });
 
-  useSeoMeta({
-    title: data.value.seoTitle + ' | ' + siteTitle,
-    ogTitle: data.value.seoTitle + ' | ' + siteTitle,
-    twitterTitle: data.value.seoTitle + ' | ' + siteTitle,
-    description: data.value.seoDescription,
-    twitterDescription: data.value.seoDescription,
-    ogUrl: baseUrl,
-    ogDescription: data.value.seoDescription,
-    ogImage: img(data.value.seoImage.asset._ref, {width, height}),
-    twitterImage: img(data.value.seoImage.asset._ref, {width, height}),
-    twitterCard: 'summary_large_image',
-  });
+  if (data.value) {
+    useSeoMeta({
+      title: data.value.seoTitle + ' | ' + siteTitle,
+      ogTitle: data.value.seoTitle + ' | ' + siteTitle,
+      twitterTitle: data.value.seoTitle + ' | ' + siteTitle,
+      description: data.value.seoDescription,
+      twitterDescription: data.value.seoDescription,
+      ogUrl: baseUrl,
+      ogDescription: data.value.seoDescription,
+      ogImage: img(data.value.seoImage.asset._ref, {width, height}),
+      twitterImage: img(data.value.seoImage.asset._ref, {width, height}),
+      twitterCard: 'summary_large_image',
+    });
+  }
+
 </script>
