@@ -5,10 +5,9 @@
         <li
           class="listing-pagination__button listing-pagination__button--prev"
           v-if="currentPage > 1"
-          @click="(evt) => {
+          @click="(evt: Event) => {
             paginatePrev(evt);
             gtag('event', 'click', {'value': route.path, target: 'listing-pagination<'});
-            // broadcastPagination();
           }"
         >
           <LazyButton
@@ -20,10 +19,9 @@
         <li
           class="listing-pagination__button listing-pagination__button--next"
           v-if="currentPage < totalPages"
-          @click="(evt) => {
+          @click="(evt: Event) => {
             paginateNext(evt);
             gtag('event', 'click',{'value': route.path, target: 'listing-pagination>'});
-            // broadcastPagination();
           }"
         >
           <LazyButton

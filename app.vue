@@ -42,8 +42,9 @@
     elemPointersManager.value?.resetAllListeners();
   };
 
-  const enterPage = () => {
+  const enterPage = (el: HTMLElement, done: CallableFunction): void => {
     elemPointersManager.value?.initListeners();
+    done();
   };
 
   const reinitCursors = () => {
@@ -53,6 +54,20 @@
   };
 
   onMounted(() => {
+    // prevents window to scrollTop then returns to savedPosition
+    window.history.scrollRestoration = 'auto';
+
+    // but restore manual scrollRestoration at the first navigation
+    const unwatch = useRouter().beforeEach(() => {
+        window.history.scrollRestoration = 'manual';
+        unwatch();
+    });
+
+    // and restore auto scrollRestoration when leaving the page
+    window.addEventListener('unload', () => {
+        window.history.scrollRestoration = 'auto';
+    });
+
     elemPointersManager.value = new ElementPointers();
     elemPointersManager.value?.initListeners();
     document.addEventListener('listing-paginate', reinitCursors);

@@ -78,13 +78,13 @@
 
     &__caption {
       position: absolute;
-      bottom: 0;
-      left: 0;
+      inset-block-end: 0;
+      inset-inline-start: 0;
       z-index: 1;
       width: 100%;
       padding: .75rem 1rem;
       margin: 0;
-      background: var(--c-header-bg);
+      background: var(--c-accent-3-t_75);
       border-radius: 0 0 .5rem .5rem;
     }
 

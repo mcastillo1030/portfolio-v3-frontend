@@ -91,59 +91,51 @@
       // (d)dark-mode / (l)light-mode (t)ransparent & (a)ccent
       --c-dt: rgba(128, 164, 194, .5);
       --c-lt: rgba(144, 167, 178, .5);
+      --icon-width: clamp(1.125rem, 7%, 2.5rem);
+      --icon-offset-v: clamp(0.75rem, 4%, 3.25rem);
       position: relative;
       margin-bottom: 2.25rem;
 
-      &::before,
-      &::after {
+      &::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
+        inset-inline-start: 0;
+        inset-block-end: 0;
         width: 100%;
-        height: 100%;
-        border-radius: .5rem;
-        transform-origin: top left;
+        height: calc(var(--icon-width) + (2 * var(--icon-offset-v)));
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+        transition: opacity .2s ease-out;
+        mix-blend-mode: screen;
       }
 
       &::before {
         z-index: 1;
-        background: var(--c-dt);
-        clip-path: polygon(0 0, 0 71%, 71% 0);
-        transition: clip-path .2s ease-in-out;
+        background: var(--c-lt);
       }
+    }
 
-      &::after {
-        z-index: 2;
-        background: var(--c-selection);
-        clip-path: polygon(0 0, 0 40%, 40% 0);
-        transition: clip-path .3s ease-in-out;
-      }
+    &__image-wrap:hover::before {
+      opacity: .3;
+    }
 
-      &:hover::before {
-        clip-path: polygon(0 0, 0 40%, 40% 0);
-      }
-
-      &:hover::after {
-        clip-path: polygon(0 0, 0 20%, 20% 0);
-      }
+    .dark-mode &__image-wrap::before {
+      background: var(--c-dt);
     }
 
     &__image-icon {
       position: absolute;
-      top: clamp(0.75rem, 4%, 3.25rem);
-      left: clamp(0.75rem, 4%, 3.25rem);
+      inset-inline-start: var(--icon-offset-v);
+      inset-block-end: var(--icon-offset-v);
       z-index: 3;
-      width: clamp(1.125rem, 7%, 2.5rem);
-      width: auto;
+      width: var(--icon-width);
       aspect-ratio: 1 / 1;
       color: var(--c-background);
-      transform-origin: top left;
-      transition: transform .3s ease-in-out;
+      transition: opacity .2s ease-out;
     }
 
     &__image-wrap:hover &__image-icon {
-      transform: scale(.6);
+      opacity: .3;
     }
 
     &__image::before {
