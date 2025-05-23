@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/sanity', '@nuxt/image', 'nuxt-gtag', '@nuxtjs/sitemap'],
+  modules: ['@nuxt/image', 'nuxt-gtag', '@nuxtjs/sitemap', '@nuxtjs/sanity'],
 
   nitro: {
     prerender: {

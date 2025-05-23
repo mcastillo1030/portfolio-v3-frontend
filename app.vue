@@ -43,12 +43,10 @@
   };
 
   const enterPage = () => {
-    console.log('here');
     elemPointersManager.value?.initListeners();
   };
 
   const reinitCursors = () => {
-    // console.log('here');
     resetCursor();
     elemPointersManager.value?.resetAllListeners();
     elemPointersManager.value?.initListeners();

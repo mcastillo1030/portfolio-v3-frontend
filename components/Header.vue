@@ -701,7 +701,7 @@
     }, header.value);
 
     // Attach event listeners
-    window.addEventListener('scroll', windowScrollHandler);
+    // window.addEventListener('scroll', windowScrollHandler);
     document.addEventListener('menu:opened', menuOpenHandler);
     document.addEventListener('menu:closed', menuCloseHandler);
     document.addEventListener('hero:complete', heroCompleteHandler);
@@ -715,7 +715,7 @@
 
   onUnmounted(() => {
     ctx.revert();
-    window.removeEventListener('scroll', windowScrollHandler);
+    // window.removeEventListener('scroll', windowScrollHandler);
     document.removeEventListener('menu:opened', menuOpenHandler);
     document.removeEventListener('menu:closed', menuCloseHandler);
     document.removeEventListener('hero:complete', heroCompleteHandler);
