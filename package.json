@@ -1,5 +1,6 @@
 {
   "name": "marlon-castillo-portfolio",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -25,6 +26,7 @@
     "just-debounce-it": "^3.2.0"
   },
   "engines": {
-    "node": "20.19.0"
+    "node": ">=20.19.0",
+    "npm": ">=10.8.2"
   }
 }
